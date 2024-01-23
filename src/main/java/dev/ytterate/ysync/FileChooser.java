@@ -11,8 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -51,13 +53,22 @@ public class FileChooser extends JFrame {
         panel.add(nameInput);
         panel.add(submitBtn);
         panel.add(label);
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.getContentPane().add(panel);
 
         JLabel nameLabel = new JLabel("Hello!");
         JPanel panel2 = new JPanel();
         panel2.add(nameLabel);
         frame.getContentPane().add(panel2, BorderLayout.SOUTH);
 
+        dynamicNameListener(nameInput, nameLabel);
+
+        addPopupListener(submitBtn, panel2);
+
+        addDirectoryListener(frame, button, label);
+
+    }
+
+    private static void dynamicNameListener(JTextField nameInput, JLabel nameLabel) {
         nameInput.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -79,7 +90,29 @@ public class FileChooser extends JFrame {
             }
 
         });
+    }
 
+    private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(true);
+
+                int option = fileChooser.showOpenDialog(frame);
+
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    file = fileChooser.getSelectedFile();
+                    label.setText("You have selected: " + file.getAbsolutePath());
+                } else {
+                    label.setText("Open command canceled");
+                }
+            }
+        });
+    }
+
+    private void addPopupListener(JButton submitBtn, JPanel panel2) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,26 +139,6 @@ public class FileChooser extends JFrame {
                 }
             }
         });
-
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setAcceptAllFileFilterUsed(true);
-                fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Png files only", "png"));
-                fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Jpg files only", "jpg"));
-
-                int option = fileChooser.showOpenDialog(frame);
-
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    file = fileChooser.getSelectedFile();
-                    label.setText("You have selected: " + file.getAbsolutePath());
-                } else {
-                    label.setText("Open command canceled");
-                }
-            }
-        });
-
     }
 
     private ImageIcon createThumbnail(File file) {
