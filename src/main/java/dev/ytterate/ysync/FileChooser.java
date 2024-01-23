@@ -1,5 +1,6 @@
 package dev.ytterate.ysync;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -11,17 +12,18 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
-public class fileChooser extends JFrame {
+public class FileChooser extends JFrame {
+    File file = null;
 
     public static void main(String[] args) {
-        fileChooser fileChooser = new fileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.createWindow();
     }
 
@@ -36,16 +38,25 @@ public class fileChooser extends JFrame {
 
     private void createUi(final JFrame frame) {
         JPanel panel = new JPanel();
-        LayoutManager layout = new FlowLayout();
+        LayoutManager layout = new GridLayout(5,1);
         panel.setLayout(layout);
 
         JButton button = new JButton("Choose file");
-        JButton submitBtn = new JButton("Click");
+        JButton submitBtn = new JButton("Submit");
         JLabel label = new JLabel();
         JTextField nameInput = new JTextField();
-        nameInput.setColumns(10);
+        nameInput.setColumns(40);
+
+        panel.add(button);
+        panel.add(nameInput);
+        panel.add(submitBtn);
+        panel.add(label);
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
 
         JLabel nameLabel = new JLabel("Hello!");
+        JPanel panel2 = new JPanel();
+        panel2.add(nameLabel);
+        frame.getContentPane().add(panel2, BorderLayout.SOUTH);
 
         nameInput.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -72,27 +83,26 @@ public class fileChooser extends JFrame {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JLabel imageLabel = new JLabel();
 
-                ImageIcon icon = createImageIcon("/funny.jpeg");
-                if (icon != null) {
-                    imageLabel.setIcon(icon);
+                if (file != null) {
+                    ImageIcon thumbnail = createThumbnail(file);
+                    if (thumbnail != null) {
 
-                    int option = JOptionPane.showOptionDialog(
-                            submitBtn,
-                            new Object[]{imageLabel, panel},
-                            "Welcome back",
-                            JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE,
-                            icon,
-                            new Object[]{},
-                            null);
+                        int optionDialog = JOptionPane.showOptionDialog(
+                                submitBtn,
+                                new Object[]{panel2},
+                                "Welcome back",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                thumbnail,
+                                new Object[]{},
+                                null);
+                        if (optionDialog == JOptionPane.OK_OPTION) {
 
-                    if (option == JOptionPane.OK_OPTION) {
-
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(submitBtn, "Thumbnail generation failed!");
                     }
-                } else {
-                          JOptionPane.showMessageDialog(submitBtn, "Image not found!");
                 }
             }
         });
@@ -108,7 +118,7 @@ public class fileChooser extends JFrame {
                 int option = fileChooser.showOpenDialog(frame);
 
                 if (option == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
+                    file = fileChooser.getSelectedFile();
                     label.setText("You have selected: " + file.getAbsolutePath());
                 } else {
                     label.setText("Open command canceled");
@@ -116,26 +126,25 @@ public class fileChooser extends JFrame {
             }
         });
 
-        JPanel panel2 = new JPanel();
-        panel2.add(nameLabel);
-        panel.add(button);
-        panel.add(submitBtn);
-        panel.add(nameInput);
-        panel.add(label);
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.getContentPane().add(panel2, BorderLayout.SOUTH);
     }
 
-    private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
+    private ImageIcon createThumbnail(File file) {
+        try {
+            BufferedImage originalImage = ImageIO.read(file);
+
+            int thumbnailWidth = 100;
+            int thumbnailHeight = 100;
+
+            BufferedImage thumbnail = new BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_ARGB);
+            thumbnail.getGraphics().drawImage(originalImage.getScaledInstance(thumbnailWidth, thumbnailHeight, Image.SCALE_SMOOTH), 0, 0, null);
+            System.out.println("dubbel");
+            return new ImageIcon(thumbnail);
+        } catch (IOException e) {
+            System.err.println("Thumbnail generation error: " + e.getMessage());
             return null;
         }
-    }
 
+    }
 }
 
 

@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MyUi.form" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MyUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/fileChooser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/funny.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/funny.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/fileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +33,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.FileChooser.executor": "Run",
     "Application.MyUi.executor": "Run",
     "Application.fileChooser.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -57,8 +53,8 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="fileChooser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="dev.ytterate.ysync.fileChooser" />
+    <configuration name="FileChooser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.ytterate.ysync.FileChooser" />
       <module name="ysync2" />
       <extension name="coverage">
         <pattern>
@@ -72,7 +68,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.fileChooser" />
+        <item itemvalue="Application.FileChooser" />
       </list>
     </recent_temporary>
   </component>
@@ -84,11 +80,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
-      <workItem from="1705526495985" duration="23311000" />
+      <workItem from="1705526495985" duration="30516000" />
     </task>
+    <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
+      <option name="closed" value="true" />
+      <created>1706026535590</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1706026535590</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Displaying image and dynamic name update. Choosing only png and jpeg files working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Displaying image and dynamic name update. Choosing only png and jpeg files working" />
   </component>
 </project>
