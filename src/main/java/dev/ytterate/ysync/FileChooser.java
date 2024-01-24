@@ -11,10 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -22,7 +19,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileChooser extends JFrame {
-    File file = null;
+    private File file = null;
+    private JPanel popupPanel = null;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -31,21 +29,22 @@ public class FileChooser extends JFrame {
 
     private void createWindow() {
         JFrame frame = new JFrame("File reader");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new GridLayout(3,1));
         createUi(frame);
         frame.setSize(600, 240);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     private void createUi(final JFrame frame) {
         JPanel panel = new JPanel();
-        LayoutManager layout = new GridLayout(5,1);
+        LayoutManager layout = new FlowLayout();
         panel.setLayout(layout);
 
         JButton button = new JButton("Choose file");
         JButton submitBtn = new JButton("Submit");
-        JLabel label = new JLabel();
+        JLabel label = new JLabel("", JLabel.CENTER);
         JTextField nameInput = new JTextField();
         nameInput.setColumns(40);
 
@@ -62,7 +61,7 @@ public class FileChooser extends JFrame {
 
         dynamicNameListener(nameInput, nameLabel);
 
-        addPopupListener(submitBtn, panel2);
+        addPopupListener(submitBtn, popupPanel);
 
         addDirectoryListener(frame, button, label);
 
@@ -105,6 +104,27 @@ public class FileChooser extends JFrame {
                 if (option == JFileChooser.APPROVE_OPTION) {
                     file = fileChooser.getSelectedFile();
                     label.setText("You have selected: " + file.getAbsolutePath());
+
+                    File [] filesInDirectory = file.listFiles();
+
+                    StringBuilder fileList = new StringBuilder("<html><body>");
+
+                    for (File file : filesInDirectory){
+                        if (file.isDirectory()){
+                            fileList.append("+ ").append(file.getName()).append("<br>");
+                        } else {
+                            fileList.append("- ").append(file.getName()).append("<br>");
+                        }
+                    }
+
+                    fileList.append("</body></html>");
+                    JLabel fileListLabel = new JLabel(fileList.toString());
+                    fileListLabel.setHorizontalAlignment(JLabel.CENTER);
+
+                    popupPanel = new JPanel(new BorderLayout());
+                    popupPanel.add(fileListLabel, BorderLayout.CENTER);
+
+                    JOptionPane.showMessageDialog(frame, popupPanel, "Files in Directory", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     label.setText("Open command canceled");
                 }
@@ -112,7 +132,7 @@ public class FileChooser extends JFrame {
         });
     }
 
-    private void addPopupListener(JButton submitBtn, JPanel panel2) {
+    private void addPopupListener(JButton submitBtn, JPanel popupPanel) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,7 +143,7 @@ public class FileChooser extends JFrame {
 
                         int optionDialog = JOptionPane.showOptionDialog(
                                 submitBtn,
-                                new Object[]{panel2},
+                                new Object[]{popupPanel},
                                 "Welcome back",
                                 JOptionPane.DEFAULT_OPTION,
                                 JOptionPane.INFORMATION_MESSAGE,
@@ -150,7 +170,6 @@ public class FileChooser extends JFrame {
 
             BufferedImage thumbnail = new BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_ARGB);
             thumbnail.getGraphics().drawImage(originalImage.getScaledInstance(thumbnailWidth, thumbnailHeight, Image.SCALE_SMOOTH), 0, 0, null);
-            System.out.println("dubbel");
             return new ImageIcon(thumbnail);
         } catch (IOException e) {
             System.err.println("Thumbnail generation error: " + e.getMessage());
