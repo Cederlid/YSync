@@ -1,16 +1,10 @@
 package dev.ytterate.ysync;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -105,29 +99,66 @@ public class FileChooser extends JFrame {
                     file = fileChooser.getSelectedFile();
                     label.setText("You have selected: " + file.getAbsolutePath());
 
-                    File [] filesInDirectory = file.listFiles();
+                    DefaultMutableTreeNode root = new DefaultMutableTreeNode(file.getName());
 
-                    StringBuilder fileList = new StringBuilder("<html><body>");
+                    populateTree(root, file);
 
-                    for (File file : filesInDirectory){
-                        if (file.isDirectory()){
-                            fileList.append("+ ").append(file.getName()).append("<br>");
-                        } else {
-                            fileList.append("- ").append(file.getName()).append("<br>");
-                        }
-                    }
+                    JTree tree = new JTree(root);
 
-                    fileList.append("</body></html>");
-                    JLabel fileListLabel = new JLabel(fileList.toString());
-                    fileListLabel.setHorizontalAlignment(JLabel.CENTER);
+                    tree.addTreeExpansionListener(new FileTreeExpansionListner());
+
+//                    StringBuilder fileList = new StringBuilder("<html><body>");
+//
+//                    listFiles(file, fileList, 0);
+//
+//                    fileList.append("</body></html>");
+//                    JLabel fileListLabel = new JLabel(fileList.toString());
+//                    fileListLabel.setHorizontalAlignment(JLabel.CENTER);
+
+                    JScrollPane scrollPane = new JScrollPane(tree);
+                    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                     popupPanel = new JPanel(new BorderLayout());
-                    popupPanel.add(fileListLabel, BorderLayout.CENTER);
+                    popupPanel.add(scrollPane, BorderLayout.CENTER);
 
                     JOptionPane.showMessageDialog(frame, popupPanel, "Files in Directory", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     label.setText("Open command canceled");
                 }
+            }
+
+            private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
+                File[] filesInDirectory = directory.listFiles();
+
+                if (filesInDirectory != null){
+                    for (File file : filesInDirectory){
+                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(file.getName());
+                        parentNode.add(node);
+
+                        if (file.isDirectory()){
+                            populateTree(node, file);
+                        }
+                    }
+                }
+            }
+
+            private void listFiles(File directory, StringBuilder fileList, int indentationLevel) {
+                File [] filesInDirectory = directory.listFiles();
+
+                if (filesInDirectory != null){
+                    for (File file : filesInDirectory){
+                        for (int i = 0; i < indentationLevel; i++) {
+                            fileList.append("&nbsp;&nbsp;");
+                        }
+                        if (file.isDirectory()){
+                            fileList.append("+ ").append(file.getName()).append("<br>");
+                            listFiles(file, fileList, indentationLevel + 1);
+                        } else {
+                            fileList.append("- ").append(file.getName()).append("<br>");
+                        }
+                    }
+                }
+
             }
         });
     }

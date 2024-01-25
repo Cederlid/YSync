@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Refactored code">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Choose directory only, returns a popup with list of all files and directories">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileTreeExpansionListner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
@@ -48,6 +49,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="dev.ytterate.ysync" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
@@ -80,7 +84,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
-      <workItem from="1705526495985" duration="35350000" />
+      <workItem from="1705526495985" duration="41905000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -103,7 +107,14 @@
       <option name="presentableId" value="LOCAL−00003" />
       <updated>1706041877079</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL−00004" summary="Choose directory only, returns a popup with list of all files and directories">
+      <option name="closed" value="true" />
+      <created>1706101788067</created>
+      <option name="number" value="LOCAL−00004" />
+      <option name="presentableId" value="LOCAL−00004" />
+      <updated>1706101788067</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -113,6 +124,7 @@
     <MESSAGE value="Displaying image and dynamic name update. Choosing only png and jpeg files working" />
     <MESSAGE value="thumbnail image works" />
     <MESSAGE value="Refactored code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored code" />
+    <MESSAGE value="Choose directory only, returns a popup with list of all files and directories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Choose directory only, returns a popup with list of all files and directories" />
   </component>
 </project>
