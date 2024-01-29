@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="created new button and changed some methods">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="comparing two directories and listing files that does not exist in both">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
@@ -83,7 +83,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
-      <workItem from="1705526495985" duration="63081000" />
+      <workItem from="1705526495985" duration="64055000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -127,7 +127,14 @@
       <option name="presentableId" value="LOCAL−00006" />
       <updated>1706283791628</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL−00007" summary="comparing two directories and listing files that does not exist in both">
+      <option name="closed" value="true" />
+      <created>1706550143772</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1706550143772</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +147,7 @@
     <MESSAGE value="Choose directory only, returns a popup with list of all files and directories" />
     <MESSAGE value="using JTree and being able to show or hide files inside directories" />
     <MESSAGE value="created new button and changed some methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="created new button and changed some methods" />
+    <MESSAGE value="comparing two directories and listing files that does not exist in both" />
+    <option name="LAST_COMMIT_MESSAGE" value="comparing two directories and listing files that does not exist in both" />
   </component>
 </project>

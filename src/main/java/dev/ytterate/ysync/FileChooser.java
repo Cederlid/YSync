@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Date;
 
 public class FileChooser extends JFrame {
     private File file1 = null;
@@ -138,6 +139,7 @@ public class FileChooser extends JFrame {
 
         });
     }
+
     private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
         File[] filesInDirectory = directory.listFiles();
 
@@ -153,53 +155,48 @@ public class FileChooser extends JFrame {
         }
     }
 
-    private void compareFilesInDirectories(File dir1, File dir2){
-        File [] files1 = dir1.listFiles();
-        File [] files2 = dir2.listFiles();
+    private void compareFilesInDirectories(File dir1, File dir2) {
+        File[] files1 = dir1.listFiles();
+        File[] files2 = dir2.listFiles();
 
-        if (files1 != null && files2 != null){
+        if (files1 != null && files2 != null) {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
 
-            for (File file1 : files1){
+            for (File file1 : files1) {
                 boolean found = false;
 
-                for (File file2 : files2){
-                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length()) {
+                for (File file2 : files2) {
+                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length() && file1.lastModified() == file2.lastModified()) {
                         found = true;
                         break;
                     }
                 }
-                if (!found){
-                    differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName());
+                if (!found) {
+                    differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
                 }
             }
 
-            for (File file2 : files2){
+            for (File file2 : files2) {
                 boolean found = false;
 
-                for (File file1 : files1){
-                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length()){
+                for (File file1 : files1) {
+                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length() && file1.lastModified() == file2.lastModified()) {
                         found = true;
                         break;
                     }
                 }
 
-                if (!found){
-                    differencesModel.addElement("File: " + file2.getName() + " - in directory: " + dir2.getName());
+                if (!found) {
+                    differencesModel.addElement("File: " + file2.getName() + " - in directory: " + dir2.getName() + " - last modified: " + new Date(file2.lastModified()));
                 }
             }
 
             JList<String> differencesList = new JList<>(differencesModel);
             JScrollPane differencesScrollPane = new JScrollPane(differencesList);
             differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
             jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
         }
     }
-
-
-
-
 
 
 }
