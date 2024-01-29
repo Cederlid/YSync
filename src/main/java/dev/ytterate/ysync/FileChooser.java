@@ -1,20 +1,20 @@
 package dev.ytterate.ysync;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class FileChooser extends JFrame {
-    private File file = null;
+    private File file1 = null;
     private File file2 = null;
     private JPanel jPanel = null;
+    private JPanel jPanel2 = null;
     private JTree tree;
+    private JTree tree2;
+
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -23,7 +23,6 @@ public class FileChooser extends JFrame {
 
     private void createWindow() {
         JFrame frame = new JFrame("File reader");
-        // frame.setLayout(new GridLayout(3,1));
         createUi(frame);
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,51 +39,17 @@ public class FileChooser extends JFrame {
         JButton button2 = new JButton("Choose file 2");
         JButton submitBtn = new JButton("Submit");
         JLabel label = new JLabel("", JLabel.CENTER);
-        //JTextField nameInput = new JTextField();
-        //nameInput.setColumns(40);
 
         panel.add(button);
-        //panel.add(nameInput);
         panel.add(button2);
         panel.add(submitBtn);
         panel.add(label);
         frame.getContentPane().add(panel, BorderLayout.NORTH);
 
-        JLabel nameLabel = new JLabel("Hello!");
-//        JPanel panel2 = new JPanel();
-//        panel2.add(nameLabel);
-//        frame.getContentPane().add(panel2, BorderLayout.SOUTH);
-
-        // dynamicNameListener(nameInput, nameLabel);
-
         addPopupListener(frame, submitBtn, label);
-
         addDirectoryListener(frame, button, label);
+        addDirectoryListener2(frame, button2, label);
 
-    }
-
-    private static void dynamicNameListener(JTextField nameInput, JLabel nameLabel) {
-        nameInput.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            private void updateLabel() {
-                nameLabel.setText(nameInput.getText() + ", Hello!");
-            }
-
-        });
     }
 
     private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
@@ -98,34 +63,31 @@ public class FileChooser extends JFrame {
                 int option = fileChooser.showOpenDialog(frame);
 
                 if (option == JFileChooser.APPROVE_OPTION) {
-                    file = fileChooser.getSelectedFile();
-                    //label.setText("You have selected: " + file.getAbsolutePath());
-
-                    //  JOptionPane.showMessageDialog(frame, popupPanel1, "Files in Directory", JOptionPane.INFORMATION_MESSAGE);
+                    file1 = fileChooser.getSelectedFile();
                 } else {
                     label.setText("Open command canceled");
                 }
             }
+        });
 
+    }
 
-//            private void listFiles(File directory, StringBuilder fileList, int indentationLevel) {
-//                File [] filesInDirectory = directory.listFiles();
-//
-//                if (filesInDirectory != null){
-//                    for (File file : filesInDirectory){
-//                        for (int i = 0; i < indentationLevel; i++) {
-//                            fileList.append("&nbsp;&nbsp;");
-//                        }
-//                        if (file.isDirectory()){
-//                            fileList.append("+ ").append(file.getName()).append("<br>");
-//                            listFiles(file, fileList, indentationLevel + 1);
-//                        } else {
-//                            fileList.append("- ").append(file.getName()).append("<br>");
-//                        }
-//                    }
-//                }
-//
-//            }
+    private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label) {
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(true);
+
+                int option = fileChooser.showOpenDialog(frame);
+
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    file2 = fileChooser.getSelectedFile();
+                } else {
+                    label.setText("Open command canceled");
+                }
+            }
         });
 
     }
@@ -135,35 +97,36 @@ public class FileChooser extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (file != null) {
+                if (file1 != null && file2 != null) {
                     showPopUp();
                 }
             }
 
             private void showPopUp() {
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode(file.getName());
+                DefaultMutableTreeNode root1 = new DefaultMutableTreeNode(file1.getName());
+                DefaultMutableTreeNode root2 = new DefaultMutableTreeNode(file2.getName());
 
-                populateTree(root, file);
 
-                tree = new JTree(root);
+                populateTree(root1, file1);
+                populateTree(root2, file2);
+
+                tree = new JTree(root1);
+                tree2 = new JTree(root2);
 
                 tree.addTreeExpansionListener(new FileTreeExpansionListner());
-
-//                    StringBuilder fileList = new StringBuilder("<html><body>");
-//
-//                    listFiles(file, fileList, 0);
-//
-//                    fileList.append("</body></html>");
-//                    JLabel fileListLabel = new JLabel(fileList.toString());
-//                    fileListLabel.setHorizontalAlignment(JLabel.CENTER);
+                tree2.addTreeExpansionListener(new FileTreeExpansionListner());
 
                 JScrollPane scrollPane = new JScrollPane(tree);
-                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                JScrollPane scrollPane2 = new JScrollPane(tree2);
 
                 jPanel = new JPanel(new BorderLayout());
                 jPanel.add(scrollPane, BorderLayout.CENTER);
+                jPanel2 = new JPanel(new BorderLayout());
+                jPanel2.add(scrollPane2, BorderLayout.CENTER);
 
-                JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, label, jPanel);
+                compareFilesInDirectories(file1, file2);
+
+                JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanel, jPanel2);
                 splitPane.setResizeWeight(0.5);
 
                 frame.getContentPane().removeAll();
@@ -172,24 +135,72 @@ public class FileChooser extends JFrame {
                 frame.repaint();
             }
 
-            private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
-                File[] filesInDirectory = directory.listFiles();
-
-                if (filesInDirectory != null) {
-                    for (File file : filesInDirectory) {
-                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(file.getName());
-                        parentNode.add(node);
-
-                        if (file.isDirectory()) {
-                            populateTree(node, file);
-                        }
-                    }
-                }
-            }
-
 
         });
     }
+    private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
+        File[] filesInDirectory = directory.listFiles();
+
+        if (filesInDirectory != null) {
+            for (File file : filesInDirectory) {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(file.getName());
+                parentNode.add(node);
+
+                if (file.isDirectory()) {
+                    populateTree(node, file);
+                }
+            }
+        }
+    }
+
+    private void compareFilesInDirectories(File dir1, File dir2){
+        File [] files1 = dir1.listFiles();
+        File [] files2 = dir2.listFiles();
+
+        if (files1 != null && files2 != null){
+            DefaultListModel<String> differencesModel = new DefaultListModel<>();
+
+            for (File file1 : files1){
+                boolean found = false;
+
+                for (File file2 : files2){
+                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length()) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName());
+                }
+            }
+
+            for (File file2 : files2){
+                boolean found = false;
+
+                for (File file1 : files1){
+                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length()){
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found){
+                    differencesModel.addElement("File: " + file2.getName() + " - in directory: " + dir2.getName());
+                }
+            }
+
+            JList<String> differencesList = new JList<>(differencesModel);
+            JScrollPane differencesScrollPane = new JScrollPane(differencesList);
+            differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+            jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
+        }
+    }
+
+
+
+
+
 
 }
 
