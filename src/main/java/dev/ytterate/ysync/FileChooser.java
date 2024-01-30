@@ -160,46 +160,38 @@ public class FileChooser extends JFrame {
         if (files1 != null && files2 != null) {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
 
-            for (File file1 : files1) {
-                boolean found = false;
+            compareFilesOneWay(dir1, files1, files2, differencesModel);
 
-                for (File file2 : files2) {
-                    if (file2.getName().equals(file1.getName())) {
-                        found = true;
-
-                        if (file1.lastModified() > file2.lastModified() && !file1.isDirectory()){
-                            differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
-                        }
-                        break;
-                    }
-                }
-                if (!found) {
-                    differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
-                }
-            }
-
-            for (File file2 : files2) {
-                boolean found = false;
-
-                for (File file1 : files1) {
-                    if (file1.getName().equals(file2.getName())) {
-                        found = true;
-                        if (file2.lastModified() > file1.lastModified() && !file2.isDirectory()){
-                            differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file2.lastModified()));
-                        }
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    differencesModel.addElement("File: " + file2.getName() + " - in directory: " + dir2.getName() + " - last modified: " + new Date(file2.lastModified()));
-                }
-            }
+            compareFilesOneWay(dir2,files2, files1, differencesModel );
 
             JList<String> differencesList = new JList<>(differencesModel);
             JScrollPane differencesScrollPane = new JScrollPane(differencesList);
             differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
+        }
+    }
+
+    private static void compareFilesOneWay(File dir1, File[] files1, File[] files2, DefaultListModel<String> differencesModel) {
+        for (File file1 : files1) {
+            boolean found = false;
+
+            for (File file2 : files2) {
+                if (file2.getName().equals(file1.getName())) {
+                    found = true;
+
+                    if (file1.isDirectory()){
+                        compareFilesOneWay(file1, file1.listFiles(), file2.listFiles(),differencesModel);
+                    }
+                    else if (file1.lastModified() > file2.lastModified()){
+                        differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
+                    }
+
+                    break;
+                }
+            }
+            if (!found) {
+                differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
+            }
         }
     }
 

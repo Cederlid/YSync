@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="getting last modified date for files that doesn't exist in both directories">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="lists file if it has the latest modification time but not directory">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
@@ -83,7 +83,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
-      <workItem from="1705526495985" duration="71879000" />
+      <workItem from="1705526495985" duration="74655000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -141,7 +141,14 @@
       <option name="presentableId" value="LOCAL−00008" />
       <updated>1706551523885</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL−00009" summary="lists file if it has the latest modification time but not directory">
+      <option name="closed" value="true" />
+      <created>1706635326434</created>
+      <option name="number" value="LOCAL−00009" />
+      <option name="presentableId" value="LOCAL−00009" />
+      <updated>1706635326434</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +163,7 @@
     <MESSAGE value="created new button and changed some methods" />
     <MESSAGE value="comparing two directories and listing files that does not exist in both" />
     <MESSAGE value="getting last modified date for files that doesn't exist in both directories" />
-    <option name="LAST_COMMIT_MESSAGE" value="getting last modified date for files that doesn't exist in both directories" />
+    <MESSAGE value="lists file if it has the latest modification time but not directory" />
+    <option name="LAST_COMMIT_MESSAGE" value="lists file if it has the latest modification time but not directory" />
   </component>
 </project>
