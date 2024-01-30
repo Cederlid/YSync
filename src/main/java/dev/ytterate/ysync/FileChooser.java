@@ -135,8 +135,6 @@ public class FileChooser extends JFrame {
                 frame.revalidate();
                 frame.repaint();
             }
-
-
         });
     }
 
@@ -166,8 +164,12 @@ public class FileChooser extends JFrame {
                 boolean found = false;
 
                 for (File file2 : files2) {
-                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length() && file1.lastModified() == file2.lastModified()) {
+                    if (file2.getName().equals(file1.getName())) {
                         found = true;
+
+                        if (file1.lastModified() > file2.lastModified() && !file1.isDirectory()){
+                            differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file1.lastModified()));
+                        }
                         break;
                     }
                 }
@@ -180,8 +182,11 @@ public class FileChooser extends JFrame {
                 boolean found = false;
 
                 for (File file1 : files1) {
-                    if (file1.getName().equals(file2.getName()) && file1.length() == file2.length() && file1.lastModified() == file2.lastModified()) {
+                    if (file1.getName().equals(file2.getName())) {
                         found = true;
+                        if (file2.lastModified() > file1.lastModified() && !file2.isDirectory()){
+                            differencesModel.addElement("File: " + file1.getName() + " - in directory: " + dir1.getName() + " - last modified: " + new Date(file2.lastModified()));
+                        }
                         break;
                     }
                 }
