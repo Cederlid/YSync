@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="lists file if it has the latest modification time but not directory">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="extracted none gui method to another class">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/mixkit-small-cricket-screech-1781.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,30 +26,35 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2b6DAwekkLKx5BBVQYUKgrxn8z6" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.FileChooser.executor": "Run",
-    "Application.MyUi.executor": "Run",
-    "Application.fileChooser.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.FileChooser.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MyUi.executor&quot;: &quot;Run&quot;,
+    &quot;Application.fileChooser.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="dev.ytterate.ysync" />
@@ -83,7 +91,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
-      <workItem from="1705526495985" duration="74655000" />
+      <workItem from="1705526495985" duration="79607000" />
+      <workItem from="1706712844447" duration="11639000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -148,13 +157,28 @@
       <option name="presentableId" value="LOCAL−00009" />
       <updated>1706635326434</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL−00010" summary="Comparing directories recursively">
+      <option name="closed" value="true" />
+      <created>1706646593178</created>
+      <option name="number" value="LOCAL−00010" />
+      <option name="presentableId" value="LOCAL−00010" />
+      <updated>1706646593178</updated>
+    </task>
+    <task id="LOCAL−00011" summary="extracted none gui method to another class">
+      <option name="closed" value="true" />
+      <created>1706647709027</created>
+      <option name="number" value="LOCAL−00011" />
+      <option name="presentableId" value="LOCAL−00011" />
+      <updated>1706647709027</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Displaying image and dynamic name update. Choosing only png and jpeg files working" />
     <MESSAGE value="thumbnail image works" />
     <MESSAGE value="Refactored code" />
@@ -164,6 +188,8 @@
     <MESSAGE value="comparing two directories and listing files that does not exist in both" />
     <MESSAGE value="getting last modified date for files that doesn't exist in both directories" />
     <MESSAGE value="lists file if it has the latest modification time but not directory" />
-    <option name="LAST_COMMIT_MESSAGE" value="lists file if it has the latest modification time but not directory" />
+    <MESSAGE value="Comparing directories recursively" />
+    <MESSAGE value="extracted none gui method to another class" />
+    <option name="LAST_COMMIT_MESSAGE" value="extracted none gui method to another class" />
   </component>
 </project>

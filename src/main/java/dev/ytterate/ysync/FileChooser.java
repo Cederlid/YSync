@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FileChooser extends JFrame {
     private File file1 = null;
@@ -100,13 +100,16 @@ public class FileChooser extends JFrame {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if (file1 != null && file2 != null) {
-                    showPopUp();
+                    try {
+                        showPopUp();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
 
-            private void showPopUp() {
+            private void showPopUp() throws IOException {
                 DefaultMutableTreeNode root1 = new DefaultMutableTreeNode(file1.getName());
                 DefaultMutableTreeNode root2 = new DefaultMutableTreeNode(file2.getName());
 
@@ -156,7 +159,7 @@ public class FileChooser extends JFrame {
         }
     }
 
-    private void compareFilesInDirectories(File dir1, File dir2) {
+    private void compareFilesInDirectories(File dir1, File dir2) throws IOException {
         File[] files1 = dir1.listFiles();
         File[] files2 = dir2.listFiles();
 
@@ -164,8 +167,8 @@ public class FileChooser extends JFrame {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
             ArrayList<String> differencesList = new ArrayList<>();
 
-            fileComparison.compareFilesOneWay(dir1, files1, files2, differencesList);
-            fileComparison.compareFilesOneWay(dir2, files2, files1, differencesList);
+            fileComparison.compareAndCopyFiles(dir1, dir2, files1, files2, differencesList);
+            fileComparison.compareAndCopyFiles(dir2, dir1, files2, files1, differencesList);
 
             for (String s : differencesList) {
                 differencesModel.addElement(s);
