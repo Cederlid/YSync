@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class FileComparison {
-    void compareAndCopyFiles(File sourceDir, File destDir, File[] sourceFiles, File[] destFiles, ArrayList<String> differencesModel) throws IOException {
-        if (sourceFiles != null && destFiles != null) {
+    void copyFile(File sourceDir, File destDir, File[] sourceFiles, File[] destFiles, ArrayList<String> differencesModel) throws IOException {
+        if(sourceFiles != null && destFiles != null) {
             for (File sourceFile : sourceFiles) {
                 boolean found = false;
 
@@ -23,21 +23,20 @@ public class FileComparison {
                         found = true;
 
                         if (sourceFile.lastModified() > destFile.lastModified()) {
-                            copyAndUpdate(sourceFile, destDir);
                             differencesModel.add("File: " + sourceFile.getName() + " - in directory: " + destDir.getName() + " - last modified: " + new Date(sourceFile.lastModified()));
+                            copyFile(sourceDir, destDir, sourceFiles, destFiles, differencesModel);
                         }
-
                         break;
                     }
                 }
                 if (!found) {
-                    copyAndUpdate(sourceFile, destDir);
                     differencesModel.add("File: " + sourceFile.getName() + " - in directory: " + destDir.getName() + " - last modified: " + new Date(sourceFile.lastModified()));
+                    copyFile(sourceDir, destDir, sourceFiles, destFiles, differencesModel);
                 }
             }
         }
-
     }
+
 
     void copyAndUpdate(File sourceFile, File destDir) throws IOException {
         File destFile = new File(destDir, sourceFile.getName());

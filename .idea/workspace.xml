@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="extracted none gui method to another class">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/mixkit-small-cricket-screech-1781.wav" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added dependencies and copy file between directories">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
@@ -92,7 +90,7 @@
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
       <workItem from="1705526495985" duration="79607000" />
-      <workItem from="1706712844447" duration="11639000" />
+      <workItem from="1706712844447" duration="14583000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -171,7 +169,14 @@
       <option name="presentableId" value="LOCAL−00011" />
       <updated>1706647709027</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL−00012" summary="added dependencies and copy file between directories">
+      <option name="closed" value="true" />
+      <created>1706734865640</created>
+      <option name="number" value="LOCAL−00012" />
+      <option name="presentableId" value="LOCAL−00012" />
+      <updated>1706734865640</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +195,7 @@
     <MESSAGE value="lists file if it has the latest modification time but not directory" />
     <MESSAGE value="Comparing directories recursively" />
     <MESSAGE value="extracted none gui method to another class" />
-    <option name="LAST_COMMIT_MESSAGE" value="extracted none gui method to another class" />
+    <MESSAGE value="added dependencies and copy file between directories" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dependencies and copy file between directories" />
   </component>
 </project>
