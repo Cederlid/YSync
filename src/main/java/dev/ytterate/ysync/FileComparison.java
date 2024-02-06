@@ -3,58 +3,76 @@ package dev.ytterate.ysync;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 public class FileComparison {
-    void copyFile(File sourceDir, File destDir, File[] sourceFiles, File[] destFiles, ArrayList<String> differencesModel) throws IOException {
-        if(sourceFiles != null && destFiles != null) {
-            for (File sourceFile : sourceFiles) {
-                boolean found = false;
+    void compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
+        if (sourceDir != null && destDir != null) {
+            for (File sourceFile : sourceDir.listFiles()) {
+                if (sourceFile.isDirectory()) {
+                    boolean found = false;
 
-                for (File destFile : destFiles) {
-                    if (sourceFile.getName().equals(destFile.getName())) {
-                        found = true;
-
-                        if (sourceFile.lastModified() > destFile.lastModified()) {
-                            differencesModel.add("File: " + sourceFile.getName() + " - in directory: " + destDir.getName() + " - last modified: " + new Date(sourceFile.lastModified()));
-                            copyFile(sourceDir, destDir, sourceFiles, destFiles, differencesModel);
+                    // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
+                    for (File destFile : destDir.listFiles()) {
+                        if (sourceFile.getName().equals(destFile.getName())) {
+                            found = true;
+                            compareAndCopyFiles(sourceFile, destFile);
+                            break;
                         }
-                        break;
+                    }
+                    if (!found) {
+                        File destFile = new File(destDir, sourceFile.getName());
+                        try {
+                            FileUtils.copyDirectory(sourceFile, destFile);
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else {
+
+                    boolean found = false;
+
+                    // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
+                    for (File destFile : destDir.listFiles()) {
+                        if (sourceFile.getName().equals(destFile.getName())) {
+                            found = true;
+
+                            if (sourceFile.lastModified() > destFile.lastModified()) {
+                                copyFile(sourceFile, destDir);
+                            }
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        copyFile(sourceFile, destDir);
                     }
                 }
-                if (!found) {
-                    differencesModel.add("File: " + sourceFile.getName() + " - in directory: " + destDir.getName() + " - last modified: " + new Date(sourceFile.lastModified()));
-                    copyFile(sourceDir, destDir, sourceFiles, destFiles, differencesModel);
-                }
             }
-        }
-    }
 
-
-    void copyAndUpdate(File sourceFile, File destDir) throws IOException {
-        File destFile = new File(destDir, sourceFile.getName());
-        if (destFile.exists()) {
-            destFile.delete();
         }
-        if (sourceFile.isDirectory()){ //TODO
-            return;
+        for (File destFile : destDir.listFiles()) {
+            updateAndSyncFile(destDir, destFile.getName(), destFile.lastModified());
         }
-        copyFile(sourceFile, destFile);
-        updateAndSyncFile(destDir, sourceFile.getName(), sourceFile.lastModified());
     }
 
     void copyFile(File sourceFile, File destFile) throws IOException {
         Path sourcePath = sourceFile.toPath();
-        Path destPath = destFile.toPath();
+        Path PathToFolder = destFile.toPath().resolve(sourcePath.getFileName());
 
-        Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(sourcePath, PathToFolder, StandardCopyOption.REPLACE_EXISTING);
     }
 
     void updateAndSyncFile(File destDir, String fileName, long lastModified) {
@@ -66,15 +84,20 @@ public class FileComparison {
     }
 
     JSONArray readSyncFile(File syncFile) {
-        JSONArray filesArray = new JSONArray();
-        if (syncFile.exists()) {
-            try {
-                String content = FileUtils.readFileToString(syncFile);
-                filesArray = new JSONArray(content);
-            } catch (IOException e) {
-                e.printStackTrace();
+        JSONArray filesArray = null;
+        try {
+            if (!syncFile.exists()) {
+                syncFile.createNewFile();
+                filesArray = new JSONArray("[]");
+            } else {
+                FileInputStream fileInputStream = new FileInputStream(syncFile);
+                JSONTokener tokener = new JSONTokener(fileInputStream);
+                filesArray = new JSONArray(tokener);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return filesArray;
     }
 
@@ -104,6 +127,5 @@ public class FileComparison {
             e.printStackTrace();
         }
     }
-
 
 }

@@ -167,8 +167,9 @@ public class FileChooser extends JFrame {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
             ArrayList<String> differencesList = new ArrayList<>();
 
-            fileComparison.copyFile(dir1, dir2, files1, files2, differencesList);
-            fileComparison.copyFile(dir2, dir1, files2, files1, differencesList);
+
+            fileComparison.compareAndCopyFiles(dir1, dir2);
+            fileComparison.compareAndCopyFiles(dir2, dir1);
 
             for (String s : differencesList) {
                 differencesModel.addElement(s);
