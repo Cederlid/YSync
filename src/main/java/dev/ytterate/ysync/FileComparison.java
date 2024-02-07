@@ -78,11 +78,16 @@ public class FileComparison {
     void copyFile(File sourceFile, File destFile) throws IOException {
         Path sourcePath = sourceFile.toPath();
         Path PathToFolder = destFile.toPath().resolve(sourcePath.getFileName());
-
+        if (sourceFile.getName().equals(".ysync")){
+            return;
+        }
         Files.copy(sourcePath, PathToFolder, StandardCopyOption.REPLACE_EXISTING);
     }
 
     void updateAndSyncFile(File destDir, String fileName, long lastModified) {
+        if (fileName.equals(".ysync")) {
+            return;
+        }
         File syncFile = new File(destDir, ".ysync");
         JSONArray filesArray = readSyncFile(syncFile);
 
@@ -93,13 +98,13 @@ public class FileComparison {
     JSONArray readSyncFile(File syncFile) {
         JSONArray filesArray = null;
         try {
-            if (!syncFile.exists()) {
-                syncFile.createNewFile();
-                filesArray = new JSONArray("[]");
-            } else {
+            if (syncFile.exists()) {
                 FileInputStream fileInputStream = new FileInputStream(syncFile);
                 JSONTokener tokener = new JSONTokener(fileInputStream);
                 filesArray = new JSONArray(tokener);
+            } else {
+                syncFile.createNewFile();
+                filesArray = new JSONArray("[]");
             }
         } catch (IOException e) {
             e.printStackTrace();
