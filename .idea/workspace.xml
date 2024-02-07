@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="changed the copyFile method">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="ysync file is listing all the copied files in the directory, and removed deprecated method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
       <workItem from="1705526495985" duration="79607000" />
-      <workItem from="1706712844447" duration="46241000" />
+      <workItem from="1706712844447" duration="48720000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -183,7 +182,14 @@
       <option name="presentableId" value="LOCAL−00013" />
       <updated>1706737622643</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL−00014" summary="ysync file is listing all the copied files in the directory, and removed deprecated method">
+      <option name="closed" value="true" />
+      <created>1707258711329</created>
+      <option name="number" value="LOCAL−00014" />
+      <option name="presentableId" value="LOCAL−00014" />
+      <updated>1707258711329</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,6 +210,7 @@
     <MESSAGE value="extracted none gui method to another class" />
     <MESSAGE value="added dependencies and copy file between directories" />
     <MESSAGE value="changed the copyFile method" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed the copyFile method" />
+    <MESSAGE value="ysync file is listing all the copied files in the directory, and removed deprecated method" />
+    <option name="LAST_COMMIT_MESSAGE" value="ysync file is listing all the copied files in the directory, and removed deprecated method" />
   </component>
 </project>

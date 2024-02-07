@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
 
 public class FileComparison {
     void compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
@@ -35,6 +32,7 @@ public class FileComparison {
                     if (!found) {
                         File destFile = new File(destDir, sourceFile.getName());
                         try {
+                            recursiveSyncAndUpdate(sourceFile);
                             FileUtils.copyDirectory(sourceFile, destFile);
                         } catch (IOException e){
                             e.printStackTrace();
@@ -68,6 +66,15 @@ public class FileComparison {
         }
     }
 
+    private void recursiveSyncAndUpdate(File sourceDir) {
+        for (File sourceFile : sourceDir.listFiles()){
+            if (sourceFile.isDirectory()){
+                recursiveSyncAndUpdate(sourceFile);
+            }
+            updateAndSyncFile(sourceDir, sourceFile.getName(), sourceFile.lastModified());
+        }
+    }
+
     void copyFile(File sourceFile, File destFile) throws IOException {
         Path sourcePath = sourceFile.toPath();
         Path PathToFolder = destFile.toPath().resolve(sourcePath.getFileName());
@@ -79,7 +86,7 @@ public class FileComparison {
         File syncFile = new File(destDir, ".ysync");
         JSONArray filesArray = readSyncFile(syncFile);
 
-        updateOrCreateEntry(filesArray, fileName, lastModified);
+        createJsonObjectInArray(filesArray, fileName, lastModified);
         writeSyncFile(syncFile, filesArray);
     }
 
@@ -101,7 +108,7 @@ public class FileComparison {
         return filesArray;
     }
 
-    void updateOrCreateEntry(JSONArray filesArray, String fileName, long lastModified) {
+    void createJsonObjectInArray(JSONArray filesArray, String fileName, long lastModified) {
         boolean found = false;
         for (int i = 0; i < filesArray.length(); i++) {
             JSONObject fileObj = filesArray.getJSONObject(i);
