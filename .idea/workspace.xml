@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="copying files in subdirectories">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Not writing ysync file to ysync file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
@@ -89,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1705526494932</updated>
       <workItem from="1705526495985" duration="79607000" />
-      <workItem from="1706712844447" duration="50203000" />
+      <workItem from="1706712844447" duration="68662000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -196,7 +196,14 @@
       <option name="presentableId" value="LOCAL−00015" />
       <updated>1707264624297</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL−00016" summary="Not writing ysync file to ysync file">
+      <option name="closed" value="true" />
+      <created>1707298911219</created>
+      <option name="number" value="LOCAL−00016" />
+      <option name="presentableId" value="LOCAL−00016" />
+      <updated>1707298911219</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -219,6 +226,7 @@
     <MESSAGE value="changed the copyFile method" />
     <MESSAGE value="ysync file is listing all the copied files in the directory, and removed deprecated method" />
     <MESSAGE value="copying files in subdirectories" />
-    <option name="LAST_COMMIT_MESSAGE" value="copying files in subdirectories" />
+    <MESSAGE value="Not writing ysync file to ysync file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Not writing ysync file to ysync file" />
   </component>
 </project>
