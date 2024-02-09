@@ -25,11 +25,11 @@ public class FileComparison {
                     if (sourceFile.getName().equals(destFile.getName())) {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {//TODO add a check inside if it's a directory, to check if the destFile i also a directory (if it is a directory continue copy, if it isn't show a popup with text "this files are ignored"
-                           if (sourceFile.isDirectory() && destFile.isDirectory()){
-                               compareAndCopyFiles(sourceFile, destFile);
-                           }else {
-                               System.out.printf("Can't copy, %s is a directory and %s is a file!\n",sourceFile.getName(),destFile.getName());
-                           }
+                            if (sourceFile.isDirectory() && destFile.isDirectory()) {
+                                compareAndCopyFiles(sourceFile, destFile);
+                            } else {
+                                System.out.printf("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                            }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {//TODO add a elseif before this to check if destFile isDirectory and make the same error.
                             copyFile(sourceFile, destDir);
                         }
@@ -37,34 +37,37 @@ public class FileComparison {
                     }
                 }
                 if (!found) {
-                    createSubDirIfNotExist(destDir, sourceFile);
+                    copyNewSourceToDest(sourceFile, destDir);
                 }
 
             }
         }
+        //FIXME destDir can be null
         for (File destFile : destDir.listFiles()) {
-            updateAndSyncFile(destDir, destFile.getName(), destFile.lastModified());
+            updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
         }
     }
 
-    private void createSubDirIfNotExist(File destDir, File sourceFile) throws IOException {
-        if (sourceFile.isDirectory()) {
-            File destFile = new File(destDir, sourceFile.getName());
+    private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
+        assert destDir.isDirectory();
+        if (notSyncedSource.isDirectory()) {
+            File targetDirectory = new File(destDir, notSyncedSource.getName());
 
-            recursiveSyncAndUpdate(sourceFile);
-            copyDirectory(sourceFile, destFile);
+            recursivelyUpdateSyncFiles(notSyncedSource);
+            copyDirectory(notSyncedSource, targetDirectory);
+            recursivelyUpdateSyncFiles(targetDirectory);
         } else {
-            copyFile(sourceFile, destDir);
+            copyFile(notSyncedSource, destDir);
         }
     }
 
     //Todo resolve the bug why its not creating .ysync in subdirectory in destDir
-    private void recursiveSyncAndUpdate(File sourceDir) {
-        for (File sourceFile : sourceDir.listFiles()) {
-            if (sourceFile.isDirectory()) {
-                recursiveSyncAndUpdate(sourceFile);
+    private void recursivelyUpdateSyncFiles(File directory) {
+        for (File file : directory.listFiles()) {
+            if (file.isDirectory()) {
+                recursivelyUpdateSyncFiles(file);
             }
-            updateAndSyncFile(sourceDir, sourceFile.getName(), sourceFile.lastModified());
+            updateSyncFile(directory, file.getName(), file.lastModified());
         }
     }
 
@@ -87,12 +90,13 @@ public class FileComparison {
             if (f.isDirectory()) {
                 copyDirectory(f, new File(destDir, f.getName()));
             } else {
-                copyFile(f,destDir);
+                copyFile(f, destDir);
             }
         }
     }
 
-    void updateAndSyncFile(File destDir, String fileName, long lastModified) {
+    //TODO inefficient to write sync file for ever row
+    void updateSyncFile(File destDir, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
             return;
         }
