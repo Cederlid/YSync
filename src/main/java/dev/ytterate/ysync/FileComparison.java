@@ -37,15 +37,7 @@ public class FileComparison {
                     }
                 }
                 if (!found) {
-                    if (sourceFile.isDirectory()) { //TODO move the code inside the if-statement to a method
-                        File destFile = new File(destDir, sourceFile.getName());
-
-                        recursiveSyncAndUpdate(sourceFile);
-                        // FileUtils.copyDirectory(sourceFile, destFile);
-                        copyDirectory(sourceFile, destFile);
-                    } else {
-                        copyFile(sourceFile, destDir);
-                    }
+                    createSubDirIfNotExist(destDir, sourceFile);
                 }
 
             }
@@ -54,6 +46,18 @@ public class FileComparison {
             updateAndSyncFile(destDir, destFile.getName(), destFile.lastModified());
         }
     }
+
+    private void createSubDirIfNotExist(File destDir, File sourceFile) throws IOException {
+        if (sourceFile.isDirectory()) {
+            File destFile = new File(destDir, sourceFile.getName());
+
+            recursiveSyncAndUpdate(sourceFile);
+            copyDirectory(sourceFile, destFile);
+        } else {
+            copyFile(sourceFile, destDir);
+        }
+    }
+
     //Todo resolve the bug why its not creating .ysync in subdirectory in destDir
     private void recursiveSyncAndUpdate(File sourceDir) {
         for (File sourceFile : sourceDir.listFiles()) {
