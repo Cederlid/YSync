@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FileComparison {
-    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException { //TODO add a list of errors and make this methods return it
+    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
         List<String> errors = new ArrayList<>();
 
         if (sourceDir != null && destDir != null) {
@@ -27,14 +27,17 @@ public class FileComparison {
                 for (File destFile : destDir.listFiles()) {
                     if (sourceFile.getName().equals(destFile.getName())) {
                         found = true;
-                        if (sourceFile.isDirectory() || destFile.isDirectory()) {//TODO add a check inside if it's a directory, to check if the destFile i also a directory (if it is a directory continue copy, if it isn't show a popup with text "this files are ignored"
+                        if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
                                 compareAndCopyFiles(sourceFile, destFile);
                             } else {
                                 String error = String.format("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
                                 errors.add(error);
                             }
-                        } else if (sourceFile.lastModified() > destFile.lastModified()) {//TODO add a elseif before this to check if destFile isDirectory and make the same error.
+                        } else if (destFile.isDirectory()) {
+                            String error = String.format("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                            errors.add(error);
+                        } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             copyFile(sourceFile, destDir);
                         }
                         break;
@@ -66,7 +69,6 @@ public class FileComparison {
         }
     }
 
-    //Todo resolve the bug why its not creating .ysync in subdirectory in destDir
     private void recursivelyUpdateSyncFiles(File directory) {
         for (File file : directory.listFiles()) {
             if (file.isDirectory()) {
