@@ -11,13 +11,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class FileComparison {
-    void compareAndCopyFiles(File sourceDir, File destDir) throws IOException { //TODO add a list of errors and make this methods return it
+    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException { //TODO add a list of errors and make this methods return it
+        List<String> errors = new ArrayList<>();
+
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
-
                 boolean found = false;
 
                 // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
@@ -28,7 +31,8 @@ public class FileComparison {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
                                 compareAndCopyFiles(sourceFile, destFile);
                             } else {
-                                System.out.printf("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                                String error = String.format("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                                errors.add(error);
                             }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {//TODO add a elseif before this to check if destFile isDirectory and make the same error.
                             copyFile(sourceFile, destDir);
@@ -46,6 +50,7 @@ public class FileComparison {
         for (File destFile : destDir.listFiles()) {
             updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
         }
+        return errors;
     }
 
     private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
