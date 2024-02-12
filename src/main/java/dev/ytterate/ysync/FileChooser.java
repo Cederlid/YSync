@@ -133,8 +133,6 @@ public class FileChooser extends JFrame {
                 jPanel2 = new JPanel(new BorderLayout());
                 jPanel2.add(scrollPane2, BorderLayout.CENTER);
 
-//                compareFilesInDirectories(file1, file2);
-
                 List<String> errors = compareFilesInDirectories(file1, file2);
 
                 if (!errors.isEmpty()) {

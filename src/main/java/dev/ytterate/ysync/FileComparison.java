@@ -30,12 +30,12 @@ public class FileComparison {
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
                                 compareAndCopyFiles(sourceFile, destFile);
-                            } else {
-                                String error = String.format("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                            } else if(sourceFile.isDirectory()){
+                                String error = String.format("%s is a file in %s and a directory in %s !\n",destFile.getName(),destDir.getName(), sourceDir.getName());
                                 errors.add(error);
                             }
                         } else if (destFile.isDirectory()) {
-                            String error = String.format("Can't copy, %s is a directory and %s is a file!\n", sourceFile.getName(), destFile.getName());
+                            String error = String.format("%s is a file in %s and a directory in %s !\n",destFile.getName(),sourceDir.getName(), destDir.getName());
                             errors.add(error);
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             copyFile(sourceFile, destDir);
