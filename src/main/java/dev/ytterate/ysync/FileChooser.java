@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileChooser extends JFrame {
     private File file1 = null;
@@ -17,6 +18,7 @@ public class FileChooser extends JFrame {
     private JTree tree;
     private JTree tree2;
     private FileComparison fileComparison = new FileComparison();
+    private JLabel errorLabel = new JLabel();
 
 
 
@@ -104,7 +106,7 @@ public class FileChooser extends JFrame {
                     try {
                         showPopUp();
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        errorLabel.setText("Error: " + ex.getMessage());
                     }
                 }
             }
@@ -131,7 +133,17 @@ public class FileChooser extends JFrame {
                 jPanel2 = new JPanel(new BorderLayout());
                 jPanel2.add(scrollPane2, BorderLayout.CENTER);
 
-                compareFilesInDirectories(file1, file2);
+//                compareFilesInDirectories(file1, file2);
+
+                List<String> errors = compareFilesInDirectories(file1, file2);
+
+                if (!errors.isEmpty()) {
+                    StringBuilder errorMessage = new StringBuilder();
+                    for (String error : errors){
+                        errorMessage.append(error).append("\n");
+                    }
+                    JOptionPane.showMessageDialog(null, errorMessage.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
                 JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanel, jPanel2);
                 splitPane.setResizeWeight(0.5);
@@ -159,7 +171,9 @@ public class FileChooser extends JFrame {
         }
     }
 
-    private void compareFilesInDirectories(File dir1, File dir2) throws IOException {
+    private List<String> compareFilesInDirectories(File dir1, File dir2) throws IOException {
+        List<String> errors = new ArrayList<>();
+
         File[] files1 = dir1.listFiles();
         File[] files2 = dir2.listFiles();
 
@@ -168,8 +182,8 @@ public class FileChooser extends JFrame {
             ArrayList<String> differencesList = new ArrayList<>();
 
 
-            fileComparison.compareAndCopyFiles(dir1, dir2);
-            fileComparison.compareAndCopyFiles(dir2, dir1);
+            errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2));
+            errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1));
 
             for (String s : differencesList) {
                 differencesModel.addElement(s);
@@ -180,6 +194,7 @@ public class FileChooser extends JFrame {
             differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
         }
+        return errors;
     }
 
 
