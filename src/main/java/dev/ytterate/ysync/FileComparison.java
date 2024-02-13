@@ -29,7 +29,8 @@ public class FileComparison {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
-                                compareAndCopyFiles(sourceFile, destFile);
+                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
+                                errors.addAll(subDirErrors);
                             } else if(sourceFile.isDirectory()){
                                 String error = String.format("%s is a file in %s and a directory in %s !\n",destFile.getName(),destDir.getName(), sourceDir.getName());
                                 errors.add(error);
