@@ -31,12 +31,12 @@ public class FileComparison {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
                                 List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
                                 errors.addAll(subDirErrors);
-                            } else if(sourceFile.isDirectory()){
-                                String error = String.format("%s is a file in %s and a directory in %s !\n",destFile.getName(),destDir.getName(), sourceDir.getName());
+                            } else if (sourceFile.isDirectory()) {
+                                String error = String.format("%s is a file in %s/%s and a directory in %s/%s!\n", destFile.getName(), destDir.getParentFile().getName(),destDir.getName(), sourceDir.getParentFile().getName(), sourceDir.getName());
                                 errors.add(error);
                             }
                         } else if (destFile.isDirectory()) {
-                            String error = String.format("%s is a file in %s and a directory in %s !\n",destFile.getName(),sourceDir.getName(), destDir.getName());
+                            String error = String.format("%s is a file in %s/%s and a directory in %s/%s!\n", sourceFile.getName(), sourceDir.getParentFile().getName(),sourceDir.getName(), destDir.getParentFile().getName(), destDir.getName());
                             errors.add(error);
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             copyFile(sourceFile, destDir);
@@ -49,11 +49,11 @@ public class FileComparison {
                 }
 
             }
+            for (File destFile : destDir.listFiles()) {
+                updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
+            }
         }
-        //FIXME destDir can be null
-        for (File destFile : destDir.listFiles()) {
-            updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
-        }
+        //FIXME destDir can be null = think it's done I moved it inside the if != null
         return errors;
     }
 
@@ -120,8 +120,8 @@ public class FileComparison {
         try {
             if (syncFile.exists()) {
                 FileInputStream fileInputStream = new FileInputStream(syncFile);
-                JSONTokener tokener = new JSONTokener(fileInputStream);
-                filesArray = new JSONArray(tokener);
+                JSONTokener jsonTokener = new JSONTokener(fileInputStream);
+                filesArray = new JSONArray(jsonTokener);
             } else {
                 syncFile.createNewFile();
                 filesArray = new JSONArray("[]");

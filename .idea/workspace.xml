@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="modified the error message">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="errors should be shown for subdirectories and sub files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
@@ -90,7 +90,7 @@
       <updated>1705526494932</updated>
       <workItem from="1705526495985" duration="79607000" />
       <workItem from="1706712844447" duration="69627000" />
-      <workItem from="1707425171874" duration="35242000" />
+      <workItem from="1707425171874" duration="41771000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -253,7 +253,14 @@
       <option name="presentableId" value="LOCAL−00023" />
       <updated>1707758633021</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL−00024" summary="errors should be shown for subdirectories and sub files">
+      <option name="closed" value="true" />
+      <created>1707835134488</created>
+      <option name="number" value="LOCAL−00024" />
+      <option name="presentableId" value="LOCAL−00024" />
+      <updated>1707835134488</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,6 +302,7 @@
     <MESSAGE value="Added a check so that if destFile is a directory it would be handled" />
     <MESSAGE value="errors are shown in gui" />
     <MESSAGE value="modified the error message" />
-    <option name="LAST_COMMIT_MESSAGE" value="modified the error message" />
+    <MESSAGE value="errors should be shown for subdirectories and sub files" />
+    <option name="LAST_COMMIT_MESSAGE" value="errors should be shown for subdirectories and sub files" />
   </component>
 </project>
