@@ -21,7 +21,6 @@ public class FileChooser extends JFrame {
     private JLabel errorLabel = new JLabel();
 
 
-
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.createWindow();
@@ -137,7 +136,7 @@ public class FileChooser extends JFrame {
 
                 if (!errors.isEmpty()) {
                     StringBuilder errorMessage = new StringBuilder();
-                    for (String error : errors){
+                    for (String error : errors) {
                         errorMessage.append(error).append("\n");
                     }
                     JOptionPane.showMessageDialog(null, errorMessage.toString(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -180,8 +179,8 @@ public class FileChooser extends JFrame {
             ArrayList<String> differencesList = new ArrayList<>();
 
 
-            errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2));
-            errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1));
+            errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2, dir1.getParentFile(), dir2.getParentFile()));
+            errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1, dir2.getParentFile(), dir1.getParentFile()));
 
             for (String s : differencesList) {
                 differencesModel.addElement(s);

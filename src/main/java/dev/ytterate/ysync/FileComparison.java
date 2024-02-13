@@ -3,7 +3,6 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -16,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FileComparison {
-    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
+    List<String> compareAndCopyFiles(File sourceDir, File destDir, File sourceRoot, File destRoot) throws IOException {
         List<String> errors = new ArrayList<>();
 
         if (sourceDir != null && destDir != null) {
@@ -29,15 +28,15 @@ public class FileComparison {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (sourceFile.isDirectory() && destFile.isDirectory()) {
-                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
+                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile, sourceRoot, destRoot);
                                 errors.addAll(subDirErrors);
                             } else if (sourceFile.isDirectory()) {
-                                String error = String.format("%s is a file in %s/%s and a directory in %s/%s!\n", destFile.getName(), destDir.getParentFile().getName(),destDir.getName(), sourceDir.getParentFile().getName(), sourceDir.getName());
+                                String error = String.format("%s is a file in %s and a directory in %s!\n", destFile.getName(), destDir.getPath().substring(destRoot.getPath().length()), sourceDir.getPath().substring(sourceRoot.getPath().length()));
+                                errors.add(error);
+                            } else if (destFile.isDirectory()) {
+                                String error = String.format("%s is a file in %s and a directory in %s!\n", sourceFile.getName(), sourceDir.getPath().substring(sourceRoot.getPath().length()), destDir.getPath().substring(destRoot.getPath().length()));
                                 errors.add(error);
                             }
-                        } else if (destFile.isDirectory()) {
-                            String error = String.format("%s is a file in %s/%s and a directory in %s/%s!\n", sourceFile.getName(), sourceDir.getParentFile().getName(),sourceDir.getName(), destDir.getParentFile().getName(), destDir.getName());
-                            errors.add(error);
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             copyFile(sourceFile, destDir);
                         }
@@ -53,7 +52,6 @@ public class FileComparison {
                 updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
             }
         }
-        //FIXME destDir can be null = think it's done I moved it inside the if != null
         return errors;
     }
 
