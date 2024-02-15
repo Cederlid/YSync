@@ -3,6 +3,7 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -44,8 +45,15 @@ public class FileComparison {
                     }
                 }
                 if (!found) {
-                    copyNewSourceToDest(sourceFile, destDir);
-                }
+                    File syncFile = new File(destDir, ".ysync");
+                    JSONArray filesArray = readSyncFile(syncFile);
+                    if (deletedInDest(filesArray, sourceFile.getName())) {
+                        deleteInSource(sourceFile);
+                    }
+                    else{
+                        copyNewSourceToDest(sourceFile, destDir);
+                    }
+              }
 
             }
             for (File destFile : destDir.listFiles()) {
@@ -54,6 +62,7 @@ public class FileComparison {
         }
         return errors;
     }
+
 
     private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
         assert destDir.isDirectory();
@@ -101,6 +110,21 @@ public class FileComparison {
         }
     }
 
+    boolean deletedInDest(JSONArray filesArray, String fileName) {
+        for (int i = 0; i < filesArray.length(); i++) {
+            JSONObject jsonObject = filesArray.getJSONObject(i);
+            if (jsonObject.equals(fileName)){
+                return true;
+            }
+        }
+        return true;
+    }
+
+    void deleteInSource(File sourceDir){
+            sourceDir.delete();
+    }
+
+
     //TODO inefficient to write sync file for ever row
     void updateSyncFile(File destDir, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
@@ -134,9 +158,9 @@ public class FileComparison {
     void createJsonObjectInArray(JSONArray filesArray, String fileName, long lastModified) {
         boolean found = false;
         for (int i = 0; i < filesArray.length(); i++) {
-            JSONObject fileObj = filesArray.getJSONObject(i);
-            if (fileObj.getString("name").equals(fileName)) {
-                fileObj.put("lastModified", new Date(lastModified));
+            JSONObject jsonObject = filesArray.getJSONObject(i);
+            if (jsonObject.getString("name").equals(fileName)) {
+                jsonObject.put("lastModified", new Date(lastModified));
                 found = true;
                 break;
             }
