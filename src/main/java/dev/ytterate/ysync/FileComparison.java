@@ -28,15 +28,15 @@ public class FileComparison {
                     if (sourceFile.getName().equals(destFile.getName())) {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
-                            if (sourceFile.isDirectory() && destFile.isDirectory()) {
-                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile, sourceRoot, destRoot);
-                                errors.addAll(subDirErrors);
-                            } else if (sourceFile.isDirectory()) {
+                            if (destFile.isFile()) {
                                 String error = String.format("%s is a file in %s and a directory in %s!\n", destFile.getName(), destDir.getPath().substring(destRoot.getPath().length()), sourceDir.getPath().substring(sourceRoot.getPath().length()));
                                 errors.add(error);
-                            } else if (destFile.isDirectory()) {
+                            } else if (sourceFile.isFile()) {
                                 String error = String.format("%s is a file in %s and a directory in %s!\n", sourceFile.getName(), sourceDir.getPath().substring(sourceRoot.getPath().length()), destDir.getPath().substring(destRoot.getPath().length()));
                                 errors.add(error);
+                            } else {
+                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile, sourceRoot, destRoot);
+                                errors.addAll(subDirErrors);
                             }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             copyFile(sourceFile, destDir);
