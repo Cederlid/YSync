@@ -45,16 +45,18 @@ public class FileComparison {
                     }
                 }
                 if (!found) {
-                    File syncFile = new File(destDir, ".ysync");
-                    JSONArray filesArray = readSyncFile(syncFile);
-                    if (deletedInDest(filesArray, sourceFile.getName())) {
-                        deleteInSource(sourceFile);
-                    }
-                    else{
+                    if (getInYsync(destDir, sourceFile.getName()) != null) {
+
+                        long fileTimeInSource = getInYsync(sourceDir, sourceFile.getName()).getLong("lastModified");
+                        long fileTimeInDestination = getInYsync(destDir, sourceFile.getName()).getLong("lastModified");
+
+                        if (fileTimeInDestination > fileTimeInSource) {
+                            deleteInSource(sourceFile);
+                        }
+                    } else {
                         copyNewSourceToDest(sourceFile, destDir);
                     }
-              }
-
+                }
             }
             for (File destFile : destDir.listFiles()) {
                 updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
@@ -110,18 +112,29 @@ public class FileComparison {
         }
     }
 
-    boolean deletedInDest(JSONArray filesArray, String fileName) {
+    JSONObject getInYsync(File directory, String fileName) {
+
+        JSONArray filesArray = readSyncFile(directory);
+
         for (int i = 0; i < filesArray.length(); i++) {
             JSONObject jsonObject = filesArray.getJSONObject(i);
-            if (jsonObject.equals(fileName)){
-                return true;
+            if (jsonObject.getString("name").equals(fileName)) {
+                return jsonObject;
             }
         }
-        return true;
+        return null;
     }
 
-    void deleteInSource(File sourceDir){
-            sourceDir.delete();
+    void deleteInSource(File sourceFile) {
+        File [] contents = sourceFile.listFiles();
+        if (contents != null){
+            for (File f : contents){
+                if (! Files.isSymbolicLink(f.toPath())){
+                    deleteInSource(f);
+                }
+            }
+        }
+        sourceFile.delete();
     }
 
 
@@ -130,23 +143,25 @@ public class FileComparison {
         if (fileName.equals(".ysync")) {
             return;
         }
-        File syncFile = new File(destDir, ".ysync");
-        JSONArray filesArray = readSyncFile(syncFile);
+        JSONArray filesArray = readSyncFile(destDir);
 
         createJsonObjectInArray(filesArray, fileName, lastModified);
-        writeSyncFile(syncFile, filesArray);
+        writeSyncFile(destDir, filesArray);
     }
 
-    JSONArray readSyncFile(File syncFile) {
+    JSONArray readSyncFile(File directory) {
+        File syncFile = new File(directory, ".ysync");
         JSONArray filesArray = null;
+
         try {
             if (syncFile.exists()) {
                 FileInputStream fileInputStream = new FileInputStream(syncFile);
                 JSONTokener jsonTokener = new JSONTokener(fileInputStream);
                 filesArray = new JSONArray(jsonTokener);
             } else {
+                filesArray = new JSONArray();
                 syncFile.createNewFile();
-                filesArray = new JSONArray("[]");
+                writeSyncFile(directory, filesArray);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,7 +175,7 @@ public class FileComparison {
         for (int i = 0; i < filesArray.length(); i++) {
             JSONObject jsonObject = filesArray.getJSONObject(i);
             if (jsonObject.getString("name").equals(fileName)) {
-                jsonObject.put("lastModified", new Date(lastModified));
+                jsonObject.put("lastModified", (lastModified));
                 found = true;
                 break;
             }
@@ -169,12 +184,13 @@ public class FileComparison {
         if (!found) {
             JSONObject newFileObj = new JSONObject();
             newFileObj.put("name", fileName);
-            newFileObj.put("lastModified", new Date(lastModified));
+            newFileObj.put("lastModified", (lastModified));
             filesArray.put(newFileObj);
         }
     }
 
-    void writeSyncFile(File syncFile, JSONArray filesArray) {
+    void writeSyncFile(File directory, JSONArray filesArray) {
+        File syncFile = new File(directory, ".ysync");
         try (FileWriter writer = new FileWriter(syncFile)) {
             writer.write(filesArray.toString(4));
         } catch (IOException e) {
