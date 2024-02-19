@@ -5,4 +5,9 @@ public record CopyDirectoryAction() implements SyncAction{
     public void run() {
 
     }
+
+    @Override
+    public String render() {
+        return null;
+    }
 }
