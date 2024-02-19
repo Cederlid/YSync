@@ -1,5 +1,5 @@
 package dev.ytterate.ysync;
 
-interface SyncAction {
+public interface SyncAction {
     void run();
 }
