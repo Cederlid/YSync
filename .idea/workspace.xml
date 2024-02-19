@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removing file or directory if lastModify is later else copying file or directory">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed and made the if-statements a little cleaner">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyFileAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteFileAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/SyncAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +22,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -48,6 +55,9 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
     "vue.rearranger.settings.migration": "true"
   }
@@ -91,7 +101,7 @@
       <workItem from="1705526495985" duration="79607000" />
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
-      <workItem from="1707994838159" duration="30467000" />
+      <workItem from="1707994838159" duration="34814000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -289,7 +299,14 @@
       <option name="presentableId" value="LOCAL−00028" />
       <updated>1708112610776</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL−00029" summary="removed and made the if-statements a little cleaner">
+      <option name="closed" value="true" />
+      <created>1708348467781</created>
+      <option name="number" value="LOCAL−00029" />
+      <option name="presentableId" value="LOCAL−00029" />
+      <updated>1708348467781</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,7 +325,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Choose directory only, returns a popup with list of all files and directories" />
     <MESSAGE value="using JTree and being able to show or hide files inside directories" />
     <MESSAGE value="created new button and changed some methods" />
     <MESSAGE value="comparing two directories and listing files that does not exist in both" />
@@ -333,6 +349,7 @@
     <MESSAGE value="fixed a bug and the path in the error message" />
     <MESSAGE value="deleting files in sourceDir if it's removed in destDir" />
     <MESSAGE value="removing file or directory if lastModify is later else copying file or directory" />
-    <option name="LAST_COMMIT_MESSAGE" value="removing file or directory if lastModify is later else copying file or directory" />
+    <MESSAGE value="removed and made the if-statements a little cleaner" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed and made the if-statements a little cleaner" />
   </component>
 </project>
