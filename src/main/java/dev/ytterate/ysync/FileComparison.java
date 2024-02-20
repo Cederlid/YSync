@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileComparison {
-
-
     List<String> compareAndCopyFiles(File sourceDir, File destDir, File sourceRoot, File destRoot) throws IOException {
         List<String> errors = new ArrayList<>();
+
 
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -41,7 +40,8 @@ public class FileComparison {
                                 errors.addAll(subDirErrors);
                             }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
-                            copyFile(sourceFile, destDir);
+                            CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
+                            copyFileAction.run();
                         }
                         break;
                     }
@@ -53,7 +53,8 @@ public class FileComparison {
                         long fileTimeInDestination = getInYsync(destDir, sourceFile.getName()).getLong("lastModified");
 
                         if (fileTimeInDestination > fileTimeInSource) {
-                            deleteInSource(sourceFile);
+                            DeleteFileAction deleteFileAction = new DeleteFileAction(sourceFile.getPath());
+                            deleteFileAction.run();
                         }
                     } else {
                         copyNewSourceToDest(sourceFile, destDir);
@@ -74,10 +75,12 @@ public class FileComparison {
             File targetDirectory = new File(destDir, notSyncedSource.getName());
 
             recursivelyUpdateSyncFiles(notSyncedSource);
-            copyDirectory(notSyncedSource, targetDirectory);
+            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), targetDirectory.getPath());
+            copyDirectoryAction.run();
             recursivelyUpdateSyncFiles(targetDirectory);
         } else {
-            copyFile(notSyncedSource, destDir);
+            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), destDir.getPath());
+            copyFileAction.run();
         }
     }
 
@@ -90,29 +93,30 @@ public class FileComparison {
         }
     }
 
-    void copyFile(File sourceFile, File destDir) throws IOException {
-        Path sourcePath = sourceFile.toPath();
-        Path pathToFolder = destDir.toPath().resolve(sourcePath.getFileName());
-        if (sourceFile.getName().equals(".ysync")) {
-            return;
-        }
-        Files.copy(sourcePath, pathToFolder, StandardCopyOption.REPLACE_EXISTING);
-        File destFile = new File(destDir, sourceFile.getName());
-        destFile.setLastModified(sourceFile.lastModified());
-    }
+//    void copyFile(File sourceFile, File destDir) throws IOException {
+//        Path sourcePath = sourceFile.toPath();
+//        Path pathToFolder = destDir.toPath().resolve(sourcePath.getFileName());
+//        if (sourceFile.getName().equals(".ysync")) {
+//            return;
+//        }
+//        Files.copy(sourcePath, pathToFolder, StandardCopyOption.REPLACE_EXISTING);
+//        File destFile = new File(destDir, sourceFile.getName());
+//        destFile.setLastModified(sourceFile.lastModified());
+//    }
 
-    void copyDirectory(File sourceDir, File destDir) throws IOException {
-        if (!destDir.exists()) {
-            boolean isCreated = destDir.mkdir();
-        }
-        for (File f : sourceDir.listFiles()) {
-            if (f.isDirectory()) {
-                copyDirectory(f, new File(destDir, f.getName()));
-            } else {
-                copyFile(f, destDir);
-            }
-        }
-    }
+//    void copyDirectory(File sourceDir, File destDir) throws IOException {
+//        if (!destDir.exists()) {
+//            boolean isCreated = destDir.mkdir();
+//        }
+//        for (File f : sourceDir.listFiles()) {
+//            if (f.isDirectory()) {
+//                copyDirectory(f, new File(destDir, f.getName()));
+//            } else {
+//                CopyFileAction copyFileAction = new CopyFileAction(f.getPath(), destDir.getPath());
+//                copyFileAction.run();
+//            }
+//        }
+//    }
 
     JSONObject getInYsync(File directory, String fileName) {
 
@@ -127,17 +131,17 @@ public class FileComparison {
         return null;
     }
 
-    void deleteInSource(File sourceFile) {
-        File [] contents = sourceFile.listFiles();
-        if (contents != null){
-            for (File f : contents){
-                if (! Files.isSymbolicLink(f.toPath())){
-                    deleteInSource(f);
-                }
-            }
-        }
-        sourceFile.delete();
-    }
+//    void deleteInSource(File sourceFile) {
+//        File [] contents = sourceFile.listFiles();
+//        if (contents != null){
+//            for (File f : contents){
+//                if (! Files.isSymbolicLink(f.toPath())){
+//                    deleteInSource(f);
+//                }
+//            }
+//        }
+//        sourceFile.delete();
+//    }
 
 
     //TODO inefficient to write sync file for ever row

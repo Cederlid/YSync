@@ -9,7 +9,12 @@ public record CopyFileAction(String from, String to) implements SyncAction {
     @Override
     public void run() {
         try {
-            Files.copy(new File(from).toPath(), new File(to).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            File destFile = new File(to);
+            if (destFile.isDirectory() && destFile.list().length > 0) {
+                System.out.println("Destination directory is not empty. Handle the situation accordingly.");
+            } else {
+                Files.copy(new File(from).toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
