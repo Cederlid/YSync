@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="changed the access">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added a toString and a copyFile method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyFileAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyFileAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteFileAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteFileAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/SyncAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/SyncAction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +99,7 @@
       <workItem from="1705526495985" duration="79607000" />
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
-      <workItem from="1707994838159" duration="37557000" />
+      <workItem from="1707994838159" duration="42281000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -320,7 +318,14 @@
       <option name="presentableId" value="LOCAL−00031" />
       <updated>1708354171921</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL−00032" summary="added a toString and a copyFile method">
+      <option name="closed" value="true" />
+      <created>1708357308491</created>
+      <option name="number" value="LOCAL−00032" />
+      <option name="presentableId" value="LOCAL−00032" />
+      <updated>1708357308491</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,7 +344,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="comparing two directories and listing files that does not exist in both" />
     <MESSAGE value="getting last modified date for files that doesn't exist in both directories" />
     <MESSAGE value="lists file if it has the latest modification time but not directory" />
     <MESSAGE value="Comparing directories recursively" />
@@ -364,6 +368,7 @@
     <MESSAGE value="removed and made the if-statements a little cleaner" />
     <MESSAGE value="added new records and interface" />
     <MESSAGE value="changed the access" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed the access" />
+    <MESSAGE value="added a toString and a copyFile method" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a toString and a copyFile method" />
   </component>
 </project>
