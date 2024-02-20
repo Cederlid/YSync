@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added method to copy file and directory in action class">
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="done delete fileAction">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteFileAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteFileAction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +97,7 @@
       <workItem from="1705526495985" duration="79607000" />
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
-      <workItem from="1707994838159" duration="42598000" />
+      <workItem from="1707994838159" duration="43430000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -329,7 +330,14 @@
       <option name="presentableId" value="LOCAL−00033" />
       <updated>1708438930973</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL−00034" summary="done delete fileAction">
+      <option name="closed" value="true" />
+      <created>1708439438990</created>
+      <option name="number" value="LOCAL−00034" />
+      <option name="presentableId" value="LOCAL−00034" />
+      <updated>1708439438990</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -348,7 +356,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="lists file if it has the latest modification time but not directory" />
     <MESSAGE value="Comparing directories recursively" />
     <MESSAGE value="extracted none gui method to another class" />
     <MESSAGE value="added dependencies and copy file between directories" />
@@ -373,6 +380,7 @@
     <MESSAGE value="changed the access" />
     <MESSAGE value="added a toString and a copyFile method" />
     <MESSAGE value="added method to copy file and directory in action class" />
-    <option name="LAST_COMMIT_MESSAGE" value="added method to copy file and directory in action class" />
+    <MESSAGE value="done delete fileAction" />
+    <option name="LAST_COMMIT_MESSAGE" value="done delete fileAction" />
   </component>
 </project>
