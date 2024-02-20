@@ -25,6 +25,6 @@ public record CopyDirectoryAction(String from, String to) implements SyncAction{
     }
     @Override
     public String render() {
-        return null;
+        return "Copy directory " + from + " to " + to;
     }
 }
