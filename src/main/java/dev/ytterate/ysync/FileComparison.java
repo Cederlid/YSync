@@ -3,6 +3,7 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -11,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileComparison {
-    List<String> compareAndCopyFiles(File sourceDir, File destDir, File sourceRoot, File destRoot) throws IOException {
-        List<String> errors = new ArrayList<>();
+    //TODO make a linkedList and add all the actions to it
 
+    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
+        List<String> errors = new ArrayList<>();
 
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -21,18 +23,17 @@ public class FileComparison {
 
                 // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
                 for (File destFile : destDir.listFiles()) {
-                    MisMatchAction misMatchDestAction = new MisMatchAction(destFile,destDir);
-                    MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile,destDir);
-
                     if (sourceFile.getName().equals(destFile.getName())) {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (destFile.isFile()) {
+                                MisMatchAction misMatchDestAction = new MisMatchAction(destFile, sourceFile);
                                 misMatchDestAction.run();
                             } else if (sourceFile.isFile()) {
+                                MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile, destFile);
                                 misMatchSourceAction.run();
                             } else {
-                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile, sourceRoot, destRoot);
+                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
                                 errors.addAll(subDirErrors);
                             }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
@@ -64,7 +65,9 @@ public class FileComparison {
         return errors;
     }
 
+    //TODO write another method "run", loop through all the actions and run them
 
+    //TODO add a method "clear" to clear the list of actions
     private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
         assert destDir.isDirectory();
         if (notSyncedSource.isDirectory()) {
@@ -89,31 +92,6 @@ public class FileComparison {
         }
     }
 
-//    void copyFile(File sourceFile, File destDir) throws IOException {
-//        Path sourcePath = sourceFile.toPath();
-//        Path pathToFolder = destDir.toPath().resolve(sourcePath.getFileName());
-//        if (sourceFile.getName().equals(".ysync")) {
-//            return;
-//        }
-//        Files.copy(sourcePath, pathToFolder, StandardCopyOption.REPLACE_EXISTING);
-//        File destFile = new File(destDir, sourceFile.getName());
-//        destFile.setLastModified(sourceFile.lastModified());
-//    }
-
-//    void copyDirectory(File sourceDir, File destDir) throws IOException {
-//        if (!destDir.exists()) {
-//            boolean isCreated = destDir.mkdir();
-//        }
-//        for (File f : sourceDir.listFiles()) {
-//            if (f.isDirectory()) {
-//                copyDirectory(f, new File(destDir, f.getName()));
-//            } else {
-//                CopyFileAction copyFileAction = new CopyFileAction(f.getPath(), destDir.getPath());
-//                copyFileAction.run();
-//            }
-//        }
-//    }
-
     JSONObject getInYsync(File directory, String fileName) {
 
         JSONArray filesArray = readSyncFile(directory);
@@ -126,18 +104,6 @@ public class FileComparison {
         }
         return null;
     }
-
-//    void deleteInSource(File sourceFile) {
-//        File [] contents = sourceFile.listFiles();
-//        if (contents != null){
-//            for (File f : contents){
-//                if (! Files.isSymbolicLink(f.toPath())){
-//                    deleteInSource(f);
-//                }
-//            }
-//        }
-//        sourceFile.delete();
-//    }
 
 
     //TODO inefficient to write sync file for ever row
