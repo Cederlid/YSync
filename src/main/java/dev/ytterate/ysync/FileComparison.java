@@ -26,15 +26,16 @@ public class FileComparison {
 
                 // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
                 for (File destFile : destDir.listFiles()) {
+                    MisMatchAction misMatchDestAction = new MisMatchAction(destFile,destDir);
+                    MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile,destDir);
+
                     if (sourceFile.getName().equals(destFile.getName())) {
                         found = true;
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (destFile.isFile()) {
-                                String error = String.format("%s is a file in %s and a directory in %s!\n", destFile.getName(), destDir.getPath().substring(destRoot.getPath().length()), sourceDir.getPath().substring(sourceRoot.getPath().length()));
-                                errors.add(error);
+                                misMatchDestAction.run();
                             } else if (sourceFile.isFile()) {
-                                String error = String.format("%s is a file in %s and a directory in %s!\n", sourceFile.getName(), sourceDir.getPath().substring(sourceRoot.getPath().length()), destDir.getPath().substring(destRoot.getPath().length()));
-                                errors.add(error);
+                                misMatchSourceAction.run();
                             } else {
                                 List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile, sourceRoot, destRoot);
                                 errors.addAll(subDirErrors);
