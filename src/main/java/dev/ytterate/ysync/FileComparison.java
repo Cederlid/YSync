@@ -9,11 +9,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FileComparison {
-    //TODO make a linkedList and add all the actions to it
-
+    LinkedList<SyncAction> syncActions = new LinkedList<>();
     List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
         List<String> errors = new ArrayList<>();
 
@@ -28,10 +28,10 @@ public class FileComparison {
                         if (sourceFile.isDirectory() || destFile.isDirectory()) {
                             if (destFile.isFile()) {
                                 MisMatchAction misMatchDestAction = new MisMatchAction(destFile, sourceFile);
-                                misMatchDestAction.run();
+                                syncActions.add(misMatchDestAction);
                             } else if (sourceFile.isFile()) {
                                 MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile, destFile);
-                                misMatchSourceAction.run();
+                                syncActions.add(misMatchSourceAction);
                             } else {
                                 List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
                                 errors.addAll(subDirErrors);
@@ -51,7 +51,7 @@ public class FileComparison {
 
                         if (fileTimeInDestination > fileTimeInSource) {
                             DeleteFileAction deleteFileAction = new DeleteFileAction(sourceFile.getPath());
-                            deleteFileAction.run();
+                            syncActions.add(deleteFileAction);
                         }
                     } else {
                         copyNewSourceToDest(sourceFile, destDir);
@@ -65,9 +65,15 @@ public class FileComparison {
         return errors;
     }
 
-    //TODO write another method "run", loop through all the actions and run them
-
-    //TODO add a method "clear" to clear the list of actions
+    public void runActions() throws IOException {
+        for (SyncAction action : syncActions){
+            action.run();
+        }
+        System.out.println(syncActions);
+    }
+    public void clearActions(){
+        syncActions.clear();
+    }
     private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
         assert destDir.isDirectory();
         if (notSyncedSource.isDirectory()) {
@@ -79,7 +85,7 @@ public class FileComparison {
             recursivelyUpdateSyncFiles(targetDirectory);
         } else {
             CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), destDir.getPath());
-            copyFileAction.run();
+            syncActions.add(copyFileAction);
         }
     }
 

@@ -149,6 +149,14 @@ public class FileChooser extends JFrame {
                 frame.getContentPane().add(splitPane);
                 frame.revalidate();
                 frame.repaint();
+
+                fileComparison.runActions();
+
+                StringBuilder actionResults = new StringBuilder("Actions found: \n");
+                for (SyncAction action : fileComparison.syncActions){
+                    actionResults.append(action.toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, actionResults.toString(), "Actions found", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -176,8 +184,6 @@ public class FileChooser extends JFrame {
 
         if (files1 != null && files2 != null) {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
-            ArrayList<String> differencesList = new ArrayList<>();
-
             errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2));
             errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1));
 
@@ -185,8 +191,8 @@ public class FileChooser extends JFrame {
             //TODO call the run method to run all the actions
             //TODO clear it
 
-            for (String s : differencesList) {
-                differencesModel.addElement(s);
+            for (String error : errors) {
+                differencesModel.addElement(error);
             }
 
             JList<String> differencesList2 = new JList<>(differencesModel);
