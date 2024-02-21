@@ -13,13 +13,13 @@ public record CopyDirectoryAction(String from, String to) implements SyncAction 
 
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
         if (!destDir.exists()) {
-            boolean isCreated = destDir.mkdir();
+            destDir.mkdir();
         }
         for (File f : sourceDir.listFiles()) {
             if (f.isDirectory()) {
                 copyDirectory(f, new File(destDir, f.getName()));
             } else {
-                copyFile(f, destDir);
+                copyFile(f, new File(destDir, f.getName()));
             }
         }
     }

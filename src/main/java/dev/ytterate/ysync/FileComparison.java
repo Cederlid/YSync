@@ -14,6 +14,7 @@ import java.util.List;
 
 public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
+
     List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
         List<String> errors = new ArrayList<>();
 
@@ -38,7 +39,7 @@ public class FileComparison {
                             }
                         } else if (sourceFile.lastModified() > destFile.lastModified()) {
                             CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destFile.getPath());
-                            copyFileAction.run();
+                            syncActions.add(copyFileAction);
                         }
                         break;
                     }
@@ -63,28 +64,30 @@ public class FileComparison {
             }
         }
         return errors;
+
     }
 
     public void runActions() throws IOException {
-        for (SyncAction action : syncActions){
+        for (SyncAction action : syncActions) {
             action.run();
         }
-        System.out.println(syncActions);
     }
-    public void clearActions(){
+
+    public void clearActions() {
         syncActions.clear();
     }
-    private void copyNewSourceToDest(File notSyncedSource, File destDir) throws IOException {
-        assert destDir.isDirectory();
-        if (notSyncedSource.isDirectory()) {
-            File targetDirectory = new File(destDir, notSyncedSource.getName());
 
-            recursivelyUpdateSyncFiles(notSyncedSource);
+    private void copyNewSourceToDest(File notSyncedSource, File destDir) {
+        assert destDir.isDirectory();
+        File targetDirectory = new File(destDir, notSyncedSource.getName());
+        if (notSyncedSource.isDirectory()) {
             CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), targetDirectory.getPath());
-            copyDirectoryAction.run();
-            recursivelyUpdateSyncFiles(targetDirectory);
+            syncActions.add(copyDirectoryAction);
         } else {
-            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), destDir.getPath());
+            if (notSyncedSource.getName().equals(".ysync")) {
+                return;
+            }
+            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), targetDirectory.getPath());
             syncActions.add(copyFileAction);
         }
     }
