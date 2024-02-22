@@ -15,52 +15,54 @@ import java.util.List;
 public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
 
-    List<String> compareAndCopyFiles(File sourceDir, File destDir) throws IOException {
+    List<String> compareAndCopyFiles(File sourceDir, File destDir) {
         List<String> errors = new ArrayList<>();
 
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
-                boolean found = false;
-
-                // Optional<File> filtered = Arrays.stream(destDir.listFiles()).filter(f -> f.getName().equals(sourceFile.getName())).findFirst();
-                for (File destFile : destDir.listFiles()) {
-                    if (sourceFile.getName().equals(destFile.getName())) {
-                        found = true;
-                        if (sourceFile.isDirectory() || destFile.isDirectory()) {
-                            if (destFile.isFile()) {
-                                MisMatchAction misMatchDestAction = new MisMatchAction(destFile, sourceFile);
-                                syncActions.add(misMatchDestAction);
-                            } else if (sourceFile.isFile()) {
-                                MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile, destFile);
-                                syncActions.add(misMatchSourceAction);
-                            } else {
-                                List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
-                                errors.addAll(subDirErrors);
-                            }
-                        } else if (sourceFile.lastModified() > destFile.lastModified()) {
-                            CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destFile.getPath());
-                            syncActions.add(copyFileAction);
-                        }
-                        break;
-                    }
+                if (sourceFile.getName().equals(".ysync")) {
+                    continue;
                 }
-                if (!found) {
-                    if (getInYsync(destDir, sourceFile.getName()) != null) {
 
-                        long fileTimeInSource = getInYsync(sourceDir, sourceFile.getName()).getLong("lastModified");
-                        long fileTimeInDestination = getInYsync(destDir, sourceFile.getName()).getLong("lastModified");
-
-                        if (fileTimeInDestination > fileTimeInSource) {
-                            DeleteFileAction deleteFileAction = new DeleteFileAction(sourceFile.getPath());
-                            syncActions.add(deleteFileAction);
-                        }
-                    } else {
+                File destFile = tryGetFile(destDir, sourceFile);
+                if (destFile == null) {
+                    if (getInYsync(destDir, sourceFile.getName()) == null) {
                         copyNewSourceToDest(sourceFile, destDir);
                     }
+                } else {
+                    if (sourceFile.isDirectory() || destFile.isDirectory()) {
+                        if (destFile.isFile()) {
+                            MisMatchAction misMatchDestAction = new MisMatchAction(destFile, sourceFile);
+                            syncActions.add(misMatchDestAction);
+                        } else if (sourceFile.isFile()) {
+                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile, destFile);
+                            syncActions.add(misMatchSourceAction);
+                        } else {
+                            List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
+                            errors.addAll(subDirErrors);
+                        }
+                    } else if (sourceFile.lastModified() > destFile.lastModified()) {
+                        CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destFile.getPath());
+                        syncActions.add(copyFileAction);
+
+                    }
+
                 }
+
             }
             for (File destFile : destDir.listFiles()) {
-                updateSyncFile(destDir, destFile.getName(), destFile.lastModified());
+                if (tryGetFile(sourceDir, destFile) == null) {
+                    if (getInYsync(sourceDir, destFile.getName()) != null) {
+                        long fileTimeInDestination = getInYsync(destDir, destFile.getName()).getLong("lastModified");
+                        long fileTimeInSource = getInYsync(sourceDir, destFile.getName()).getLong("lastModified");
+
+                        if (fileTimeInDestination < fileTimeInSource) {
+                            DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
+                            syncActions.add(deleteFileAction);
+                        }
+
+                    }
+                }
             }
         }
         return errors;
@@ -77,6 +79,25 @@ public class FileComparison {
         syncActions.clear();
     }
 
+    File tryGetFile(File destDir, File sourceFile) {
+        String name = sourceFile.getName();
+        for (File destFile : destDir.listFiles()) {
+            if (name.equals(destFile.getName())) {
+                return destFile;
+            }
+        }
+        return null;
+    }
+
+    void recursivelyUpdateSyncFiles(File directory) {
+        for (File file : directory.listFiles()) {
+            if (file.isDirectory()) {
+                recursivelyUpdateSyncFiles(file);
+            }
+            updateSyncFile(directory, file.getName(), file.lastModified());
+        }
+    }
+
     private void copyNewSourceToDest(File notSyncedSource, File destDir) {
         assert destDir.isDirectory();
         File targetDirectory = new File(destDir, notSyncedSource.getName());
@@ -84,20 +105,8 @@ public class FileComparison {
             CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), targetDirectory.getPath());
             syncActions.add(copyDirectoryAction);
         } else {
-            if (notSyncedSource.getName().equals(".ysync")) {
-                return;
-            }
             CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), targetDirectory.getPath());
             syncActions.add(copyFileAction);
-        }
-    }
-
-    private void recursivelyUpdateSyncFiles(File directory) {
-        for (File file : directory.listFiles()) {
-            if (file.isDirectory()) {
-                recursivelyUpdateSyncFiles(file);
-            }
-            updateSyncFile(directory, file.getName(), file.lastModified());
         }
     }
 

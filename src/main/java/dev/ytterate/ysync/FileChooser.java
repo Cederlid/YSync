@@ -151,12 +151,14 @@ public class FileChooser extends JFrame {
                 frame.repaint();
 
                 fileComparison.runActions();
-
+                fileComparison.recursivelyUpdateSyncFiles(file1);
+                fileComparison.recursivelyUpdateSyncFiles(file2);
                 StringBuilder actionResults = new StringBuilder("Actions found: \n");
                 for (SyncAction action : fileComparison.syncActions){
                     actionResults.append(action.toString()).append("\n");
                 }
                 JOptionPane.showMessageDialog(null, actionResults.toString(), "Actions found", JOptionPane.INFORMATION_MESSAGE);
+                fileComparison.clearActions();
             }
         });
     }
@@ -186,10 +188,6 @@ public class FileChooser extends JFrame {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
             errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2));
             errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1));
-
-            //TODO display mismatch in a dialogue
-            //TODO call the run method to run all the actions
-            //TODO clear it
 
             for (String error : errors) {
                 differencesModel.addElement(error);
