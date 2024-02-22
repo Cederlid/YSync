@@ -154,6 +154,7 @@ public class FileChooser extends JFrame {
                 fileComparison.recursivelyUpdateSyncFiles(file1);
                 fileComparison.recursivelyUpdateSyncFiles(file2);
                 StringBuilder actionResults = new StringBuilder("Actions found: \n");
+                //TODO show only mismatch actions in the dialog with widgets instead of a string
                 for (SyncAction action : fileComparison.syncActions){
                     actionResults.append(action.toString()).append("\n");
                 }
@@ -162,6 +163,7 @@ public class FileChooser extends JFrame {
             }
         });
     }
+    //TODO create a new popup that shows only the mismatches that you can select between the actions (do or not)
 
     private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
         File[] filesInDirectory = directory.listFiles();

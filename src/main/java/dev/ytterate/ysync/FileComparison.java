@@ -60,7 +60,6 @@ public class FileComparison {
                             DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
                             syncActions.add(deleteFileAction);
                         }
-
                     }
                 }
             }

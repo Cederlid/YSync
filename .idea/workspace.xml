@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="used the correct target name in the parameter">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="delete in dest instead of source">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
@@ -98,7 +98,7 @@
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
-      <workItem from="1708557219130" duration="11203000" />
+      <workItem from="1708557219130" duration="12503000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -394,7 +394,14 @@
       <option name="presentableId" value="LOCAL−00042" />
       <updated>1708550626259</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL−00043" summary="delete in dest instead of source">
+      <option name="closed" value="true" />
+      <created>1708639986741</created>
+      <option name="number" value="LOCAL−00043" />
+      <option name="presentableId" value="LOCAL−00043" />
+      <updated>1708639986741</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -413,7 +420,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Moved a part of the code to a method" />
     <MESSAGE value="Fixed bug for subdirectory" />
     <MESSAGE value="Made compareAndCOpyFiles return a list with errors" />
     <MESSAGE value="Added a check so that if destFile is a directory it would be handled" />
@@ -438,6 +444,7 @@
     <MESSAGE value="cleaned up the code" />
     <MESSAGE value="added actions to a list and show them in a dialog" />
     <MESSAGE value="used the correct target name in the parameter" />
-    <option name="LAST_COMMIT_MESSAGE" value="used the correct target name in the parameter" />
+    <MESSAGE value="delete in dest instead of source" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete in dest instead of source" />
   </component>
 </project>
