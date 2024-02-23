@@ -153,10 +153,8 @@ public class FileChooser extends JFrame {
                 fileComparison.runActions();
                 fileComparison.recursivelyUpdateSyncFiles(file1);
                 fileComparison.recursivelyUpdateSyncFiles(file2);
-//                StringBuilder actionResults = new StringBuilder("Actions found: \n");
                 //TODO show only mismatch actions in the dialog with widgets instead of a string
                 showMisMatchActionsDialog(fileComparison.syncActions);
-//                JOptionPane.showMessageDialog(null, actionResults.toString(), "Actions found", JOptionPane.INFORMATION_MESSAGE);
                 fileComparison.clearActions();
             }
         });
@@ -193,6 +191,8 @@ public class FileChooser extends JFrame {
         }
 
         JList<SyncAction> mismatchList = new JList<>(misMatchModel);
+        mismatchList.setCellRenderer(new CheckBoxListCellRenderer());
+
         JScrollPane scrollPane = new JScrollPane(mismatchList);
         panel.add(scrollPane, BorderLayout.CENTER);
 
@@ -200,13 +200,17 @@ public class FileChooser extends JFrame {
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SyncAction selectedAction = mismatchList.getSelectedValue();
-                if (selectedAction != null){
-                    try {
-                        selectedAction.run();
-                        misMatchModel.removeElement(selectedAction);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                for (int i = 0; i < misMatchModel.size(); i++) {
+                    SyncAction action = misMatchModel.getElementAt(i);
+                    if (action.isMisMatch()){
+                        if (mismatchList.isSelectedIndex(i)){
+                            try {
+                                action.run();
+                                misMatchModel.removeElement(action);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
                     }
                 }
             }
