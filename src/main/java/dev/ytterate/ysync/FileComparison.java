@@ -65,7 +65,6 @@ public class FileComparison {
             }
         }
         return errors;
-
     }
 
     public void runActions() throws IOException {

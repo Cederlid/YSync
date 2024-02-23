@@ -153,12 +153,10 @@ public class FileChooser extends JFrame {
                 fileComparison.runActions();
                 fileComparison.recursivelyUpdateSyncFiles(file1);
                 fileComparison.recursivelyUpdateSyncFiles(file2);
-                StringBuilder actionResults = new StringBuilder("Actions found: \n");
+//                StringBuilder actionResults = new StringBuilder("Actions found: \n");
                 //TODO show only mismatch actions in the dialog with widgets instead of a string
-                for (SyncAction action : fileComparison.syncActions){
-                    actionResults.append(action.toString()).append("\n");
-                }
-                JOptionPane.showMessageDialog(null, actionResults.toString(), "Actions found", JOptionPane.INFORMATION_MESSAGE);
+                showMisMatchActionsDialog(fileComparison.syncActions);
+//                JOptionPane.showMessageDialog(null, actionResults.toString(), "Actions found", JOptionPane.INFORMATION_MESSAGE);
                 fileComparison.clearActions();
             }
         });
@@ -178,6 +176,59 @@ public class FileChooser extends JFrame {
                 }
             }
         }
+    }
+
+    private void showMisMatchActionsDialog(List<SyncAction> actions){
+        JFrame dialogFrame = new JFrame("Mismatch Actions");
+        dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
+        for (SyncAction action : actions){
+            if (action.isMisMatch()){
+                misMatchModel.addElement(action);
+            }
+        }
+
+        JList<SyncAction> mismatchList = new JList<>(misMatchModel);
+        JScrollPane scrollPane = new JScrollPane(mismatchList);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        JButton continueButton = new JButton("Continue");
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SyncAction selectedAction = mismatchList.getSelectedValue();
+                if (selectedAction != null){
+                    try {
+                        selectedAction.run();
+                        misMatchModel.removeElement(selectedAction);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+        });
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogFrame.dispose();
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(continueButton);
+        buttonPanel.add(cancelButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        dialogFrame.getContentPane().add(panel);
+
+        dialogFrame.pack();
+        dialogFrame.setVisible(true);
     }
 
     private List<String> compareFilesInDirectories(File dir1, File dir2) throws IOException {

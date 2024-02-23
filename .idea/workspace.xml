@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="delete in dest instead of source">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added a mismatch check">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
@@ -37,27 +37,27 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.FileChooser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MyUi.executor&quot;: &quot;Run&quot;,
-    &quot;Application.fileChooser.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.FileChooser.executor": "Run",
+    "Application.MyUi.executor": "Run",
+    "Application.fileChooser.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="dev.ytterate.ysync" />
@@ -98,7 +98,7 @@
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
-      <workItem from="1708557219130" duration="12503000" />
+      <workItem from="1708557219130" duration="16785000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -401,7 +401,14 @@
       <option name="presentableId" value="LOCAL−00043" />
       <updated>1708639986741</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL−00044" summary="added a mismatch check">
+      <option name="closed" value="true" />
+      <created>1708641645144</created>
+      <option name="number" value="LOCAL−00044" />
+      <option name="presentableId" value="LOCAL−00044" />
+      <updated>1708641645144</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,7 +427,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Fixed bug for subdirectory" />
     <MESSAGE value="Made compareAndCOpyFiles return a list with errors" />
     <MESSAGE value="Added a check so that if destFile is a directory it would be handled" />
     <MESSAGE value="errors are shown in gui" />
@@ -445,6 +451,7 @@
     <MESSAGE value="added actions to a list and show them in a dialog" />
     <MESSAGE value="used the correct target name in the parameter" />
     <MESSAGE value="delete in dest instead of source" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete in dest instead of source" />
+    <MESSAGE value="added a mismatch check" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a mismatch check" />
   </component>
 </project>
