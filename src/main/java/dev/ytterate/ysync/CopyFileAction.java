@@ -9,7 +9,7 @@ public record CopyFileAction(String from, String to) implements SyncAction {
     @Override
     public void run() {
         try {
-            Files.copy(new File(from).toPath(), new File(to).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(new File(from).toPath(),  new File(to, new File(from).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

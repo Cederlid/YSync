@@ -42,7 +42,7 @@ public class FileComparison {
                             errors.addAll(subDirErrors);
                         }
                     } else if (sourceFile.lastModified() > destFile.lastModified()) {
-                        CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destFile.getPath());
+                        CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
                         syncActions.add(copyFileAction);
 
                     }
@@ -68,7 +68,7 @@ public class FileComparison {
     }
 
     public void runActions() throws IOException {
-        for (SyncAction action : syncActions) {
+        for (SyncAction action : syncActions) { //TODO if it's not a mismatch action action.run
             action.run();
         }
     }

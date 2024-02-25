@@ -191,6 +191,7 @@ public class FileChooser extends JFrame {
         }
 
         JList<SyncAction> mismatchList = new JList<>(misMatchModel);
+
         mismatchList.setCellRenderer(new CheckBoxListCellRenderer());
 
         JScrollPane scrollPane = new JScrollPane(mismatchList);
@@ -206,7 +207,6 @@ public class FileChooser extends JFrame {
                         if (mismatchList.isSelectedIndex(i)){
                             try {
                                 action.run();
-                                misMatchModel.removeElement(action);
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
                             }

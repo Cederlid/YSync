@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="showing a list of MisMatchAction in a new dialog">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CheckBoxListCellRenderer.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added checkBox to the mismatches that you kan select from">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
@@ -98,7 +97,7 @@
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
-      <workItem from="1708557219130" duration="19211000" />
+      <workItem from="1708557219130" duration="23235000" />
     </task>
     <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
       <option name="closed" value="true" />
@@ -415,7 +414,14 @@
       <option name="presentableId" value="LOCAL−00045" />
       <updated>1708699347630</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL−00046" summary="added checkBox to the mismatches that you kan select from">
+      <option name="closed" value="true" />
+      <created>1708704824890</created>
+      <option name="number" value="LOCAL−00046" />
+      <option name="presentableId" value="LOCAL−00046" />
+      <updated>1708704824890</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,7 +440,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Added a check so that if destFile is a directory it would be handled" />
     <MESSAGE value="errors are shown in gui" />
     <MESSAGE value="modified the error message" />
     <MESSAGE value="errors should be shown for subdirectories and sub files" />
@@ -459,6 +464,7 @@
     <MESSAGE value="delete in dest instead of source" />
     <MESSAGE value="added a mismatch check" />
     <MESSAGE value="showing a list of MisMatchAction in a new dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="showing a list of MisMatchAction in a new dialog" />
+    <MESSAGE value="added checkBox to the mismatches that you kan select from" />
+    <option name="LAST_COMMIT_MESSAGE" value="added checkBox to the mismatches that you kan select from" />
   </component>
 </project>
