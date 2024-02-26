@@ -26,6 +26,6 @@ public record DeleteDirectoryAction(String directory) implements SyncAction {
 
     @Override
     public String render() {
-        return "Delete directory: " + directory;
+        return "Delete dest: " + directory;
     }
 }

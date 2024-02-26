@@ -31,11 +31,8 @@ public class FileComparison {
                     }
                 } else {
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
-                        if (destFile.isFile()) {
-                            MisMatchAction misMatchDestAction = new MisMatchAction(destFile, sourceFile);
-                            syncActions.add(misMatchDestAction);
-                        } else if (sourceFile.isFile()) {
-                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile, destFile);
+                        if (destFile.isFile() || sourceFile.isFile()) {
+                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destDir.getPath());
                             syncActions.add(misMatchSourceAction);
                         } else {
                             List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
@@ -68,8 +65,10 @@ public class FileComparison {
     }
 
     public void runActions() throws IOException {
-        for (SyncAction action : syncActions) { //TODO if it's not a mismatch action action.run
-            action.run();
+        for (SyncAction action : syncActions) {
+            if (!action.isMisMatch()){
+                action.run();
+            }
         }
     }
 
@@ -122,7 +121,7 @@ public class FileComparison {
     }
 
 
-    //TODO inefficient to write sync file for ever row
+    //TODO inefficient to write sync source for ever row
     void updateSyncFile(File destDir, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
             return;

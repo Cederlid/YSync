@@ -40,8 +40,8 @@ public class FileChooser extends JFrame {
         LayoutManager layout = new FlowLayout();
         panel.setLayout(layout);
 
-        JButton button = new JButton("Choose file");
-        JButton button2 = new JButton("Choose file 2");
+        JButton button = new JButton("Choose source");
+        JButton button2 = new JButton("Choose source 2");
         JButton submitBtn = new JButton("Submit");
         JLabel label = new JLabel("", JLabel.CENTER);
 

@@ -17,6 +17,6 @@ public record DeleteFileAction(String file) implements SyncAction {
 
     @Override
     public String render() {
-        return "Delete file: " + file;
+        return "Delete source: " + file;
     }
 }

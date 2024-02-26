@@ -3,6 +3,7 @@ package dev.ytterate.ysync;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public record CopyFileAction(String from, String to) implements SyncAction {
@@ -17,7 +18,7 @@ public record CopyFileAction(String from, String to) implements SyncAction {
 
     @Override
     public String render() {
-        return "Copy file " + from + " to " + to;
+        return "Copy source " + from + " to " + to;
     }
 
 }
