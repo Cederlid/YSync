@@ -32,7 +32,7 @@ public class FileComparison {
                 } else {
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
-                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destDir.getPath());
+                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
                             syncActions.add(misMatchSourceAction);
                         } else {
                             List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
@@ -97,12 +97,11 @@ public class FileComparison {
 
     private void copyNewSourceToDest(File notSyncedSource, File destDir) {
         assert destDir.isDirectory();
-        File targetDirectory = new File(destDir, notSyncedSource.getName());
         if (notSyncedSource.isDirectory()) {
-            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), targetDirectory.getPath());
+            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), destDir.getPath());
             syncActions.add(copyDirectoryAction);
         } else {
-            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), targetDirectory.getPath());
+            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), destDir.getPath());
             syncActions.add(copyFileAction);
         }
     }
@@ -121,7 +120,7 @@ public class FileComparison {
     }
 
 
-    //TODO inefficient to write sync source for ever row
+    //TODO inefficient destDir write sync sourceFile for ever row
     void updateSyncFile(File destDir, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
             return;

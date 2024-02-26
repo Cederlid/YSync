@@ -40,8 +40,8 @@ public class FileChooser extends JFrame {
         LayoutManager layout = new FlowLayout();
         panel.setLayout(layout);
 
-        JButton button = new JButton("Choose source");
-        JButton button2 = new JButton("Choose source 2");
+        JButton button = new JButton("Choose sourceFile");
+        JButton button2 = new JButton("Choose sourceFile 2");
         JButton submitBtn = new JButton("Submit");
         JLabel label = new JLabel("", JLabel.CENTER);
 
@@ -153,13 +153,11 @@ public class FileChooser extends JFrame {
                 fileComparison.runActions();
                 fileComparison.recursivelyUpdateSyncFiles(file1);
                 fileComparison.recursivelyUpdateSyncFiles(file2);
-                //TODO show only mismatch actions in the dialog with widgets instead of a string
                 showMisMatchActionsDialog(fileComparison.syncActions);
                 fileComparison.clearActions();
             }
         });
     }
-    //TODO create a new popup that shows only the mismatches that you can select between the actions (do or not)
 
     private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
         File[] filesInDirectory = directory.listFiles();
@@ -213,6 +211,7 @@ public class FileChooser extends JFrame {
                         }
                     }
                 }
+                dialogFrame.dispose();
             }
         });
 

@@ -26,6 +26,6 @@ public record CopyDirectoryAction(String from, String to) implements SyncAction 
 
     @Override
     public String render() {
-        return "Copy dest " + from + " to " + to;
+        return "Copy dest " + from + " destDir " + to;
     }
 }
