@@ -15,8 +15,7 @@ import java.util.List;
 public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
 
-    List<String> compareAndCopyFiles(File sourceDir, File destDir) {
-        List<String> errors = new ArrayList<>();
+    void compareAndCopyFiles(File sourceDir, File destDir) {
 
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -34,9 +33,6 @@ public class FileComparison {
                         if (destFile.isFile() || sourceFile.isFile()) {
                             MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
                             syncActions.add(misMatchSourceAction);
-                        } else {
-                            List<String> subDirErrors = compareAndCopyFiles(sourceFile, destFile);
-                            errors.addAll(subDirErrors);
                         }
                     } else if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
@@ -61,7 +57,6 @@ public class FileComparison {
                 }
             }
         }
-        return errors;
     }
 
     public void runActions() throws IOException {

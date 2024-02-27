@@ -5,6 +5,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class FileChooser extends JFrame {
     private JTree tree2;
     private FileComparison fileComparison = new FileComparison();
     private JLabel errorLabel = new JLabel();
+    private int count = 0;
+
 
 
     public static void main(String[] args) {
@@ -132,15 +136,7 @@ public class FileChooser extends JFrame {
                 jPanel2 = new JPanel(new BorderLayout());
                 jPanel2.add(scrollPane2, BorderLayout.CENTER);
 
-                List<String> errors = compareFilesInDirectories(file1, file2);
-
-                if (!errors.isEmpty()) {
-                    StringBuilder errorMessage = new StringBuilder();
-                    for (String error : errors) {
-                        errorMessage.append(error).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(null, errorMessage.toString(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                compareFilesInDirectories(file1, file2);
 
                 JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanel, jPanel2);
                 splitPane.setResizeWeight(0.5);
@@ -150,11 +146,7 @@ public class FileChooser extends JFrame {
                 frame.revalidate();
                 frame.repaint();
 
-                fileComparison.runActions();
-                fileComparison.recursivelyUpdateSyncFiles(file1);
-                fileComparison.recursivelyUpdateSyncFiles(file2);
-                showMisMatchActionsDialog(fileComparison.syncActions);
-                fileComparison.clearActions();
+                copyFilesInOneDirection();
             }
         });
     }
@@ -174,7 +166,7 @@ public class FileChooser extends JFrame {
         }
     }
 
-    private void showMisMatchActionsDialog(List<SyncAction> actions){
+    private void showMisMatchActionsDialog(List<SyncAction> actions) {
         JFrame dialogFrame = new JFrame("Mismatch Actions");
         dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -182,8 +174,8 @@ public class FileChooser extends JFrame {
         panel.setLayout(new BorderLayout());
 
         DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
-        for (SyncAction action : actions){
-            if (action.isMisMatch()){
+        for (SyncAction action : actions) {
+            if (action.isMisMatch()) {
                 misMatchModel.addElement(action);
             }
         }
@@ -201,8 +193,8 @@ public class FileChooser extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 for (int i = 0; i < misMatchModel.size(); i++) {
                     SyncAction action = misMatchModel.getElementAt(i);
-                    if (action.isMisMatch()){
-                        if (mismatchList.isSelectedIndex(i)){
+                    if (action.isMisMatch()) {
+                        if (mismatchList.isSelectedIndex(i)) {
                             try {
                                 action.run();
                             } catch (IOException ex) {
@@ -211,21 +203,29 @@ public class FileChooser extends JFrame {
                         }
                     }
                 }
+                try {
+                    fileComparison.runActions();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                fileComparison.recursivelyUpdateSyncFiles(file2);
+                fileComparison.clearActions();
                 dialogFrame.dispose();
-            }
-        });
-
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialogFrame.dispose();
+                if (count == 0){
+                    count++;
+                    try {
+                        copyFilesInOneDirection();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    count = 0;
+                }
             }
         });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(continueButton);
-        buttonPanel.add(cancelButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
         dialogFrame.getContentPane().add(panel);
@@ -234,27 +234,24 @@ public class FileChooser extends JFrame {
         dialogFrame.setVisible(true);
     }
 
-    private List<String> compareFilesInDirectories(File dir1, File dir2) throws IOException {
-        List<String> errors = new ArrayList<>();
+    private void copyFilesInOneDirection() throws IOException {
+        fileComparison.compareAndCopyFiles(file1, file2);
+        showMisMatchActionsDialog(fileComparison.syncActions);
+    }
+
+    private void compareFilesInDirectories(File dir1, File dir2) {
 
         File[] files1 = dir1.listFiles();
         File[] files2 = dir2.listFiles();
 
         if (files1 != null && files2 != null) {
             DefaultListModel<String> differencesModel = new DefaultListModel<>();
-            errors.addAll(fileComparison.compareAndCopyFiles(dir1, dir2));
-            errors.addAll(fileComparison.compareAndCopyFiles(dir2, dir1));
-
-            for (String error : errors) {
-                differencesModel.addElement(error);
-            }
 
             JList<String> differencesList2 = new JList<>(differencesModel);
             JScrollPane differencesScrollPane = new JScrollPane(differencesList2);
             differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
         }
-        return errors;
     }
 
 
