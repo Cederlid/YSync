@@ -5,11 +5,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileChooser extends JFrame {
@@ -21,8 +18,7 @@ public class FileChooser extends JFrame {
     private JTree tree2;
     private FileComparison fileComparison = new FileComparison();
     private JLabel errorLabel = new JLabel();
-    private int count = 0;
-
+    private int copyDirectionCount = 0;
 
 
     public static void main(String[] args) {
@@ -55,7 +51,7 @@ public class FileChooser extends JFrame {
         panel.add(label);
         frame.getContentPane().add(panel, BorderLayout.NORTH);
 
-        addPopupListener(frame, submitBtn, label);
+        addPopupListener(frame, submitBtn);
         addDirectoryListener(frame, button, label);
         addDirectoryListener2(frame, button2, label);
 
@@ -101,7 +97,7 @@ public class FileChooser extends JFrame {
 
     }
 
-    private void addPopupListener(JFrame frame, JButton submitBtn, JLabel label) {
+    private void addPopupListener(JFrame frame, JButton submitBtn) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,7 +142,7 @@ public class FileChooser extends JFrame {
                 frame.revalidate();
                 frame.repaint();
 
-                copyFilesInOneDirection();
+                copyFilesInOneDirection(file1, file2);
             }
         });
     }
@@ -208,18 +204,19 @@ public class FileChooser extends JFrame {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                fileComparison.recursivelyUpdateSyncFiles(file2);
                 fileComparison.clearActions();
                 dialogFrame.dispose();
-                if (count == 0){
-                    count++;
+                if (copyDirectionCount == 0) {
+                    copyDirectionCount++;
+                    fileComparison.recursivelyUpdateSyncFiles(file2);
                     try {
-                        copyFilesInOneDirection();
+                        copyFilesInOneDirection(file2, file1);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 } else {
-                    count = 0;
+                    copyDirectionCount = 0;
+                    fileComparison.recursivelyUpdateSyncFiles(file1);
                 }
             }
         });
@@ -234,13 +231,12 @@ public class FileChooser extends JFrame {
         dialogFrame.setVisible(true);
     }
 
-    private void copyFilesInOneDirection() throws IOException {
-        fileComparison.compareAndCopyFiles(file1, file2);
+    private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
+        fileComparison.compareAndCopyFiles(dir1, dir2);
         showMisMatchActionsDialog(fileComparison.syncActions);
     }
 
     private void compareFilesInDirectories(File dir1, File dir2) {
-
         File[] files1 = dir1.listFiles();
         File[] files2 = dir2.listFiles();
 

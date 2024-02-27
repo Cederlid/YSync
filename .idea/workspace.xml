@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Changed the parameters and fixed a problem with the code where the wrong parameter was called.">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed error list">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
@@ -100,14 +100,7 @@
       <workItem from="1706712844447" duration="69627000" />
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
-      <workItem from="1708557219130" duration="44962000" />
-    </task>
-    <task id="LOCAL−00001" summary="Displaying image and dynamic name update. Choosing only png and jpeg files working">
-      <option name="closed" value="true" />
-      <created>1706026535590</created>
-      <option name="number" value="LOCAL−00001" />
-      <option name="presentableId" value="LOCAL−00001" />
-      <updated>1706026535590</updated>
+      <workItem from="1708557219130" duration="47979000" />
     </task>
     <task id="LOCAL−00002" summary="thumbnail image works">
       <option name="closed" value="true" />
@@ -445,7 +438,14 @@
       <option name="presentableId" value="LOCAL−00049" />
       <updated>1708970779361</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL−00050" summary="removed error list">
+      <option name="closed" value="true" />
+      <created>1709055907321</created>
+      <option name="number" value="LOCAL−00050" />
+      <option name="presentableId" value="LOCAL−00050" />
+      <updated>1709055907322</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -464,7 +464,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="error message have been modified" />
     <MESSAGE value="fixed a bug and the path in the error message" />
     <MESSAGE value="deleting files in sourceDir if it's removed in destDir" />
     <MESSAGE value="removing file or directory if lastModify is later else copying file or directory" />
@@ -489,6 +488,7 @@
     <MESSAGE value="changed parameters of copyFile and handled mismatch action" />
     <MESSAGE value="deleting file or directory if it is a MisMatchAction." />
     <MESSAGE value="Changed the parameters and fixed a problem with the code where the wrong parameter was called." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the parameters and fixed a problem with the code where the wrong parameter was called." />
+    <MESSAGE value="removed error list" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed error list" />
   </component>
 </project>
