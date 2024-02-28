@@ -2,13 +2,12 @@ package dev.ytterate.ysync;
 
 import java.io.File;
 import java.io.IOException;
-
 import static org.apache.commons.io.FileUtils.copyFile;
 
 public record CopyDirectoryAction(String from, String to) implements SyncAction {
     @Override
     public void run() throws IOException {
-        copyDirectory(new File(from), new File(to));
+        copyDirectory(new File(from), new File(to, new File(from).getName()));
     }
 
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
