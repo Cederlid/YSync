@@ -9,17 +9,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class FileChooser extends JFrame {
+public class FileChooser extends JFrame implements ContinueCallback {
     private File file1 = null;
     private File file2 = null;
     private JPanel jPanel = null;
     private JPanel jPanel2 = null;
     private JTree tree;
     private JTree tree2;
-    private FileComparison fileComparison = new FileComparison();
     private JLabel errorLabel = new JLabel();
-    private ContinueCallback continueCallback;
-
+    private FileComparison fileComparison;
+    private Resolved resolved;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -162,11 +161,8 @@ public class FileChooser extends JFrame {
         }
     }
 
-    private void setContinueCallback(ContinueCallback callback) {
-        this.continueCallback = callback;
-    }
-
-    private void showMisMatchActionsDialog(List<SyncAction> actions) {
+    @Override
+    public void onGotMisMatches(List<SyncAction> syncActions) throws IOException {
         JFrame dialogFrame = new JFrame("Choose actions to overwrite");
         dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -174,7 +170,7 @@ public class FileChooser extends JFrame {
         panel.setLayout(new BorderLayout());
 
         DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
-        for (SyncAction action : actions) {
+        for (SyncAction action : syncActions) {
             if (action.isMisMatch()) {
                 misMatchModel.addElement(action);
             }
@@ -204,19 +200,10 @@ public class FileChooser extends JFrame {
                     }
                 }
                 try {
-                    fileComparison.runActions();
+                    fileComparison.onResolvedMisMatches();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                fileComparison.clearActions();
-                dialogFrame.dispose();
-                fileComparison.recursivelyUpdateSyncFiles(file2);
-                try {
-                    copyFilesInOneDirection(file2, file1);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
             }
         });
 
@@ -231,8 +218,9 @@ public class FileChooser extends JFrame {
     }
 
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
-        fileComparison.compareAndCopyFiles(dir1, dir2);
-        showMisMatchActionsDialog(fileComparison.syncActions);
+        fileComparison = new FileComparison(dir1, dir2, this);
+        fileComparison.compareAndCopyFiles();
+
     }
 
     private void compareFilesInDirectories(File dir1, File dir2) {

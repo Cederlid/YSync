@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed error list">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed copyDirectionCount">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/Resolved.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,9 +18,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Record" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -101,13 +103,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00002" summary="thumbnail image works">
-      <option name="closed" value="true" />
-      <created>1706040928848</created>
-      <option name="number" value="LOCAL−00002" />
-      <option name="presentableId" value="LOCAL−00002" />
-      <updated>1706040928848</updated>
     </task>
     <task id="LOCAL−00003" summary="Refactored code">
       <option name="closed" value="true" />
@@ -445,7 +440,14 @@
       <option name="presentableId" value="LOCAL−00050" />
       <updated>1709055907322</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL−00051" summary="removed copyDirectionCount">
+      <option name="closed" value="true" />
+      <created>1709229513787</created>
+      <option name="number" value="LOCAL−00051" />
+      <option name="presentableId" value="LOCAL−00051" />
+      <updated>1709229513788</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -464,7 +466,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fixed a bug and the path in the error message" />
     <MESSAGE value="deleting files in sourceDir if it's removed in destDir" />
     <MESSAGE value="removing file or directory if lastModify is later else copying file or directory" />
     <MESSAGE value="removed and made the if-statements a little cleaner" />
@@ -489,6 +490,7 @@
     <MESSAGE value="deleting file or directory if it is a MisMatchAction." />
     <MESSAGE value="Changed the parameters and fixed a problem with the code where the wrong parameter was called." />
     <MESSAGE value="removed error list" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed error list" />
+    <MESSAGE value="removed copyDirectionCount" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed copyDirectionCount" />
   </component>
 </project>

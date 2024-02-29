@@ -3,19 +3,26 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
-public class FileComparison {
+
+public class FileComparison implements Resolved{
     LinkedList<SyncAction> syncActions = new LinkedList<>();
+    private ContinueCallback continueCallback;
+    private File sourceDir;
+    private File destDir;
 
-    void compareAndCopyFiles(File sourceDir, File destDir) {
+    FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
+        this.sourceDir = sourceDir;
+        this.destDir = destDir;
+        this.continueCallback = continueCallback;
+    }
+
+    void compareAndCopyFiles() throws IOException {
 
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -39,7 +46,6 @@ public class FileComparison {
                         syncActions.add(copyFileAction);
 
                     }
-
                 }
 
             }
@@ -57,6 +63,7 @@ public class FileComparison {
                 }
             }
         }
+        continueCallback.onGotMisMatches(syncActions);
     }
 
     public void runActions() throws IOException {
@@ -175,4 +182,10 @@ public class FileComparison {
         }
     }
 
+    @Override
+    public void onResolvedMisMatches() throws IOException {
+        runActions();
+        clearActions();
+        recursivelyUpdateSyncFiles(destDir);
+    }
 }
