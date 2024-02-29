@@ -163,7 +163,7 @@ public class FileChooser extends JFrame {
     }
 
     private void showMisMatchActionsDialog(List<SyncAction> actions) {
-        JFrame dialogFrame = new JFrame("Mismatch Actions");
+        JFrame dialogFrame = new JFrame("Choose actions to overwrite");
         dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -177,7 +177,7 @@ public class FileChooser extends JFrame {
         }
 
         JList<SyncAction> mismatchList = new JList<>(misMatchModel);
-
+        mismatchList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mismatchList.setCellRenderer(new CheckBoxListCellRenderer());
 
         JScrollPane scrollPane = new JScrollPane(mismatchList);
