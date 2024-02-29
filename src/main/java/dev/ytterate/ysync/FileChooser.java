@@ -19,6 +19,7 @@ public class FileChooser extends JFrame {
     private FileComparison fileComparison = new FileComparison();
     private JLabel errorLabel = new JLabel();
     private int copyDirectionCount = 0;
+    private ContinueCallback continueCallback;
 
 
     public static void main(String[] args) {
@@ -143,6 +144,7 @@ public class FileChooser extends JFrame {
                 frame.repaint();
 
                 copyFilesInOneDirection(file1, file2);
+                continueCallback.onContinueClicked(fileComparison.syncActions, copyDirectionCount, file1, file2);
             }
         });
     }
@@ -160,6 +162,10 @@ public class FileChooser extends JFrame {
                 }
             }
         }
+    }
+
+    private void setContinueCallback(ContinueCallback callback) {
+        this.continueCallback = callback;
     }
 
     private void showMisMatchActionsDialog(List<SyncAction> actions) {
