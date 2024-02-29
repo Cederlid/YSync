@@ -18,7 +18,6 @@ public class FileChooser extends JFrame {
     private JTree tree2;
     private FileComparison fileComparison = new FileComparison();
     private JLabel errorLabel = new JLabel();
-    private int copyDirectionCount = 0;
     private ContinueCallback continueCallback;
 
 
@@ -144,7 +143,6 @@ public class FileChooser extends JFrame {
                 frame.repaint();
 
                 copyFilesInOneDirection(file1, file2);
-                continueCallback.onContinueClicked(fileComparison.syncActions, copyDirectionCount, file1, file2);
             }
         });
     }
@@ -212,18 +210,13 @@ public class FileChooser extends JFrame {
                 }
                 fileComparison.clearActions();
                 dialogFrame.dispose();
-                if (copyDirectionCount == 0) {
-                    copyDirectionCount++;
-                    fileComparison.recursivelyUpdateSyncFiles(file2);
-                    try {
-                        copyFilesInOneDirection(file2, file1);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } else {
-                    copyDirectionCount = 0;
-                    fileComparison.recursivelyUpdateSyncFiles(file1);
+                fileComparison.recursivelyUpdateSyncFiles(file2);
+                try {
+                    copyFilesInOneDirection(file2, file1);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
+
             }
         });
 

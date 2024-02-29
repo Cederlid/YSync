@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ContinueCallback {
 
-    void onContinueClicked(List<SyncAction> selectedActions, int copyDirectionCount, File file1, File file2) throws IOException;
-    void onContinueCompleted();
+    void onContinueClicked(List<SyncAction> selectedActions, File file1, File file2) throws IOException;
+
+
 }
