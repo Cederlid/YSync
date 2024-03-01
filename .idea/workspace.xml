@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Added resolved and moved some logic">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CopyDirectoryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/DeleteDirectoryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Fixed parameters and fixed so that the window closes">
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,13 +118,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00004" summary="Choose directory only, returns a popup with list of all files and directories">
-      <option name="closed" value="true" />
-      <created>1706101788067</created>
-      <option name="number" value="LOCAL−00004" />
-      <option name="presentableId" value="LOCAL−00004" />
-      <updated>1706101788067</updated>
     </task>
     <task id="LOCAL−00005" summary="using JTree and being able to show or hide files inside directories">
       <option name="closed" value="true" />
@@ -466,7 +455,14 @@
       <option name="presentableId" value="LOCAL−00052" />
       <updated>1709235072417</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL−00053" summary="Fixed parameters and fixed so that the window closes">
+      <option name="closed" value="true" />
+      <created>1709315445020</created>
+      <option name="number" value="LOCAL−00053" />
+      <option name="presentableId" value="LOCAL−00053" />
+      <updated>1709315445021</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,7 +481,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="removing file or directory if lastModify is later else copying file or directory" />
     <MESSAGE value="removed and made the if-statements a little cleaner" />
     <MESSAGE value="added new records and interface" />
     <MESSAGE value="changed the access" />
@@ -510,7 +505,8 @@
     <MESSAGE value="removed error list" />
     <MESSAGE value="removed copyDirectionCount" />
     <MESSAGE value="Added resolved and moved some logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added resolved and moved some logic" />
+    <MESSAGE value="Fixed parameters and fixed so that the window closes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed parameters and fixed so that the window closes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -519,11 +515,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java</url>
           <line>187</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java</url>
-          <line>8</line>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
