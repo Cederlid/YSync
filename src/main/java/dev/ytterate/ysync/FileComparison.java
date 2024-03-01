@@ -44,7 +44,6 @@ public class FileComparison implements Resolved{
                     } else if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
                         syncActions.add(copyFileAction);
-
                     }
                 }
 

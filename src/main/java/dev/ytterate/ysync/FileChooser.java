@@ -204,6 +204,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                dialogFrame.dispose();
             }
         });
 

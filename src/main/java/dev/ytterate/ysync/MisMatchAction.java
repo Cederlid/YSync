@@ -12,10 +12,10 @@ public record MisMatchAction(String source, String dest) implements SyncAction {
         if (sourceTarget.isFile()){
             File directoryToDelete = new File(destTarget.getParent(), sourceTarget.getName());
             if (directoryToDelete.exists() && directoryToDelete.isDirectory()){
-                DeleteFileAction deleteFileAction = new DeleteFileAction(directoryToDelete.getPath());
-                deleteFileAction.run();
+                DeleteDirectoryAction deleteDirectoryAction = new DeleteDirectoryAction(directoryToDelete.getPath());
+                deleteDirectoryAction.run();
             }
-            CopyFileAction copyFileAction = new CopyFileAction(source, destTarget.getParent());
+            CopyFileAction copyFileAction = new CopyFileAction(sourceTarget.getPath(), destTarget.getParent());
             copyFileAction.run();
         } else {
             File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
@@ -23,7 +23,7 @@ public record MisMatchAction(String source, String dest) implements SyncAction {
                 DeleteFileAction deleteFileAction = new DeleteFileAction(fileToDelete.getPath());
                 deleteFileAction.run();
             }
-            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(source, destTarget.getParent());
+            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(sourceTarget.getPath(), destTarget.getPath());
             copyDirectoryAction.run();
         }
     }

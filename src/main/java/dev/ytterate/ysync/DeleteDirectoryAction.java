@@ -15,9 +15,7 @@ public record DeleteDirectoryAction(String directory) implements SyncAction {
         if (contents != null) {
             for (File f : contents) {
                 if (!Files.isSymbolicLink(f.toPath())) {
-                    if (f.isDirectory()) {
                         deleteDirectory(f);
-                    }
                 }
             }
         }
