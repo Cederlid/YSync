@@ -67,9 +67,7 @@ public class FileComparison implements Resolved{
 
     public void runActions() throws IOException {
         for (SyncAction action : syncActions) {
-            if (!action.isMisMatch()){
                 action.run();
-            }
         }
     }
 

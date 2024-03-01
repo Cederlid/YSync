@@ -191,11 +191,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     SyncAction action = misMatchModel.getElementAt(i);
                     if (action.isMisMatch()) {
                         if (mismatchList.isSelectedIndex(i)) {
-                            try {
-                                action.run();
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
+                            ((MisMatchAction)action).confirm();
                         }
                     }
                 }

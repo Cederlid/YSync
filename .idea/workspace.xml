@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Fixed parameters and fixed so that the window closes">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="Change MisMatchAction to class instead of record">
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/MisMatchAction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,13 +120,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00005" summary="using JTree and being able to show or hide files inside directories">
-      <option name="closed" value="true" />
-      <created>1706187303720</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1706187303720</updated>
     </task>
     <task id="LOCAL−00006" summary="created new button and changed some methods">
       <option name="closed" value="true" />
@@ -462,7 +457,14 @@
       <option name="presentableId" value="LOCAL−00053" />
       <updated>1709315445021</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL−00054" summary="Change MisMatchAction to class instead of record">
+      <option name="closed" value="true" />
+      <created>1709318381991</created>
+      <option name="number" value="LOCAL−00054" />
+      <option name="presentableId" value="LOCAL−00054" />
+      <updated>1709318381991</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +483,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="removed and made the if-statements a little cleaner" />
     <MESSAGE value="added new records and interface" />
     <MESSAGE value="changed the access" />
     <MESSAGE value="added a toString and a copyFile method" />
@@ -506,14 +507,15 @@
     <MESSAGE value="removed copyDirectionCount" />
     <MESSAGE value="Added resolved and moved some logic" />
     <MESSAGE value="Fixed parameters and fixed so that the window closes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed parameters and fixed so that the window closes" />
+    <MESSAGE value="Change MisMatchAction to class instead of record" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change MisMatchAction to class instead of record" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java</url>
-          <line>187</line>
+          <line>185</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
