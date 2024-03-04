@@ -12,9 +12,9 @@ import java.util.LinkedList;
 
 public class FileComparison implements Resolved{
     LinkedList<SyncAction> syncActions = new LinkedList<>();
-    private ContinueCallback continueCallback;
-    private File sourceDir;
-    private File destDir;
+    private final ContinueCallback continueCallback;
+    private final File sourceDir;
+    private final File destDir;
 
     FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
         this.sourceDir = sourceDir;
@@ -63,6 +63,7 @@ public class FileComparison implements Resolved{
             }
         }
         continueCallback.onGotMisMatches(syncActions);
+        continueCallback.copyComplete();
     }
 
     public void runActions() throws IOException {

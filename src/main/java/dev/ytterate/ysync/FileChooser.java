@@ -16,9 +16,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private JPanel jPanel2 = null;
     private JTree tree;
     private JTree tree2;
-    private JLabel errorLabel = new JLabel();
+    private final JLabel errorLabel = new JLabel();
     private FileComparison fileComparison;
-    private Resolved resolved;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -162,7 +161,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     @Override
-    public void onGotMisMatches(List<SyncAction> syncActions) throws IOException {
+    public void onGotMisMatches(List<SyncAction> syncActions) {
         JFrame dialogFrame = new JFrame("Choose actions to overwrite");
         dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -214,10 +213,19 @@ public class FileChooser extends JFrame implements ContinueCallback {
         dialogFrame.setVisible(true);
     }
 
+    @Override
+    public void copyComplete() throws IOException {
+        copyFilesInOtherDirection(file2, file1);
+    }
+
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
         fileComparison = new FileComparison(dir1, dir2, this);
         fileComparison.compareAndCopyFiles();
 
+    }
+    private void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
+        fileComparison = new FileComparison(dir2, dir1, this);
+        fileComparison.compareAndCopyFiles();
     }
 
     private void compareFilesInDirectories(File dir1, File dir2) {

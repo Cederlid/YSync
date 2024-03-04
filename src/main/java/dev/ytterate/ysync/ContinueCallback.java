@@ -7,4 +7,6 @@ public interface ContinueCallback {
 
     void onGotMisMatches(List<SyncAction> syncActions) throws IOException;
 
+    void copyComplete() throws IOException;
+
 }
