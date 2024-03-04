@@ -18,6 +18,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private JTree tree2;
     private final JLabel errorLabel = new JLabel();
     private FileComparison fileComparison;
+    private boolean hasBeenCalled;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -220,12 +221,15 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
         fileComparison = new FileComparison(dir1, dir2, this);
+        hasBeenCalled = false;
         fileComparison.compareAndCopyFiles();
-
     }
     private void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
-        fileComparison = new FileComparison(dir2, dir1, this);
-        fileComparison.compareAndCopyFiles();
+        if (!hasBeenCalled) {
+            hasBeenCalled = true;
+            fileComparison = new FileComparison(dir2, dir1, this);
+            fileComparison.compareAndCopyFiles();
+        }
     }
 
     private void compareFilesInDirectories(File dir1, File dir2) {
