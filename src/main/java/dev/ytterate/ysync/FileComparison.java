@@ -63,7 +63,6 @@ public class FileComparison implements Resolved{
             }
         }
         continueCallback.onGotMisMatches(syncActions);
-        continueCallback.copyComplete();
     }
 
     public void runActions() throws IOException {
@@ -185,5 +184,6 @@ public class FileComparison implements Resolved{
         runActions();
         clearActions();
         recursivelyUpdateSyncFiles(destDir);
+        continueCallback.copyComplete();
     }
 }
