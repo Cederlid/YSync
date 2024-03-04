@@ -23,7 +23,7 @@ public class FileComparison implements Resolved{
     }
 
     void compareAndCopyFiles() throws IOException {
-
+        boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
                 if (sourceFile.getName().equals(".ysync")) {
@@ -40,6 +40,7 @@ public class FileComparison implements Resolved{
                         if (destFile.isFile() || sourceFile.isFile()) {
                             MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
                             syncActions.add(misMatchSourceAction);
+                            hasMismatches = true;
                         }
                     } else if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
@@ -62,7 +63,11 @@ public class FileComparison implements Resolved{
                 }
             }
         }
-        continueCallback.onGotMisMatches(syncActions);
+       if (hasMismatches){
+           continueCallback.onGotMisMatches(syncActions);
+       } else {
+           onResolvedMisMatches();
+       }
     }
 
     public void runActions() throws IOException {
