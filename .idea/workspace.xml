@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="fixed so it's not recursive for copy files">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added CompletableFuture">
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,13 +118,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00011" summary="extracted none gui method to another class">
-      <option name="closed" value="true" />
-      <created>1706647709027</created>
-      <option name="number" value="LOCAL−00011" />
-      <option name="presentableId" value="LOCAL−00011" />
-      <updated>1706647709027</updated>
     </task>
     <task id="LOCAL−00012" summary="added dependencies and copy file between directories">
       <option name="closed" value="true" />
@@ -464,7 +455,14 @@
       <option name="presentableId" value="LOCAL−00059" />
       <updated>1709585433031</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL−00060" summary="added CompletableFuture">
+      <option name="closed" value="true" />
+      <created>1709737183779</created>
+      <option name="number" value="LOCAL−00060" />
+      <option name="presentableId" value="LOCAL−00060" />
+      <updated>1709737183779</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +481,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="done delete directoryAction" />
     <MESSAGE value="done MisMatchAction and modified DeleteFileAction" />
     <MESSAGE value="replaced code with MisMatchAction" />
     <MESSAGE value="changed run method in CopyFileAction, so it would handle nonempty directories and replaced existing methods in FileComparison with action classes" />
@@ -508,6 +505,7 @@
     <MESSAGE value=" copy files in both directions" />
     <MESSAGE value="skipping dialog with no mismatches" />
     <MESSAGE value="fixed so it's not recursive for copy files" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed so it's not recursive for copy files" />
+    <MESSAGE value="added CompletableFuture" />
+    <option name="LAST_COMMIT_MESSAGE" value="added CompletableFuture" />
   </component>
 </project>

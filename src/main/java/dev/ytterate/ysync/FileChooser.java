@@ -57,8 +57,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     }
 
-    private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
-        button.addActionListener(new ActionListener() {
+    private ActionListener createDirectoryActionListener(JFrame frame, JLabel label, JButton button, boolean isFirstButton) {
+        return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -68,33 +68,24 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 int option = fileChooser.showOpenDialog(frame);
 
                 if (option == JFileChooser.APPROVE_OPTION) {
-                    file1 = fileChooser.getSelectedFile();
+                   File targetFile = fileChooser.getSelectedFile();
+                   if (isFirstButton){
+                       file1 = targetFile;
+                   } else{
+                       file2 = targetFile;
+                   }
                 } else {
                     label.setText("Open command canceled");
                 }
             }
-        });
-
+        };
+    }
+    private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
+        button.addActionListener(createDirectoryActionListener(frame, label, button, true));
     }
 
     private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label) {
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.setAcceptAllFileFilterUsed(true);
-
-                int option = fileChooser.showOpenDialog(frame);
-
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    file2 = fileChooser.getSelectedFile();
-                } else {
-                    label.setText("Open command canceled");
-                }
-            }
-        });
-
+        button2.addActionListener(createDirectoryActionListener(frame, label, button2, false));
     }
 
     private void addPopupListener(JFrame frame, JButton submitBtn) {
