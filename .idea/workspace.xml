@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added CompletableFuture">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="deleted unnecessary parameter in createDirectoryActionListener">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,20 +120,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00012" summary="added dependencies and copy file between directories">
-      <option name="closed" value="true" />
-      <created>1706734865640</created>
-      <option name="number" value="LOCAL−00012" />
-      <option name="presentableId" value="LOCAL−00012" />
-      <updated>1706734865640</updated>
-    </task>
-    <task id="LOCAL−00013" summary="changed the copyFile method">
-      <option name="closed" value="true" />
-      <created>1706737622643</created>
-      <option name="number" value="LOCAL−00013" />
-      <option name="presentableId" value="LOCAL−00013" />
-      <updated>1706737622643</updated>
     </task>
     <task id="LOCAL−00014" summary="ysync file is listing all the copied files in the directory, and removed deprecated method">
       <option name="closed" value="true" />
@@ -462,7 +450,21 @@
       <option name="presentableId" value="LOCAL−00060" />
       <updated>1709737183779</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL−00061" summary="Refactored directory action listeners to remove code duplication">
+      <option name="closed" value="true" />
+      <created>1709739373363</created>
+      <option name="number" value="LOCAL−00061" />
+      <option name="presentableId" value="LOCAL−00061" />
+      <updated>1709739373363</updated>
+    </task>
+    <task id="LOCAL−00062" summary="deleted unnecessary parameter in createDirectoryActionListener">
+      <option name="closed" value="true" />
+      <created>1709739495230</created>
+      <option name="number" value="LOCAL−00062" />
+      <option name="presentableId" value="LOCAL−00062" />
+      <updated>1709739495230</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,8 +483,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="done MisMatchAction and modified DeleteFileAction" />
-    <MESSAGE value="replaced code with MisMatchAction" />
     <MESSAGE value="changed run method in CopyFileAction, so it would handle nonempty directories and replaced existing methods in FileComparison with action classes" />
     <MESSAGE value="fixed a bug" />
     <MESSAGE value="cleaned up the code" />
@@ -506,6 +506,8 @@
     <MESSAGE value="skipping dialog with no mismatches" />
     <MESSAGE value="fixed so it's not recursive for copy files" />
     <MESSAGE value="added CompletableFuture" />
-    <option name="LAST_COMMIT_MESSAGE" value="added CompletableFuture" />
+    <MESSAGE value="Refactored directory action listeners to remove code duplication" />
+    <MESSAGE value="deleted unnecessary parameter in createDirectoryActionListener" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted unnecessary parameter in createDirectoryActionListener" />
   </component>
 </project>

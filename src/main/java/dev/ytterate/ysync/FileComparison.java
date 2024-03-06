@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.concurrent.CompletableFuture;
 
 
 public class FileComparison implements Resolved{
@@ -63,11 +64,19 @@ public class FileComparison implements Resolved{
                 }
             }
         }
-       if (hasMismatches){
-           continueCallback.onGotMisMatches(syncActions);
-       } else {
-           onResolvedMisMatches();
-       }
+        if (hasMismatches){
+            CompletableFuture<Boolean> completableFuture = continueCallback.onGotMisMatches(syncActions);
+            completableFuture.thenApply(result -> {
+                try {
+                    onResolvedMisMatches();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                return null;
+            });
+        } else {
+            onResolvedMisMatches();
+        }
     }
 
     public void runActions() throws IOException {

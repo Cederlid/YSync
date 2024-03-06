@@ -155,18 +155,18 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     @Override
     public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
-        JFrame dialogFrame = new JFrame("Choose actions to overwrite");
-        dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
         DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
         for (SyncAction action : syncActions) {
             if (action.isMisMatch()) {
                 misMatchModel.addElement(action);
             }
         }
+
+        JFrame dialogFrame = new JFrame("Choose actions to overwrite");
+        dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
         JList<SyncAction> mismatchList = new JList<>(misMatchModel);
         mismatchList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -189,14 +189,14 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     }
                 }
                 try {
-                    completableFuture.thenApply(result -> {
-                        try {
-                            fileComparison.onResolvedMisMatches();
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        return null;
-                    });
+//                    completableFuture.thenApply(result -> {
+//                        try {
+//                            fileComparison.onResolvedMisMatches();
+//                        } catch (IOException ex) {
+//                            throw new RuntimeException(ex);
+//                        }
+//                        return null;
+//                    });
                     completableFuture.complete(true);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
