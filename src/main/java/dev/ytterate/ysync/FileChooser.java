@@ -57,7 +57,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     }
 
-    private ActionListener createDirectoryActionListener(JFrame frame, JLabel label, JButton button, boolean isFirstButton) {
+    private ActionListener createDirectoryActionListener(JFrame frame, JLabel label, boolean isFirstButton) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,11 +81,11 @@ public class FileChooser extends JFrame implements ContinueCallback {
         };
     }
     private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
-        button.addActionListener(createDirectoryActionListener(frame, label, button, true));
+        button.addActionListener(createDirectoryActionListener(frame, label, true));
     }
 
     private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label) {
-        button2.addActionListener(createDirectoryActionListener(frame, label, button2, false));
+        button2.addActionListener(createDirectoryActionListener(frame, label, false));
     }
 
     private void addPopupListener(JFrame frame, JButton submitBtn) {
