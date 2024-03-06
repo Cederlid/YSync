@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class FileChooser extends JFrame implements ContinueCallback {
     private File file1 = null;
@@ -162,7 +163,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     @Override
-    public void onGotMisMatches(List<SyncAction> syncActions) {
+    public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
         JFrame dialogFrame = new JFrame("Choose actions to overwrite");
         dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -184,6 +185,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JButton continueButton = new JButton("Continue");
+        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -196,13 +198,22 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     }
                 }
                 try {
-                    fileComparison.onResolvedMisMatches();
-                } catch (IOException ex) {
+                    completableFuture.thenApply(result -> {
+                        try {
+                            fileComparison.onResolvedMisMatches();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        return null;
+                    });
+                    completableFuture.complete(true);
+                } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
                 dialogFrame.dispose();
             }
         });
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(continueButton);
@@ -212,6 +223,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
         dialogFrame.pack();
         dialogFrame.setVisible(true);
+
+        return completableFuture;
     }
 
     @Override

@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="skipping dialog with no mismatches">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="fixed so it's not recursive for copy files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,13 +120,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00010" summary="Comparing directories recursively">
-      <option name="closed" value="true" />
-      <created>1706646593178</created>
-      <option name="number" value="LOCAL−00010" />
-      <option name="presentableId" value="LOCAL−00010" />
-      <updated>1706646593178</updated>
     </task>
     <task id="LOCAL−00011" summary="extracted none gui method to another class">
       <option name="closed" value="true" />
@@ -463,7 +457,14 @@
       <option name="presentableId" value="LOCAL−00058" />
       <updated>1709584211576</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL−00059" summary="fixed so it's not recursive for copy files">
+      <option name="closed" value="true" />
+      <created>1709585433031</created>
+      <option name="number" value="LOCAL−00059" />
+      <option name="presentableId" value="LOCAL−00059" />
+      <updated>1709585433031</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +483,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="done delete fileAction" />
     <MESSAGE value="done delete directoryAction" />
     <MESSAGE value="done MisMatchAction and modified DeleteFileAction" />
     <MESSAGE value="replaced code with MisMatchAction" />
@@ -507,6 +507,7 @@
     <MESSAGE value="trying to copy files in both directions" />
     <MESSAGE value=" copy files in both directions" />
     <MESSAGE value="skipping dialog with no mismatches" />
-    <option name="LAST_COMMIT_MESSAGE" value="skipping dialog with no mismatches" />
+    <MESSAGE value="fixed so it's not recursive for copy files" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed so it's not recursive for copy files" />
   </component>
 </project>
