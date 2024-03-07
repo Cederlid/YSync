@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="deleted unnecessary parameter in createDirectoryActionListener">
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="moved thenApply to FileComparison">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
@@ -120,13 +120,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00014" summary="ysync file is listing all the copied files in the directory, and removed deprecated method">
-      <option name="closed" value="true" />
-      <created>1707258711329</created>
-      <option name="number" value="LOCAL−00014" />
-      <option name="presentableId" value="LOCAL−00014" />
-      <updated>1707258711329</updated>
     </task>
     <task id="LOCAL−00015" summary="copying files in subdirectories">
       <option name="closed" value="true" />
@@ -464,7 +457,14 @@
       <option name="presentableId" value="LOCAL−00062" />
       <updated>1709739495230</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL−00063" summary="moved thenApply to FileComparison">
+      <option name="closed" value="true" />
+      <created>1709745882828</created>
+      <option name="number" value="LOCAL−00063" />
+      <option name="presentableId" value="LOCAL−00063" />
+      <updated>1709745882828</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +483,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="changed run method in CopyFileAction, so it would handle nonempty directories and replaced existing methods in FileComparison with action classes" />
     <MESSAGE value="fixed a bug" />
     <MESSAGE value="cleaned up the code" />
     <MESSAGE value="added actions to a list and show them in a dialog" />
@@ -508,6 +507,7 @@
     <MESSAGE value="added CompletableFuture" />
     <MESSAGE value="Refactored directory action listeners to remove code duplication" />
     <MESSAGE value="deleted unnecessary parameter in createDirectoryActionListener" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted unnecessary parameter in createDirectoryActionListener" />
+    <MESSAGE value="moved thenApply to FileComparison" />
+    <option name="LAST_COMMIT_MESSAGE" value="moved thenApply to FileComparison" />
   </component>
 </project>

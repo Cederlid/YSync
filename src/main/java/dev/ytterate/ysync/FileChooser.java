@@ -189,14 +189,6 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     }
                 }
                 try {
-//                    completableFuture.thenApply(result -> {
-//                        try {
-//                            fileComparison.onResolvedMisMatches();
-//                        } catch (IOException ex) {
-//                            throw new RuntimeException(ex);
-//                        }
-//                        return null;
-//                    });
                     completableFuture.complete(true);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);

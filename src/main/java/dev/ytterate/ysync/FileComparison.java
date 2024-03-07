@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -69,10 +70,10 @@ public class FileComparison implements Resolved{
             completableFuture.thenApply(result -> {
                 try {
                     onResolvedMisMatches();
+                    return null;
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                return null;
             });
         } else {
             onResolvedMisMatches();
@@ -155,7 +156,13 @@ public class FileComparison implements Resolved{
                 filesArray = new JSONArray(jsonTokener);
             } else {
                 filesArray = new JSONArray();
-                syncFile.createNewFile();
+                boolean newFile = false;
+                try {
+                    newFile = syncFile.createNewFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                assert newFile;
                 writeSyncFile(directory, filesArray);
             }
         } catch (IOException e) {
