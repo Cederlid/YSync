@@ -13,14 +13,13 @@ import java.util.concurrent.CompletableFuture;
 
 public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
-    private final ContinueCallback continueCallback;
     private final File sourceDir;
     private final File destDir;
+    private FileChooser fileChooser = new FileChooser();
 
-    FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
+    FileComparison(File sourceDir, File destDir){
         this.sourceDir = sourceDir;
         this.destDir = destDir;
-        this.continueCallback = continueCallback;
     }
 
     void compareAndCopyFiles() throws IOException {
@@ -65,7 +64,7 @@ public class FileComparison {
             }
         }
         if (hasMismatches){
-            CompletableFuture<Boolean> completableFuture = continueCallback.onGotMisMatches(syncActions);
+            CompletableFuture<Boolean> completableFuture = fileChooser.onGotMisMatches(syncActions);
             completableFuture.thenApply(result -> {
                 try {
                     onResolvedMisMatches();
@@ -203,6 +202,14 @@ public class FileComparison {
         runActions();
         clearActions();
         recursivelyUpdateSyncFiles(destDir);
-        continueCallback.copyComplete();
+        CompletableFuture<Void> completableFuture = fileChooser.copyComplete();
+        completableFuture.thenApply(result -> {
+            try {
+                fileChooser.copyFilesInOtherDirection(destDir, sourceDir);
+                return null;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

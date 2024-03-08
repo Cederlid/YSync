@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class FileChooser extends JFrame implements ContinueCallback {
+public class FileChooser extends JFrame {
     private File file1 = null;
     private File file2 = null;
     private JPanel jPanel = null;
@@ -68,18 +68,19 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 int option = fileChooser.showOpenDialog(frame);
 
                 if (option == JFileChooser.APPROVE_OPTION) {
-                   File targetFile = fileChooser.getSelectedFile();
-                   if (isFirstButton){
-                       file1 = targetFile;
-                   } else{
-                       file2 = targetFile;
-                   }
+                    File targetFile = fileChooser.getSelectedFile();
+                    if (isFirstButton) {
+                        file1 = targetFile;
+                    } else {
+                        file2 = targetFile;
+                    }
                 } else {
                     label.setText("Open command canceled");
                 }
             }
         };
     }
+
     private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
         button.addActionListener(createDirectoryActionListener(frame, label, true));
     }
@@ -153,7 +154,6 @@ public class FileChooser extends JFrame implements ContinueCallback {
         }
     }
 
-    @Override
     public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
         DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
         for (SyncAction action : syncActions) {
@@ -184,7 +184,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     SyncAction action = misMatchModel.getElementAt(i);
                     if (action.isMisMatch()) {
                         if (mismatchList.isSelectedIndex(i)) {
-                            ((MisMatchAction)action).confirm();
+                            ((MisMatchAction) action).confirm();
                         }
                     }
                 }
@@ -210,20 +210,23 @@ public class FileChooser extends JFrame implements ContinueCallback {
         return completableFuture;
     }
 
-    @Override
-    public void copyComplete() throws IOException {
-        copyFilesInOtherDirection(file2, file1);
+
+    public CompletableFuture<Void> copyComplete() {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        completableFuture.complete(null);
+        return completableFuture;
     }
 
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
-        fileComparison = new FileComparison(dir1, dir2, this);
+        fileComparison = new FileComparison(dir1, dir2);
         hasBeenCalled = false;
         fileComparison.compareAndCopyFiles();
     }
-    private void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
+
+    public void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
         if (!hasBeenCalled) {
             hasBeenCalled = true;
-            fileComparison = new FileComparison(dir2, dir1, this);
+            fileComparison = new FileComparison(dir2, dir1);
             fileComparison.compareAndCopyFiles();
         }
     }
