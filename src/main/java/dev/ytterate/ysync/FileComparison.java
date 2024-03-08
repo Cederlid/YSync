@@ -5,14 +5,13 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
 
-public class FileComparison implements Resolved{
+public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
     private final ContinueCallback continueCallback;
     private final File sourceDir;
@@ -200,7 +199,6 @@ public class FileComparison implements Resolved{
         }
     }
 
-    @Override
     public void onResolvedMisMatches() throws IOException {
         runActions();
         clearActions();
