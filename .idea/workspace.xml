@@ -44,7 +44,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.FileChooser.executor": "Debug",
+    "Application.FileChooser.executor": "Run",
     "Application.MyUi.executor": "Run",
     "Application.fileChooser.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",

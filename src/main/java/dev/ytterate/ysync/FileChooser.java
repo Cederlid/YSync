@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class FileChooser extends JFrame {
+public class FileChooser extends JFrame implements ContinueCallback {
     private File file1 = null;
     private File file2 = null;
     private JPanel jPanel = null;
@@ -210,23 +210,23 @@ public class FileChooser extends JFrame {
         return completableFuture;
     }
 
-
-    public CompletableFuture<Void> copyComplete() {
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        completableFuture.complete(null);
-        return completableFuture;
+    @Override
+    public CompletableFuture<Void> copyComplete() throws IOException {
+        copyFilesInOtherDirection(file2, file1);
+        return null;
     }
 
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
-        fileComparison = new FileComparison(dir1, dir2);
+        fileComparison = new FileComparison(dir1, dir2, this);
         hasBeenCalled = false;
         fileComparison.compareAndCopyFiles();
     }
 
+
     public void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
         if (!hasBeenCalled) {
             hasBeenCalled = true;
-            fileComparison = new FileComparison(dir2, dir1);
+            fileComparison = new FileComparison(dir2, dir1, this);
             fileComparison.compareAndCopyFiles();
         }
     }

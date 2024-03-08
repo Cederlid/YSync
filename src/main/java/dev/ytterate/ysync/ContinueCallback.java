@@ -8,6 +8,6 @@ public interface ContinueCallback {
 
     CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) throws IOException;
 
-    void copyComplete() throws IOException;
+    CompletableFuture<Void> copyComplete() throws IOException;
 
 }
