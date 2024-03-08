@@ -212,8 +212,16 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     @Override
     public CompletableFuture<Void> copyComplete() throws IOException {
-        copyFilesInOtherDirection(file2, file1);
-        return null;
+        CompletableFuture<Void> completableFuture = fileComparison.compareAndCopyFiles();
+        completableFuture.thenApply(result -> {
+            try {
+                copyFilesInOtherDirection(file2, file1);
+                return null;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return completableFuture;
     }
 
     private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {

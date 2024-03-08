@@ -22,7 +22,7 @@ public class FileComparison {
         this.continueCallback = continueCallback;
     }
 
-    void compareAndCopyFiles() throws IOException {
+    CompletableFuture<Void> compareAndCopyFiles() throws IOException {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -76,16 +76,8 @@ public class FileComparison {
         } else {
             onResolvedMisMatches();
         }
-//        CompletableFuture<Void> completableFuture = continueCallback.copyComplete();
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        completableFuture.thenApply(result -> {
-            try {
-                continueCallback.copyComplete();
-                return null;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        return completableFuture;
     }
 
     public void runActions() throws IOException {
