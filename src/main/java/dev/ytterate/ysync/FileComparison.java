@@ -16,6 +16,7 @@ public class FileComparison {
     private final File sourceDir;
     private final File destDir;
     private final ContinueCallback continueCallback;
+    private final CompletableFuture<Void> copyCompleteFuture =new CompletableFuture<>();
     FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
         this.sourceDir = sourceDir;
         this.destDir = destDir;
@@ -64,8 +65,8 @@ public class FileComparison {
             }
         }
         if (hasMismatches){
-            CompletableFuture<Boolean> completableFuture = continueCallback.onGotMisMatches(syncActions);
-            completableFuture.thenApply(result -> {
+            CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
+            gotMisMatchesFuture.thenApply(result -> {
                 try {
                     onResolvedMisMatches();
                     return null;
@@ -76,8 +77,7 @@ public class FileComparison {
         } else {
             onResolvedMisMatches();
         }
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        return completableFuture;
+        return copyCompleteFuture;
     }
 
     public void runActions() throws IOException {
@@ -204,7 +204,6 @@ public class FileComparison {
         runActions();
         clearActions();
         recursivelyUpdateSyncFiles(destDir);
-        CompletableFuture<Void> completableFuture = continueCallback.copyComplete();
-        completableFuture.complete(null);
+        copyCompleteFuture.complete(null);
     }
 }

@@ -1,7 +1,6 @@
 package dev.ytterate.ysync;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,13 +12,8 @@ import java.util.concurrent.CompletableFuture;
 public class FileChooser extends JFrame implements ContinueCallback {
     private File file1 = null;
     private File file2 = null;
-    private JPanel jPanel = null;
-    private JPanel jPanel2 = null;
-    private JTree tree;
-    private JTree tree2;
     private final JLabel errorLabel = new JLabel();
     private FileComparison fileComparison;
-    private boolean hasBeenCalled;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -51,32 +45,29 @@ public class FileChooser extends JFrame implements ContinueCallback {
         panel.add(label);
         frame.getContentPane().add(panel, BorderLayout.NORTH);
 
-        addPopupListener(frame, submitBtn);
+        addPopupListener(submitBtn);
         addDirectoryListener(frame, button, label);
         addDirectoryListener2(frame, button2, label);
 
     }
 
     private ActionListener createDirectoryActionListener(JFrame frame, JLabel label, boolean isFirstButton) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.setAcceptAllFileFilterUsed(true);
+        return e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.setAcceptAllFileFilterUsed(true);
 
-                int option = fileChooser.showOpenDialog(frame);
+            int option = fileChooser.showOpenDialog(frame);
 
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    File targetFile = fileChooser.getSelectedFile();
-                    if (isFirstButton) {
-                        file1 = targetFile;
-                    } else {
-                        file2 = targetFile;
-                    }
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File targetFile = fileChooser.getSelectedFile();
+                if (isFirstButton) {
+                    file1 = targetFile;
                 } else {
-                    label.setText("Open command canceled");
+                    file2 = targetFile;
                 }
+            } else {
+                label.setText("Open command canceled");
             }
         };
     }
@@ -89,69 +80,31 @@ public class FileChooser extends JFrame implements ContinueCallback {
         button2.addActionListener(createDirectoryActionListener(frame, label, false));
     }
 
-    private void addPopupListener(JFrame frame, JButton submitBtn) {
+    private void addPopupListener(JButton submitBtn) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (file1 != null && file2 != null) {
                     try {
-                        showPopUp();
+                        startCopying();
                     } catch (IOException ex) {
                         errorLabel.setText("Error: " + ex.getMessage());
                     }
                 }
             }
 
-            private void showPopUp() throws IOException {
-                DefaultMutableTreeNode root1 = new DefaultMutableTreeNode(file1.getName());
-                DefaultMutableTreeNode root2 = new DefaultMutableTreeNode(file2.getName());
+            private void startCopying() throws IOException {
 
-
-                populateTree(root1, file1);
-                populateTree(root2, file2);
-
-                tree = new JTree(root1);
-                tree2 = new JTree(root2);
-
-                tree.addTreeExpansionListener(new FileTreeExpansionListner());
-                tree2.addTreeExpansionListener(new FileTreeExpansionListner());
-
-                JScrollPane scrollPane = new JScrollPane(tree);
-                JScrollPane scrollPane2 = new JScrollPane(tree2);
-
-                jPanel = new JPanel(new BorderLayout());
-                jPanel.add(scrollPane, BorderLayout.CENTER);
-                jPanel2 = new JPanel(new BorderLayout());
-                jPanel2.add(scrollPane2, BorderLayout.CENTER);
-
-                compareFilesInDirectories(file1, file2);
-
-                JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jPanel, jPanel2);
-                splitPane.setResizeWeight(0.5);
-
-                frame.getContentPane().removeAll();
-                frame.getContentPane().add(splitPane);
-                frame.revalidate();
-                frame.repaint();
-
-                copyFilesInOneDirection(file1, file2);
+                copyFilesInOneDirection(file1, file2).thenApply(result -> {
+                    try {
+                        copyFilesInOneDirection(file2, file1);
+                        return null;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         });
-    }
-
-    private void populateTree(DefaultMutableTreeNode parentNode, File directory) {
-        File[] filesInDirectory = directory.listFiles();
-
-        if (filesInDirectory != null) {
-            for (File file : filesInDirectory) {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(file.getName());
-                parentNode.add(node);
-
-                if (file.isDirectory()) {
-                    populateTree(node, file);
-                }
-            }
-        }
     }
 
     public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
@@ -177,24 +130,21 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
         JButton continueButton = new JButton("Continue");
         CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < misMatchModel.size(); i++) {
-                    SyncAction action = misMatchModel.getElementAt(i);
-                    if (action.isMisMatch()) {
-                        if (mismatchList.isSelectedIndex(i)) {
-                            ((MisMatchAction) action).confirm();
-                        }
+        continueButton.addActionListener(e -> {
+            for (int i = 0; i < misMatchModel.size(); i++) {
+                SyncAction action = misMatchModel.getElementAt(i);
+                if (action.isMisMatch()) {
+                    if (mismatchList.isSelectedIndex(i)) {
+                        ((MisMatchAction) action).confirm();
                     }
                 }
-                try {
-                    completableFuture.complete(true);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-                dialogFrame.dispose();
             }
+            try {
+                completableFuture.complete(true);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            dialogFrame.dispose();
         });
 
 
@@ -210,49 +160,10 @@ public class FileChooser extends JFrame implements ContinueCallback {
         return completableFuture;
     }
 
-    @Override
-    public CompletableFuture<Void> copyComplete() throws IOException {
-        CompletableFuture<Void> completableFuture = fileComparison.compareAndCopyFiles();
-        completableFuture.thenApply(result -> {
-            try {
-                copyFilesInOtherDirection(file2, file1);
-                return null;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        return completableFuture;
-    }
-
-    private void copyFilesInOneDirection(File dir1, File dir2) throws IOException {
+    private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
         fileComparison = new FileComparison(dir1, dir2, this);
-        hasBeenCalled = false;
-        fileComparison.compareAndCopyFiles();
+        return fileComparison.compareAndCopyFiles();
     }
-
-
-    public void copyFilesInOtherDirection(File dir2, File dir1) throws IOException {
-        if (!hasBeenCalled) {
-            hasBeenCalled = true;
-            fileComparison = new FileComparison(dir2, dir1, this);
-            fileComparison.compareAndCopyFiles();
-        }
-    }
-
-    private void compareFilesInDirectories(File dir1, File dir2) {
-        File[] files1 = dir1.listFiles();
-        File[] files2 = dir2.listFiles();
-
-        if (files1 != null && files2 != null) {
-            DefaultListModel<String> differencesModel = new DefaultListModel<>();
-
-            JList<String> differencesList2 = new JList<>(differencesModel);
-            JScrollPane differencesScrollPane = new JScrollPane(differencesList2);
-            differencesScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-            jPanel.add(differencesScrollPane, BorderLayout.SOUTH);
-        }
-    }
-
 
 }
 
