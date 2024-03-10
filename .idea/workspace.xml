@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="changed so that compareAndCopyFiles returns a promise">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/ContinueCallback.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed code that is not necessary">
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,13 +118,6 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00018" summary="Moved a part of the code to a method">
-      <option name="closed" value="true" />
-      <created>1707507693149</created>
-      <option name="number" value="LOCAL−00018" />
-      <option name="presentableId" value="LOCAL−00018" />
-      <updated>1707507693149</updated>
     </task>
     <task id="LOCAL−00019" summary="Fixed bug for subdirectory">
       <option name="closed" value="true" />
@@ -465,7 +455,14 @@
       <option name="presentableId" value="LOCAL−00066" />
       <updated>1709915447178</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL−00067" summary="removed code that is not necessary">
+      <option name="closed" value="true" />
+      <created>1710080990190</created>
+      <option name="number" value="LOCAL−00067" />
+      <option name="presentableId" value="LOCAL−00067" />
+      <updated>1710080990190</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +481,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="used the correct target name in the parameter" />
     <MESSAGE value="delete in dest instead of source" />
     <MESSAGE value="added a mismatch check" />
     <MESSAGE value="showing a list of MisMatchAction in a new dialog" />
@@ -509,6 +505,7 @@
     <MESSAGE value="removed commented code" />
     <MESSAGE value="removed Resolved interface" />
     <MESSAGE value="changed so that compareAndCopyFiles returns a promise" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed so that compareAndCopyFiles returns a promise" />
+    <MESSAGE value="removed code that is not necessary" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed code that is not necessary" />
   </component>
 </project>

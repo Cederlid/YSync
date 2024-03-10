@@ -97,8 +97,11 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
                 copyFilesInOneDirection(file1, file2).thenApply(result -> {
                     try {
-                        copyFilesInOneDirection(file2, file1);
-                        return null;
+                        copyFilesInOneDirection(file2, file1).thenApply(r -> {
+                            JOptionPane.showMessageDialog(null, "Copy is complete!");
+                            return null;
+                        });
+                       return null;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
