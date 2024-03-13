@@ -1,5 +1,3 @@
-package dev.ytterate.gui;
-
 import dev.ytterate.ysync.CheckBoxListCellRenderer;
 import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
