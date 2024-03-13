@@ -17,13 +17,13 @@ public class FileComparison {
     private final File destDir;
     private final ContinueCallback continueCallback;
     private final CompletableFuture<Void> copyCompleteFuture =new CompletableFuture<>();
-    FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
+    public FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
         this.sourceDir = sourceDir;
         this.destDir = destDir;
         this.continueCallback = continueCallback;
     }
 
-    CompletableFuture<Void> compareAndCopyFiles() throws IOException {
+    public CompletableFuture<Void> compareAndCopyFiles() throws IOException {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {

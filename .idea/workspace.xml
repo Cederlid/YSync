@@ -4,8 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="removed code that is not necessary">
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" afterDir="false" />
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added a message dialog when copy is completed">
+      <change afterPath="$PROJECT_DIR$/../Gui/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gui/src/main/java/org/gui/FileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CheckBoxListCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CheckBoxListCellRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +33,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Gui" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -38,27 +49,30 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.FileChooser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MyUi.executor&quot;: &quot;Run&quot;,
-    &quot;Application.fileChooser.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.FileChooser (1).executor": "Run",
+    "Application.FileChooser.executor": "Run",
+    "Application.MyUi.executor": "Run",
+    "Application.fileChooser.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "jdk.selected.JAVA_MODULE": "openjdk-21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/wijdancederlid/Ytterate/ysync",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="dev.ytterate.ysync" />
@@ -67,10 +81,17 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.FileChooser (1)">
+    <configuration name="FileChooser (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="FileChooser" />
+      <module name="Gui" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="FileChooser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="dev.ytterate.ysync.FileChooser" />
-      <module name="ysync2" />
+      <module name="ysync" />
       <option name="VM_PARAMETERS" value="-ea" />
       <extension name="coverage">
         <pattern>
@@ -101,6 +122,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.FileChooser (1)" />
         <item itemvalue="Application.FileChooser" />
       </list>
     </recent_temporary>
@@ -118,13 +140,9 @@
       <workItem from="1707425171874" duration="49553000" />
       <workItem from="1707994838159" duration="77109000" />
       <workItem from="1708557219130" duration="47979000" />
-    </task>
-    <task id="LOCAL−00019" summary="Fixed bug for subdirectory">
-      <option name="closed" value="true" />
-      <created>1707517651597</created>
-      <option name="number" value="LOCAL−00019" />
-      <option name="presentableId" value="LOCAL−00019" />
-      <updated>1707517651597</updated>
+      <workItem from="1710105289824" duration="40000" />
+      <workItem from="1710105342896" duration="42000" />
+      <workItem from="1710249176450" duration="4522000" />
     </task>
     <task id="LOCAL−00020" summary="Made compareAndCOpyFiles return a list with errors">
       <option name="closed" value="true" />
@@ -462,7 +480,14 @@
       <option name="presentableId" value="LOCAL−00067" />
       <updated>1710080990190</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL−00068" summary="added a message dialog when copy is completed">
+      <option name="closed" value="true" />
+      <created>1710081647260</created>
+      <option name="number" value="LOCAL−00068" />
+      <option name="presentableId" value="LOCAL−00068" />
+      <updated>1710081647260</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +506,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="delete in dest instead of source" />
     <MESSAGE value="added a mismatch check" />
     <MESSAGE value="showing a list of MisMatchAction in a new dialog" />
     <MESSAGE value="added checkBox to the mismatches that you kan select from" />
@@ -506,6 +530,7 @@
     <MESSAGE value="removed Resolved interface" />
     <MESSAGE value="changed so that compareAndCopyFiles returns a promise" />
     <MESSAGE value="removed code that is not necessary" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed code that is not necessary" />
+    <MESSAGE value="added a message dialog when copy is completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a message dialog when copy is completed" />
   </component>
 </project>

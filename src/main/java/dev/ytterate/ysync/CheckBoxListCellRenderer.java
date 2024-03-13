@@ -3,7 +3,7 @@ package dev.ytterate.ysync;
 import javax.swing.*;
 import java.awt.*;
 
-class CheckBoxListCellRenderer extends JCheckBox implements ListCellRenderer<Object> {
+public class CheckBoxListCellRenderer extends JCheckBox implements ListCellRenderer<Object> {
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         setComponentOrientation(list.getComponentOrientation());
