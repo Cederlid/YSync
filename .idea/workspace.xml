@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="added a message dialog when copy is completed">
-      <change afterPath="$PROJECT_DIR$/../Gui/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gui/src/main/java/org/gui/FileChooser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CheckBoxListCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/CheckBoxListCellRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileChooser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/ytterate/ysync/FileComparison.java" afterDir="false" />
-    </list>
+    <list default="true" id="ea5e9d83-df28-4fb6-a2bc-34a8d0fd4b85" name="Changes" comment="separated Gui and added it as a module" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,7 +20,9 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Gui" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -142,28 +131,7 @@
       <workItem from="1708557219130" duration="47979000" />
       <workItem from="1710105289824" duration="40000" />
       <workItem from="1710105342896" duration="42000" />
-      <workItem from="1710249176450" duration="4522000" />
-    </task>
-    <task id="LOCAL−00020" summary="Made compareAndCOpyFiles return a list with errors">
-      <option name="closed" value="true" />
-      <created>1707753430972</created>
-      <option name="number" value="LOCAL−00020" />
-      <option name="presentableId" value="LOCAL−00020" />
-      <updated>1707753430972</updated>
-    </task>
-    <task id="LOCAL−00021" summary="Added a check so that if destFile is a directory it would be handled">
-      <option name="closed" value="true" />
-      <created>1707753829615</created>
-      <option name="number" value="LOCAL−00021" />
-      <option name="presentableId" value="LOCAL−00021" />
-      <updated>1707753829615</updated>
-    </task>
-    <task id="LOCAL−00022" summary="errors are shown in gui">
-      <option name="closed" value="true" />
-      <created>1707755968406</created>
-      <option name="number" value="LOCAL−00022" />
-      <option name="presentableId" value="LOCAL−00022" />
-      <updated>1707755968406</updated>
+      <workItem from="1710249176450" duration="5213000" />
     </task>
     <task id="LOCAL−00023" summary="modified the error message">
       <option name="closed" value="true" />
@@ -487,7 +455,28 @@
       <option name="presentableId" value="LOCAL−00068" />
       <updated>1710081647260</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL−00069" summary="separated Gui and added it as a module">
+      <option name="closed" value="true" />
+      <created>1710339803871</created>
+      <option name="number" value="LOCAL−00069" />
+      <option name="presentableId" value="LOCAL−00069" />
+      <updated>1710339803872</updated>
+    </task>
+    <task id="LOCAL−00070" summary="separated Gui and added it as a module">
+      <option name="closed" value="true" />
+      <created>1710339812461</created>
+      <option name="number" value="LOCAL−00070" />
+      <option name="presentableId" value="LOCAL−00070" />
+      <updated>1710339812461</updated>
+    </task>
+    <task id="LOCAL−00071" summary="separated Gui and added it as a module">
+      <option name="closed" value="true" />
+      <created>1710339922253</created>
+      <option name="number" value="LOCAL−00071" />
+      <option name="presentableId" value="LOCAL−00071" />
+      <updated>1710339922253</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -506,7 +495,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added a mismatch check" />
     <MESSAGE value="showing a list of MisMatchAction in a new dialog" />
     <MESSAGE value="added checkBox to the mismatches that you kan select from" />
     <MESSAGE value="changed parameters of copyFile and handled mismatch action" />
@@ -531,6 +519,7 @@
     <MESSAGE value="changed so that compareAndCopyFiles returns a promise" />
     <MESSAGE value="removed code that is not necessary" />
     <MESSAGE value="added a message dialog when copy is completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a message dialog when copy is completed" />
+    <MESSAGE value="separated Gui and added it as a module" />
+    <option name="LAST_COMMIT_MESSAGE" value="separated Gui and added it as a module" />
   </component>
 </project>
