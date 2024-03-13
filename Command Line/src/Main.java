@@ -1,3 +1,6 @@
+import dev.ytterate.ysync.SyncAction;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -6,7 +9,24 @@ import java.util.Set;
 
 public class Main {
 
+    private static final SyncAction action = new SyncAction() {
+        @Override
+        public void run() throws IOException {
+            System.out.println("hi");
+        }
+
+        @Override
+        public String render() {
+            return null;
+        }
+    };
+
     public static void main(String[] args) {
+        try {
+            action.run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Scanner scanner = new Scanner(System.in);
         List<String> mismatchList = new ArrayList<>();
         Set<String> chosenMismatches = new HashSet<>();
