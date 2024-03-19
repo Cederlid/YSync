@@ -35,7 +35,7 @@ public class Main {
         ContinueCallback continueCallback = new ContinueCallback() {
             @Override
             public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
-                showMismatches(syncActions);
+                handleUserInput(syncActions);
                 return CompletableFuture.completedFuture(true);
             }
         };
@@ -51,24 +51,11 @@ public class Main {
                     return null;
                 });
 
-//            try {
-//                action.run();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-
-
-        handleUserInput();
     }
 
     private static void handleUserInput(List<SyncAction> mismatchList) {
         Scanner scanner = new Scanner(System.in);
-        Set<String> chosenMismatches = new HashSet<>();
-
-        for (SyncAction mismatch : mismatchList){
-            mismatchList.add(mismatch);
-        }
-
+        Set<SyncAction> chosenMismatches = new HashSet<>();
         List<SyncAction> unChosenMismatches = new ArrayList<>(mismatchList);
 
         int inputAsInt;
@@ -84,7 +71,7 @@ public class Main {
                     if (inputAsInt > unChosenMismatches.size() || inputAsInt < 1) {
                         System.out.println("invalid number");
                     }
-                    String chosenMismatch = unChosenMismatches.get(inputAsInt - 1);
+                    SyncAction chosenMismatch = (unChosenMismatches.get(inputAsInt - 1));
 
                     if (chosenMismatches.contains(chosenMismatch)) {
                         System.out.println("Number already chosen");
@@ -108,14 +95,15 @@ public class Main {
         int index = 1;
         for (SyncAction mismatch : mismatches){
             System.out.println(index +  ". " + mismatch);
+            index++;
         }
         System.out.println("Enter a number:");
     }
 
-    private static void printRemainingMismatches(List<String> unChosenMismatches, Set<String> chosenMismatches) {
+    private static void printRemainingMismatches(List<SyncAction> unChosenMismatches, Set<SyncAction> chosenMismatches) {
         System.out.println("Remaining Mismatches:");
         int index = 1;
-        for (String mismatch : unChosenMismatches) {
+        for (SyncAction mismatch : unChosenMismatches) {
             if (!chosenMismatches.contains(mismatch)) {
                 System.out.println(index + ". " + mismatch);
                 index++;
