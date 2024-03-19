@@ -6,10 +6,8 @@ import dev.ytterate.ysync.SyncAction;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class Main {
@@ -33,20 +31,15 @@ public class Main {
             return;
         }
 
-        ContinueCallback continueCallback = new ContinueCallback() {
-            @Override
-            public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
-                handleUserInput(syncActions);
-                return CompletableFuture.completedFuture(true);
-            }
+        ContinueCallback continueCallback = syncActions -> {
+            handleUserInput(syncActions);
+            return CompletableFuture.completedFuture(true);
         };
         FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback);
 
 
         fileComparison.compareAndCopyFiles()
-                .thenAccept(result -> {
-                    System.out.println("File comparison and copying completed.");
-                })
+                .thenAccept(result -> System.out.println("File comparison and copying completed."))
                 .exceptionally(ex -> {
                     System.err.println("Error occurred during file comparison and copying: " + ex.getMessage());
                     return null;
@@ -76,6 +69,12 @@ public class Main {
                         System.out.println("Choose the correct number");
                     }
 
+                    SyncAction chosenMisMatch = unChosenMismatches.get(inputAsInt - 1);
+                    if (chosenMisMatch.isMisMatch() && chosenMisMatch instanceof MisMatchAction misMatchAction) {
+                        misMatchAction.confirm();
+                    }
+
+
                     unChosenMismatches.remove(inputAsInt - 1);
                     printRemainingMismatches(unChosenMismatches);
 
@@ -87,6 +86,7 @@ public class Main {
 
             }
         }
+
     }
 
 
