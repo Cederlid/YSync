@@ -4,7 +4,10 @@ import dev.ytterate.ysync.SyncAction;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,7 +35,7 @@ public class Main {
         ContinueCallback continueCallback = new ContinueCallback() {
             @Override
             public CompletableFuture<Boolean> onGotMisMatches(List<SyncAction> syncActions) {
-                menu(syncActions);
+                showMismatches(syncActions);
                 return CompletableFuture.completedFuture(true);
             }
         };
@@ -53,51 +56,58 @@ public class Main {
 //            } catch (IOException e) {
 //                throw new RuntimeException(e);
 //            }
-//            Scanner scanner = new Scanner(System.in);
-//            List<String> mismatchList = new ArrayList<>();
-//            Set<String> chosenMismatches = new HashSet<>();
-//
-//            mismatchList.add("up.png");
-//            mismatchList.add("down.png");
-//            mismatchList.add("other.jpg");
-//            List<String> unChosenMismatches = new ArrayList<>(mismatchList);
-//
-//            int inputAsInt;
-//            while (!unChosenMismatches.isEmpty()) {
-//                menu(unChosenMismatches);
-//                String inputAsString = scanner.nextLine();
-//                if (inputAsString.isEmpty()) {
-//                    printRemainingMismatches(unChosenMismatches, chosenMismatches);
-//                    break;
-//                } else {
-//                    try {
-//                        inputAsInt = Integer.parseInt(inputAsString);
-//                        if (inputAsInt > unChosenMismatches.size() || inputAsInt < 1) {
-//                            System.out.println("invalid number");
-//                        }
-//                        String chosenMismatch = unChosenMismatches.get(inputAsInt - 1);
-//
-//                        if (chosenMismatches.contains(chosenMismatch)) {
-//                            System.out.println("Number already chosen");
-//                        }
-//                        chosenMismatches.add(chosenMismatch);
-//                        unChosenMismatches.remove(chosenMismatch);
-//                        printRemainingMismatches(unChosenMismatches, chosenMismatches);
-//
-//                    } catch (NumberFormatException e) {
-//                        System.out.println("you must enter a number");
-//                    } catch (IndexOutOfBoundsException e) {
-//                        System.out.println("invalid index");
-//                    }
-//
-//                }
-//            }
+
+
+        handleUserInput();
     }
 
-    private static void menu(List<SyncAction> unChosenMismatches) {
+    private static void handleUserInput(List<SyncAction> mismatchList) {
+        Scanner scanner = new Scanner(System.in);
+        Set<String> chosenMismatches = new HashSet<>();
+
+        for (SyncAction mismatch : mismatchList){
+            mismatchList.add(mismatch);
+        }
+
+        List<SyncAction> unChosenMismatches = new ArrayList<>(mismatchList);
+
+        int inputAsInt;
+        while (!unChosenMismatches.isEmpty()) {
+            showMismatches(unChosenMismatches);
+            String inputAsString = scanner.nextLine();
+            if (inputAsString.isEmpty()) {
+                printRemainingMismatches(unChosenMismatches, chosenMismatches);
+                break;
+            } else {
+                try {
+                    inputAsInt = Integer.parseInt(inputAsString);
+                    if (inputAsInt > unChosenMismatches.size() || inputAsInt < 1) {
+                        System.out.println("invalid number");
+                    }
+                    String chosenMismatch = unChosenMismatches.get(inputAsInt - 1);
+
+                    if (chosenMismatches.contains(chosenMismatch)) {
+                        System.out.println("Number already chosen");
+                    }
+                    chosenMismatches.add(chosenMismatch);
+                    unChosenMismatches.remove(chosenMismatch);
+                    printRemainingMismatches(unChosenMismatches, chosenMismatches);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("you must enter a number");
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("invalid index");
+                }
+
+            }
+        }
+    }
+
+    private static void showMismatches(List<SyncAction> mismatches) {
         System.out.println("MisMatches: ");
-        for (int i = 0; i < unChosenMismatches.size(); i++) {
-            System.out.println((i + 1) + ". " + unChosenMismatches.get(i));
+        int index = 1;
+        for (SyncAction mismatch : mismatches){
+            System.out.println(index +  ". " + mismatch);
         }
         System.out.println("Enter a number:");
     }
