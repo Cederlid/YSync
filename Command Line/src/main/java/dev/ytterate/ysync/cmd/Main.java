@@ -1,3 +1,5 @@
+package dev.ytterate.ysync.cmd;
+
 import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
@@ -12,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
+    //TODO ysync --ignore some-file --copy another-file dir1 dir2
     public static void main(String[] args) throws IOException {
         if (args.length < 2) {
             System.out.println("Specify the path to source directory and destination Directory.");
