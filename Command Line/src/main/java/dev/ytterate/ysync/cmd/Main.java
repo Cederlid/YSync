@@ -15,7 +15,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
-    //TODO ysync --ignore some-file --copy another-file dir1 dir2
     public static void main(String[] args) throws IOException {
         CommandLineArgs commandLineArgs = new CommandLineArgs();
         JCommander.newBuilder()
