@@ -22,18 +22,16 @@ public class Main {
                 .build()
                 .parse(args);
 
-        if (commandLineArgs.sourceDirectory == null || commandLineArgs.destinationDirectory == null) {
-            System.out.println("Specify the path to source directory and destination Directory.");
+        if (commandLineArgs.directories.size() != 2) {
+            System.out.println("Specify the source and destination directories.");
             return;
         }
 
-        File sourceDir = new File(commandLineArgs.sourceDirectory);
-        File destDir = new File(commandLineArgs.destinationDirectory);
+        String sourceDirectory = commandLineArgs.directories.get(0);
+        String destinationDirectory = commandLineArgs.directories.get(1);
 
-        if (args.length < 2) {
-            System.out.println("Specify the path to source directory and destination Directory.");
-            return;
-        }
+        File sourceDir = new File(sourceDirectory);
+        File destDir = new File(destinationDirectory);
 
         if (!sourceDir.isDirectory() || !destDir.isDirectory()) {
             System.out.println("Type in the correct paths.");

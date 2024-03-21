@@ -7,12 +7,8 @@ import java.util.List;
 
 public class CommandLineArgs {
 
-    @Parameter(names = {"--source", "-s"}, description = "Source directory", required = true)
-    public String sourceDirectory;
-
-    @Parameter(names = {"--destination", "-d"}, description = "Destination directory", required = true)
-    public String destinationDirectory;
-
+    @Parameter(description = "Source and destination directories", required = true)
+    public List<String> directories = new ArrayList<>();
     @Parameter(names = {"--copy", "-c"}, description = "Files to copy")
     public List<String> filesToCopy = new ArrayList<>();
 
