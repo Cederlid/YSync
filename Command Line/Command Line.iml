@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Library" />
+    <orderEntry type="library" name="beust.jcommander" level="project" />
   </component>
 </module>

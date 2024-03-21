@@ -1,5 +1,6 @@
 package dev.ytterate.ysync.cmd;
 
+import com.beust.jcommander.JCommander;
 import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
@@ -16,14 +17,24 @@ public class Main {
 
     //TODO ysync --ignore some-file --copy another-file dir1 dir2
     public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
+        CommandLineArgs commandLineArgs = new CommandLineArgs();
+        JCommander.newBuilder()
+                .addObject(commandLineArgs)
+                .build()
+                .parse(args);
+
+        if (commandLineArgs.sourceDirectory == null || commandLineArgs.destinationDirectory == null) {
             System.out.println("Specify the path to source directory and destination Directory.");
             return;
         }
 
-        File sourceDir = new File(args[0]);
-        File destDir = new File(args[1]);
+        File sourceDir = new File(commandLineArgs.sourceDirectory);
+        File destDir = new File(commandLineArgs.destinationDirectory);
 
+        if (args.length < 2) {
+            System.out.println("Specify the path to source directory and destination Directory.");
+            return;
+        }
 
         if (!sourceDir.isDirectory() || !destDir.isDirectory()) {
             System.out.println("Type in the correct paths.");
