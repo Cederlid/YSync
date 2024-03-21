@@ -19,4 +19,7 @@ public class CommandLineArgs {
     @Parameter(names = {"--ignore", "-i"}, description = "Files to ignore")
     public List<String> ignoredFiles = new ArrayList<>();
 
+    @Parameter(names = {"--delete", "-D"}, description = "Delete files in destination directory if they don't exist in source directory")
+    public boolean deleteFiles;
+
 }
