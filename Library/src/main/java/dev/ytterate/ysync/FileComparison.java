@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -16,14 +18,23 @@ public class FileComparison {
     private final File sourceDir;
     private final File destDir;
     private final ContinueCallback continueCallback;
+    private final List<String> filesToCopy;
+    private final List<String> ignoredFiles;
     private final CompletableFuture<Void> copyCompleteFuture =new CompletableFuture<>();
-    public FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback){
+    public FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback, List<String> fileToCopy, List<String> ignoredFiles){
         this.sourceDir = sourceDir;
         this.destDir = destDir;
         this.continueCallback = continueCallback;
+        this.filesToCopy = fileToCopy;
+        this.ignoredFiles = ignoredFiles;
     }
 
     public CompletableFuture<Void> compareAndCopyFiles() throws IOException {
+        List<String> emptyList = new ArrayList<>();
+       return compareAndCopyFiles(emptyList, emptyList);
+    }
+
+    public CompletableFuture<Void> compareAndCopyFiles(List<String>copyList, List<String> ignoreList) throws IOException {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -39,9 +50,15 @@ public class FileComparison {
                 } else {
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
-                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
-                            syncActions.add(misMatchSourceAction);
-                            hasMismatches = true;
+                            if (ignoreList.contains(sourceFile.getName())){
+
+                            } else if (copyList.contains(sourceFile.getName())) {
+                                copyNewSourceToDest(sourceFile, destDir);
+                            } else{
+                                MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
+                                syncActions.add(misMatchSourceAction);
+                                hasMismatches = true;
+                            }
                         }
                     } else if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
@@ -82,7 +99,7 @@ public class FileComparison {
 
     public void runActions() throws IOException {
         for (SyncAction action : syncActions) {
-                action.run();
+            action.run();
         }
     }
 

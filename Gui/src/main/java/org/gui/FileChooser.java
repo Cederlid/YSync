@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class FileChooser extends JFrame implements ContinueCallback {
@@ -115,7 +117,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
 
     private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
-        fileComparison = new FileComparison(dir1, dir2, this);
+        List<String> emptyList = new ArrayList<>();
+        fileComparison = new FileComparison(dir1, dir2, this, emptyList, emptyList);
         return fileComparison.compareAndCopyFiles();
     }
 

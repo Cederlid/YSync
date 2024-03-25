@@ -5,13 +5,13 @@ import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -46,10 +46,10 @@ public class Main {
             handleUserInput(syncActions);
             return CompletableFuture.completedFuture(true);
         };
-        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback);
+        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
 
 
-        fileComparison.compareAndCopyFiles()
+        fileComparison.compareAndCopyFiles(commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles)
                 .thenAccept(result -> System.out.println("File comparison and copying completed."))
                 .exceptionally(ex -> {
                     System.err.println("Error occurred during file comparison and copying: " + ex.getMessage());
@@ -58,13 +58,14 @@ public class Main {
 
     }
 
-    private static void handleUserInput(List<SyncAction> mismatchList) {
-        if (mismatchList.isEmpty()) {
+    private static void handleUserInput(List<SyncAction> actionList) {
+        if (actionList.isEmpty()) {
             System.out.println("There are no mismatches!");
             return;
         }
         Scanner scanner = new Scanner(System.in);
-        List<SyncAction> unChosenMismatches = new ArrayList<>(mismatchList);
+        List<SyncAction> unChosenMismatches = actionList.stream()
+                .filter(action -> action instanceof MisMatchAction).collect(Collectors.toList());
 
         int inputAsInt;
         while (!unChosenMismatches.isEmpty()) {
