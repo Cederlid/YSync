@@ -48,6 +48,9 @@ public class FileComparison {
                     return null;
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    throw t;
                 }
             });
         }
@@ -55,7 +58,7 @@ public class FileComparison {
     }
 
     private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) {
-       boolean hasMismatches = false;
+        boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
                 if (sourceFile.getName().equals(".ysync")) {

@@ -32,7 +32,7 @@ public class MisMatchAction implements SyncAction {
                     DeleteFileAction deleteFileAction = new DeleteFileAction(fileToDelete.getPath());
                     deleteFileAction.run();
                 }
-                CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(sourceTarget.getPath(), destTarget.getPath());
+                CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(sourceTarget.getPath(), destTarget.getParent());
                 copyDirectoryAction.run();
             }
         }

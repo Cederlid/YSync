@@ -5,6 +5,12 @@ import java.io.IOException;
 
 import static org.apache.commons.io.FileUtils.copyFile;
 
+
+/**
+ * Copies the complete from directory into the to directory recursively over subdirectories.
+ * @param from Path to existing directory
+ * @param to Path to existing parent
+ */
 public record CopyDirectoryAction(String from, String to) implements SyncAction {
     @Override
     public void run() throws IOException {
@@ -12,7 +18,6 @@ public record CopyDirectoryAction(String from, String to) implements SyncAction 
     }
 
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
-
         if (!destDir.exists()) {
             destDir.mkdir();
         }
