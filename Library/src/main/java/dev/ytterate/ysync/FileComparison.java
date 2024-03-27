@@ -3,6 +3,7 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -15,15 +16,16 @@ import java.util.concurrent.CompletableFuture;
 
 public class FileComparison {
     LinkedList<SyncAction> syncActions = new LinkedList<>();
-    private final File sourceDir;
-    private final File destDir;
+    private final File sourceRoot;
+    private final File destRoot;
     private final ContinueCallback continueCallback;
     private final List<String> filesToCopy;
     private final List<String> ignoredFiles;
-    private final CompletableFuture<Void> copyCompleteFuture =new CompletableFuture<>();
-    public FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback, List<String> fileToCopy, List<String> ignoredFiles){
-        this.sourceDir = sourceDir;
-        this.destDir = destDir;
+    private final CompletableFuture<Void> copyCompleteFuture = new CompletableFuture<>();
+
+    public FileComparison(File sourceDir, File destDir, ContinueCallback continueCallback, List<String> fileToCopy, List<String> ignoredFiles) {
+        this.sourceRoot = sourceDir;
+        this.destRoot = destDir;
         this.continueCallback = continueCallback;
         this.filesToCopy = fileToCopy;
         this.ignoredFiles = ignoredFiles;
@@ -31,11 +33,29 @@ public class FileComparison {
 
     public CompletableFuture<Void> compareAndCopyFiles() throws IOException {
         List<String> emptyList = new ArrayList<>();
-       return compareAndCopyFiles(emptyList, emptyList);
+        return compareAndCopyFiles(emptyList, emptyList);
     }
 
-    public CompletableFuture<Void> compareAndCopyFiles(List<String>copyList, List<String> ignoreList) throws IOException {
-        boolean hasMismatches = false;
+    public CompletableFuture<Void> compareAndCopyFiles(List<String> copyList, List<String> ignoreList) throws IOException {
+        boolean hasMismatches = compareAndCopyRecursively(copyList, ignoreList, sourceRoot, destRoot);
+        MisMatchAction misMatchAction = new MisMatchAction(sourceRoot.getPath(), destRoot.getPath());
+        if (hasMismatches){
+            misMatchAction.confirm();
+            CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
+            gotMisMatchesFuture.thenApply(result -> {
+                try {
+                    onResolvedMisMatches();
+                    return null;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        }
+        return copyCompleteFuture;
+    }
+
+    private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) {
+       boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
                 if (sourceFile.getName().equals(".ysync")) {
@@ -50,17 +70,20 @@ public class FileComparison {
                 } else {
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
-                            if (ignoreList.contains(sourceFile.getName())){
+                            if (ignoreList.contains(sourceFile.getName())) {
 
                             } else if (copyList.contains(sourceFile.getName())) {
                                 copyNewSourceToDest(sourceFile, destDir);
-                            } else{
+                            } else {
                                 MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
                                 syncActions.add(misMatchSourceAction);
+                                misMatchSourceAction.isMisMatch();
                                 hasMismatches = true;
                             }
+                        } else {
+                            hasMismatches |= compareAndCopyRecursively(copyList, ignoreList, sourceFile, destFile);
                         }
-                    } else if (sourceFile.lastModified() > destFile.lastModified()) {
+                    } if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
                         syncActions.add(copyFileAction);
                     }
@@ -81,20 +104,8 @@ public class FileComparison {
                 }
             }
         }
-        if (hasMismatches){
-            CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
-            gotMisMatchesFuture.thenApply(result -> {
-                try {
-                    onResolvedMisMatches();
-                    return null;
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-        } else {
-            onResolvedMisMatches();
-        }
-        return copyCompleteFuture;
+
+        return hasMismatches;
     }
 
     public void runActions() throws IOException {
@@ -220,7 +231,7 @@ public class FileComparison {
     public void onResolvedMisMatches() throws IOException {
         runActions();
         clearActions();
-        recursivelyUpdateSyncFiles(destDir);
+        recursivelyUpdateSyncFiles(destRoot);
         copyCompleteFuture.complete(null);
     }
 }

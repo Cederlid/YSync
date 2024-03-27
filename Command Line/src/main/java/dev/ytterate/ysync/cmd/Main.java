@@ -7,7 +7,6 @@ import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
