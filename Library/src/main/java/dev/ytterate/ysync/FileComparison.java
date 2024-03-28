@@ -61,6 +61,8 @@ public class FileComparison {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
+                String relativeSourceFilePath = sourceFile.getPath().substring(sourceRoot.getPath().length() + 1);
+
                 if (sourceFile.getName().equals(".ysync")) {
                     continue;
                 }
@@ -71,7 +73,6 @@ public class FileComparison {
                         copyNewSourceToDest(sourceFile, destDir);
                     }
                 } else {
-                    String relativeSourceFilePath = sourceFile.getPath().substring(sourceRoot.getPath().length());
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
                             if (ignoreList.contains(relativeSourceFilePath)) {
