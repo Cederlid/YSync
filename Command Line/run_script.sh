@@ -1,5 +1,5 @@
 #!/bin/bash
-DEBUG_PORT=5005
+#DEBUG_PORT=5005
 #JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=$DEBUG_PORT"
 
 java -ea \
