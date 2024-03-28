@@ -71,11 +71,12 @@ public class FileComparison {
                         copyNewSourceToDest(sourceFile, destDir);
                     }
                 } else {
+                    String relativeSourceFilePath = sourceFile.getPath().substring(sourceRoot.getPath().length());
                     if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
-                            if (ignoreList.contains(sourceFile.getName())) {
+                            if (ignoreList.contains(relativeSourceFilePath)) {
 
-                            } else if (copyList.contains(sourceFile.getName())) {
+                            } else if (copyList.contains(relativeSourceFilePath)) {
                                 copyNewSourceToDest(sourceFile, destDir);
                             } else {
                                 MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
