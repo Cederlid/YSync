@@ -39,7 +39,7 @@ public class FileComparison {
     public CompletableFuture<Void> compareAndCopyFiles(List<String> copyList, List<String> ignoreList) throws IOException {
         boolean hasMismatches = compareAndCopyRecursively(copyList, ignoreList, sourceRoot, destRoot);
         MisMatchAction misMatchAction = new MisMatchAction(sourceRoot.getPath(), destRoot.getPath());
-        if (hasMismatches){
+        if (hasMismatches) {
             misMatchAction.confirm();
             CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
             gotMisMatchesFuture.thenApply(result -> {
@@ -53,11 +53,13 @@ public class FileComparison {
                     throw t;
                 }
             });
+        } else {
+            onResolvedMisMatches();
         }
         return copyCompleteFuture;
     }
 
-    private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) {
+    private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) throws IOException {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -73,7 +75,11 @@ public class FileComparison {
                         copyNewSourceToDest(sourceFile, destDir);
                     }
                 } else {
-                    if (sourceFile.isDirectory() || destFile.isDirectory()) {
+                    if (copyList.contains(relativeSourceFilePath)) {
+                        DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
+                        syncActions.add(deleteFileAction);
+                        copyNewSourceToDest(sourceFile, destDir);
+                    } else if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
                             if (ignoreList.contains(relativeSourceFilePath)) {
 
@@ -88,7 +94,8 @@ public class FileComparison {
                         } else {
                             hasMismatches |= compareAndCopyRecursively(copyList, ignoreList, sourceFile, destFile);
                         }
-                    } if (sourceFile.lastModified() > destFile.lastModified()) {
+                    }
+                    if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
                         syncActions.add(copyFileAction);
                     }

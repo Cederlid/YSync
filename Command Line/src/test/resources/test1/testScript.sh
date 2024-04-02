@@ -11,4 +11,4 @@ rm -rf "$FILE_DIR/Directory3/"
 cp -r "$BACKUP_DIR/Directory1" "$FILE_DIR"
 cp -r "$BACKUP_DIR/Directory3" "$FILE_DIR"
 
-"$SCRIPT_DIR/../../../../run_script.sh" "$FILE_DIR/Directory1/" "$FILE_DIR/Directory3/"
+"$SCRIPT_DIR/../../../../run_script.sh" "$@" "$FILE_DIR/Directory1/" "$FILE_DIR/Directory3/"
