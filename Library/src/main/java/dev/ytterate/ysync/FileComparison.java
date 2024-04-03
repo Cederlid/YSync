@@ -79,12 +79,12 @@ public class FileComparison {
                         DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
                         syncActions.add(deleteFileAction);
                         copyNewSourceToDest(sourceFile, destDir);
-                    } else if (sourceFile.isDirectory() || destFile.isDirectory()) {
+                    } else {
+                        copyNewSourceToDest(sourceFile, destDir);
+                    } if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
                             if (ignoreList.contains(relativeSourceFilePath)) {
 
-                            } else if (copyList.contains(relativeSourceFilePath)) {
-                                copyNewSourceToDest(sourceFile, destDir);
                             } else {
                                 MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
                                 syncActions.add(misMatchSourceAction);
