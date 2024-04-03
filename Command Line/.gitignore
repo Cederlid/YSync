@@ -21,7 +21,12 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
-
+/src/test/resources/test1/Directory1/
+/src/test/resources/test1/Directory3/
+/src/test/resources/test2/Directory1/
+/src/test/resources/test2/Directory3/
+/src/test/resources/test3/Directory1/
+/src/test/resources/test3/Directory3/
 ### VS Code ###
 .vscode/
 
