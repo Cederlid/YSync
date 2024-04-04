@@ -59,7 +59,7 @@ public class FileComparison {
         return copyCompleteFuture;
     }
 
-    private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) throws IOException {
+    private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) {
         boolean hasMismatches = false;
         if (sourceDir != null && destDir != null) {
             for (File sourceFile : sourceDir.listFiles()) {
@@ -96,8 +96,8 @@ public class FileComparison {
                         }
                     }
                     if (sourceFile.lastModified() > destFile.lastModified()) {
-                        CopyFileAction copyFileAction = new CopyFileAction(sourceFile.getPath(), destDir.getPath());
-                        syncActions.add(copyFileAction);
+                        CopyAction copyAction = new CopyAction(sourceFile.getPath(), destDir.getPath(), false);
+                        syncActions.add(copyAction);
                     }
                 }
 
@@ -150,14 +150,8 @@ public class FileComparison {
     }
 
     private void copyNewSourceToDest(File notSyncedSource, File destDir) {
-        assert destDir.isDirectory();
-        if (notSyncedSource.isDirectory()) {
-            CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(notSyncedSource.getPath(), destDir.getPath());
-            syncActions.add(copyDirectoryAction);
-        } else {
-            CopyFileAction copyFileAction = new CopyFileAction(notSyncedSource.getPath(), destDir.getPath());
-            syncActions.add(copyFileAction);
-        }
+        CopyAction copyAction = new CopyAction(notSyncedSource.getPath(), destDir.getPath(), false);
+        syncActions.add(copyAction);
     }
 
     JSONObject getInYsync(File directory, String fileName) {
@@ -174,7 +168,6 @@ public class FileComparison {
     }
 
 
-    //TODO inefficient destDir write sync sourceFile for ever row
     void updateSyncFile(File destDir, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
             return;

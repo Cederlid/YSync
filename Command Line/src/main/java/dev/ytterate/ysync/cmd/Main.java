@@ -85,7 +85,6 @@ public class Main {
                         misMatchAction.confirm();
                     }
 
-
                     unChosenMismatches.remove(inputAsInt - 1);
                     printRemainingMismatches(unChosenMismatches);
 

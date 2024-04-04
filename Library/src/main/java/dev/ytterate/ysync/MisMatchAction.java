@@ -13,7 +13,7 @@ public class MisMatchAction implements SyncAction {
     }
 
     @Override
-    public void run() throws IOException {
+    public void run() {
         File sourceTarget = new File(source);
         File destTarget = new File(dest);
 
@@ -24,7 +24,7 @@ public class MisMatchAction implements SyncAction {
                     DeleteDirectoryAction deleteDirectoryAction = new DeleteDirectoryAction(directoryToDelete.getPath());
                     deleteDirectoryAction.run();
                 }
-                CopyFileAction copyFileAction = new CopyFileAction(sourceTarget.getPath(), destTarget.getParent());
+                CopyAction copyFileAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(), false);
                 copyFileAction.run();
             } else {
                 File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
@@ -32,7 +32,7 @@ public class MisMatchAction implements SyncAction {
                     DeleteFileAction deleteFileAction = new DeleteFileAction(fileToDelete.getPath());
                     deleteFileAction.run();
                 }
-                CopyDirectoryAction copyDirectoryAction = new CopyDirectoryAction(sourceTarget.getPath(), destTarget.getParent());
+                CopyAction copyDirectoryAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(),false);
                 copyDirectoryAction.run();
             }
         }
