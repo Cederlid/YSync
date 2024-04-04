@@ -5,7 +5,12 @@ import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
+import org.json.JSONArray;
+import org.json.JSONTokener;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +20,11 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        String desktopPath = System.getProperty("user.home") + "/Desktop";
+        String jsonFilePath = desktopPath + "/JsonSyncFile.json";
+        JSONArray jsonArray = readSyncFile(new File(jsonFilePath));
+        System.out.println("Sync file includes: " + jsonArray.toString());
+
         CommandLineArgs commandLineArgs = new CommandLineArgs();
         JCommander.newBuilder()
                 .addObject(commandLineArgs)
@@ -49,7 +59,7 @@ public class Main {
 
 
         fileComparison.compareAndCopyFiles(commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles)
-                .thenAccept(result -> System.out.println("File comparison and copying completed."))
+                .thenAccept(result -> System.out.println("File comparison and copying completed. "))
                 .exceptionally(ex -> {
                     System.err.println("Error occurred during file comparison and copying: " + ex.getMessage());
                     return null;
@@ -119,5 +129,30 @@ public class Main {
         }
 
     }
+
+    public static JSONArray readSyncFile(File jsonFile) {
+        JSONArray filesArray = null;
+
+        try {
+            if (jsonFile.exists()) {
+                FileInputStream fileInputStream = new FileInputStream(jsonFile);
+                JSONTokener jsonTokener = new JSONTokener(fileInputStream);
+                filesArray = new JSONArray(jsonTokener);
+            } else {
+                filesArray = new JSONArray();
+                boolean newFile = false;
+                try {
+                    newFile = jsonFile.createNewFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                assert newFile;
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return filesArray;
+    }
+
 
 }

@@ -36,10 +36,10 @@ public record CopyAction(String source, String destination, boolean override) im
 
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
         if (destDir.exists() && override) {
-            if (destDir.isDirectory()){
+            if (destDir.isDirectory()) {
                 DeleteDirectoryAction deleteDirectoryAction = new DeleteDirectoryAction(destination);
                 deleteDirectoryAction.run();
-            }else {
+            } else {
                 DeleteFileAction deleteFileAction = new DeleteFileAction(destination);
                 deleteFileAction.run();
             }
