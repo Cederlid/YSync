@@ -6,8 +6,8 @@ import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,11 +25,7 @@ public class Main {
         JSONArray jsonArray = readSyncFile(new File(jsonFilePath));
         System.out.println("Sync file includes: " + jsonArray.toString());
 
-        CommandLineArgs commandLineArgs = new CommandLineArgs();
-        JCommander.newBuilder()
-                .addObject(commandLineArgs)
-                .build()
-                .parse(args);
+        CommandLineArgs commandLineArgs = parseCommandLine(args);
 
         if (commandLineArgs.directories.size() != 2) {
             System.out.println("Specify the source and destination directories.");
@@ -55,16 +51,28 @@ public class Main {
             handleUserInput(syncActions);
             return CompletableFuture.completedFuture(true);
         };
-        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
 
+        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir);
 
-        fileComparison.compareAndCopyFiles(commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles)
-                .thenAccept(result -> System.out.println("File comparison and copying completed. "))
-                .exceptionally(ex -> {
-                    System.err.println("Error occurred during file comparison and copying: " + ex.getMessage());
-                    return null;
-                });
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject pair = jsonArray.getJSONObject(i);
+            String sourceDirectoryFromJson = pair.getString("source");
+            String destinationDirectoryFromJson = pair.getString("destination");
 
+            File sourceDirFromJson = new File(sourceDirectoryFromJson);
+            File destDirFromJson = new File(destinationDirectoryFromJson);
+
+            syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson);
+        }
+    }
+
+    private static CommandLineArgs parseCommandLine(String[] args) {
+        CommandLineArgs commandLineArgs = new CommandLineArgs();
+        JCommander.newBuilder()
+                .addObject(commandLineArgs)
+                .build()
+                .parse(args);
+        return commandLineArgs;
     }
 
     private static void handleUserInput(List<SyncAction> actionList) {
@@ -130,8 +138,8 @@ public class Main {
 
     }
 
-    public static JSONArray readSyncFile(File jsonFile) {
-        JSONArray filesArray = null;
+    private static JSONArray readSyncFile(File jsonFile) {
+        JSONArray filesArray;
 
         try {
             if (jsonFile.exists()) {
@@ -140,7 +148,7 @@ public class Main {
                 filesArray = new JSONArray(jsonTokener);
             } else {
                 filesArray = new JSONArray();
-                boolean newFile = false;
+                boolean newFile;
                 try {
                     newFile = jsonFile.createNewFile();
                 } catch (IOException e) {
@@ -153,6 +161,26 @@ public class Main {
         }
         return filesArray;
     }
+
+
+    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir) throws IOException {
+        CompletableFuture<Void> operationCompleted = new CompletableFuture<>();
+
+        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
+
+        fileComparison.compareAndCopyFiles(commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles)
+                .thenAccept(result -> {
+                    System.out.println("File comparison and copying completed.");
+                    operationCompleted.complete(null);
+                })
+                .exceptionally(ex -> {
+                    System.err.println("Error occurred during file comparison and copying: " + ex.getMessage());
+                    operationCompleted.completeExceptionally(ex);
+                    return null;
+                });
+    }
+
+
 
 
 }
