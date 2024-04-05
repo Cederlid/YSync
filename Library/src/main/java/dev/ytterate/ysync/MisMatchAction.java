@@ -1,7 +1,6 @@
 package dev.ytterate.ysync;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MisMatchAction implements SyncAction {
     boolean copyConfirmed = false;
@@ -21,16 +20,16 @@ public class MisMatchAction implements SyncAction {
             if (sourceTarget.isFile()){
                 File directoryToDelete = new File(destTarget.getParent(), sourceTarget.getName());
                 if (directoryToDelete.exists() && directoryToDelete.isDirectory()){
-                    DeleteDirectoryAction deleteDirectoryAction = new DeleteDirectoryAction(directoryToDelete.getPath());
-                    deleteDirectoryAction.run();
+                    DeleteAction deleteAction = new DeleteAction(directoryToDelete.getPath(), true, true);
+                    deleteAction.run();
                 }
                 CopyAction copyFileAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(), false);
                 copyFileAction.run();
             } else {
                 File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
                 if (fileToDelete.exists() && fileToDelete.isFile()){
-                    DeleteFileAction deleteFileAction = new DeleteFileAction(fileToDelete.getPath());
-                    deleteFileAction.run();
+                    DeleteAction deleteAction = new DeleteAction(fileToDelete.getPath(), false, true);
+                    deleteAction.run();
                 }
                 CopyAction copyDirectoryAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(),false);
                 copyDirectoryAction.run();

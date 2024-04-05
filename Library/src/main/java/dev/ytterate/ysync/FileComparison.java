@@ -76,8 +76,8 @@ public class FileComparison {
                     }
                 } else {
                     if (copyList.contains(relativeSourceFilePath)) {
-                        DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
-                        syncActions.add(deleteFileAction);
+                        DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false, false);
+                        syncActions.add(deleteAction);
                         copyNewSourceToDest(sourceFile, destDir);
                     } else {
                         copyNewSourceToDest(sourceFile, destDir);
@@ -109,8 +109,8 @@ public class FileComparison {
                         long fileTimeInSource = getInYsync(sourceDir, destFile.getName()).getLong("lastModified");
 
                         if (fileTimeInDestination < fileTimeInSource) {
-                            DeleteFileAction deleteFileAction = new DeleteFileAction(destFile.getPath());
-                            syncActions.add(deleteFileAction);
+                            DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false, false);
+                            syncActions.add(deleteAction);
                         }
                     }
                 }

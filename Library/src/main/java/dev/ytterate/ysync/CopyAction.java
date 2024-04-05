@@ -11,7 +11,7 @@ import static org.apache.commons.io.FileUtils.copyFile;
 /**
  * Copies the complete from directory into the to directory recursively over subdirectories.
  *
- * @param source Path to existing directory
+ * @param source      Path to existing directory
  * @param destination Path to existing parent
  */
 public record CopyAction(String source, String destination, boolean override) implements SyncAction {
@@ -37,11 +37,11 @@ public record CopyAction(String source, String destination, boolean override) im
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
         if (destDir.exists() && override) {
             if (destDir.isDirectory()) {
-                DeleteDirectoryAction deleteDirectoryAction = new DeleteDirectoryAction(destination);
-                deleteDirectoryAction.run();
+                DeleteAction deleteAction = new DeleteAction(destination, true, true);
+                deleteAction.run();
             } else {
-                DeleteFileAction deleteFileAction = new DeleteFileAction(destination);
-                deleteFileAction.run();
+                DeleteAction deleteAction = new DeleteAction(destination, false, true);
+                deleteAction.run();
             }
 
         }
