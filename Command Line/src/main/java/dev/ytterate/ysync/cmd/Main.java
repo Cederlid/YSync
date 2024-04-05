@@ -126,7 +126,6 @@ public class Main {
 
     }
 
-
     private static void showMismatches(List<SyncAction> mismatches) {
         System.out.println("MisMatches: ");
         int index = 1;
@@ -188,8 +187,6 @@ public class Main {
                     return null;
                 });
     }
-
-
 
 
 }

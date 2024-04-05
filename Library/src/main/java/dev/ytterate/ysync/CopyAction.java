@@ -36,13 +36,8 @@ public record CopyAction(String source, String destination, boolean override) im
 
     private void copyDirectory(File sourceDir, File destDir) throws IOException {
         if (destDir.exists() && override) {
-            if (destDir.isDirectory()) {
-                DeleteAction deleteAction = new DeleteAction(destination, true, true);
-                deleteAction.run();
-            } else {
-                DeleteAction deleteAction = new DeleteAction(destination, false, true);
-                deleteAction.run();
-            }
+            DeleteAction deleteAction = new DeleteAction(destination, true);
+            deleteAction.run();
 
         }
         if (!destDir.exists()) {

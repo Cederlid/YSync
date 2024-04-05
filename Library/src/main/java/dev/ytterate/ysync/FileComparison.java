@@ -76,7 +76,7 @@ public class FileComparison {
                     }
                 } else {
                     if (copyList.contains(relativeSourceFilePath)) {
-                        DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false, false);
+                        DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
                         syncActions.add(deleteAction);
                         copyNewSourceToDest(sourceFile, destDir);
                     } else {
@@ -109,7 +109,7 @@ public class FileComparison {
                         long fileTimeInSource = getInYsync(sourceDir, destFile.getName()).getLong("lastModified");
 
                         if (fileTimeInDestination < fileTimeInSource) {
-                            DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false, false);
+                            DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
                             syncActions.add(deleteAction);
                         }
                     }

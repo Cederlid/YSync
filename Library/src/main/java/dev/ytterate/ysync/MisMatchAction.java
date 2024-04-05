@@ -20,7 +20,7 @@ public class MisMatchAction implements SyncAction {
             if (sourceTarget.isFile()){
                 File directoryToDelete = new File(destTarget.getParent(), sourceTarget.getName());
                 if (directoryToDelete.exists() && directoryToDelete.isDirectory()){
-                    DeleteAction deleteAction = new DeleteAction(directoryToDelete.getPath(), true, true);
+                    DeleteAction deleteAction = new DeleteAction(directoryToDelete.getPath(), true);
                     deleteAction.run();
                 }
                 CopyAction copyFileAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(), false);
@@ -28,7 +28,7 @@ public class MisMatchAction implements SyncAction {
             } else {
                 File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
                 if (fileToDelete.exists() && fileToDelete.isFile()){
-                    DeleteAction deleteAction = new DeleteAction(fileToDelete.getPath(), false, true);
+                    DeleteAction deleteAction = new DeleteAction(fileToDelete.getPath(), true);
                     deleteAction.run();
                 }
                 CopyAction copyDirectoryAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(),false);

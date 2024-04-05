@@ -3,11 +3,11 @@ package dev.ytterate.ysync;
 import java.io.File;
 import java.nio.file.Files;
 
-public record DeleteAction(String target, boolean isDirectory, boolean override) implements SyncAction {
+public record DeleteAction(String target, boolean override) implements SyncAction {
     @Override
     public void run() {
         File targetFile = new File(target);
-        if (isDirectory){
+        if (targetFile.isDirectory()){
             deleteDirectory(targetFile);
         } else {
             deleteFile(targetFile);
@@ -40,6 +40,6 @@ public record DeleteAction(String target, boolean isDirectory, boolean override)
 
     @Override
     public String render() {
-        return isDirectory ? "Delete directory: " + target : "Delete file: " + target;
+        return  "Delete directory: " + target + "Delete file: " + target;
     }
 }
