@@ -20,10 +20,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String desktopPath = System.getProperty("user.home") + "/Desktop";
-        String jsonFilePath = desktopPath + "/JsonSyncFile.json";
-        JSONArray jsonArray = readSyncFile(new File(jsonFilePath));
-        System.out.println("Sync file includes: " + jsonArray.toString());
+        JSONArray jsonArray = loadJsonSyncFileFromDesktop();
 
         CommandLineArgs commandLineArgs = parseCommandLine(args);
 
@@ -55,6 +52,14 @@ public class Main {
         syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir);
 
         syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
+    }
+
+    private static JSONArray loadJsonSyncFileFromDesktop() {
+        String desktopPath = System.getProperty("user.home") + "/Desktop";
+        String jsonFilePath = desktopPath + "/JsonSyncFile.json";
+        JSONArray jsonArray = readSyncFile(new File(jsonFilePath));
+        System.out.println("Sync file includes: " + jsonArray.toString());
+        return jsonArray;
     }
 
     private static void syncDirectoriesFromJsonArray(JSONArray jsonArray, CommandLineArgs commandLineArgs, ContinueCallback continueCallback) throws IOException {
