@@ -54,6 +54,10 @@ public class Main {
 
         syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir);
 
+        syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
+    }
+
+    private static void syncDirectoriesFromJsonArray(JSONArray jsonArray, CommandLineArgs commandLineArgs, ContinueCallback continueCallback) throws IOException {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject pair = jsonArray.getJSONObject(i);
             String sourceDirectoryFromJson = pair.getString("source");
