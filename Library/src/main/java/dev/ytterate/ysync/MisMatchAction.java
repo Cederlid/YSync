@@ -6,6 +6,7 @@ public class MisMatchAction implements SyncAction {
     boolean copyConfirmed = false;
     String source;
     String dest;
+
     public MisMatchAction(String source, String dest) {
         this.source = source;
         this.dest = dest;
@@ -17,27 +18,15 @@ public class MisMatchAction implements SyncAction {
         File destTarget = new File(dest);
 
         if (copyConfirmed) {
-            if (sourceTarget.isFile()){
-                File directoryToDelete = new File(destTarget.getParent(), sourceTarget.getName());
-                if (directoryToDelete.exists() && directoryToDelete.isDirectory()){
-                    DeleteAction deleteAction = new DeleteAction(directoryToDelete.getPath(), true);
-                    deleteAction.run();
-                }
-                CopyAction copyFileAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(), false);
-                copyFileAction.run();
-            } else {
-                File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
-                if (fileToDelete.exists() && fileToDelete.isFile()){
-                    DeleteAction deleteAction = new DeleteAction(fileToDelete.getPath(), true);
-                    deleteAction.run();
-                }
-                CopyAction copyDirectoryAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(),false);
-                copyDirectoryAction.run();
-            }
+            File fileToDelete = new File(destTarget.getParent(), new File(source).getName());
+            DeleteAction deleteAction = new DeleteAction(fileToDelete.getPath(), true);
+            deleteAction.run();
+            CopyAction copyFileAction = new CopyAction(sourceTarget.getPath(), destTarget.getParent(), false);
+            copyFileAction.run();
         }
     }
 
-    public void confirm(){
+    public void confirm() {
         copyConfirmed = true;
     }
 
@@ -52,7 +41,7 @@ public class MisMatchAction implements SyncAction {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Source: " + source + " dest: " + dest;
     }
 }

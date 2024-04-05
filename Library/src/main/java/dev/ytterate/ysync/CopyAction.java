@@ -38,7 +38,6 @@ public record CopyAction(String source, String destination, boolean override) im
         if (destDir.exists() && override) {
             DeleteAction deleteAction = new DeleteAction(destination, true);
             deleteAction.run();
-
         }
         if (!destDir.exists()) {
             destDir.mkdir();
