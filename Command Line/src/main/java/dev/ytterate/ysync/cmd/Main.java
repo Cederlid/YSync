@@ -8,10 +8,12 @@ import dev.ytterate.ysync.SyncAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
@@ -49,7 +51,7 @@ public class Main {
             return CompletableFuture.completedFuture(true);
         };
 
-        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir);
+        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir, commandLineArgs.filesToCopy);
 
         syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
     }
@@ -67,11 +69,24 @@ public class Main {
             JSONObject pair = jsonArray.getJSONObject(i);
             String sourceDirectoryFromJson = pair.getString("source");
             String destinationDirectoryFromJson = pair.getString("destination");
+            JSONArray copyFromJson = pair.optJSONArray("copy");
 
             File sourceDirFromJson = new File(sourceDirectoryFromJson);
             File destDirFromJson = new File(destinationDirectoryFromJson);
 
-            syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson);
+            List<String> fileToCopy;
+
+            if (copyFromJson != null) {
+                fileToCopy = new ArrayList<>();
+                for (int j = 0; j < copyFromJson.length(); j++) {
+                    fileToCopy.add(copyFromJson.getString(j));
+                }
+
+            } else {
+                fileToCopy = new ArrayList<>();
+            }
+            syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson, fileToCopy);
+
         }
     }
 
@@ -171,7 +186,7 @@ public class Main {
     }
 
 
-    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir) throws IOException {
+    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir, List<String> fileToCopy) throws IOException {
         CompletableFuture<Void> operationCompleted = new CompletableFuture<>();
 
         FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
