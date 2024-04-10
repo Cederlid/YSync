@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CommandLineArgs {
 
-    @Parameter(description = "Source and destination directories", required = true)
+    @Parameter(description = "Source and destination directories")
     public List<String> directories = new ArrayList<>();
 
     @Parameter(names = "--dryrun", description = "Show the list of mismatches, but doesn't copy any files")

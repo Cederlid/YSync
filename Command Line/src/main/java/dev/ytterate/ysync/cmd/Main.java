@@ -26,33 +26,33 @@ public class Main {
 
         CommandLineArgs commandLineArgs = parseCommandLine(args);
 
-        if (commandLineArgs.directories.size() != 2) {
-            System.out.println("Specify the source and destination directories.");
-            return;
-        }
+//        if (commandLineArgs.directories.size() != 2) {
+//            System.out.println("Specify the source and destination directories.");
+//            return;
+//        }
 
-        String sourceDirectory = commandLineArgs.directories.get(0);
-        String destinationDirectory = commandLineArgs.directories.get(1);
+//        String sourceDirectory = commandLineArgs.directories.get(0);
+//        String destinationDirectory = commandLineArgs.directories.get(1);
 
-        File sourceDir = new File(sourceDirectory);
-        File destDir = new File(destinationDirectory);
+//        File sourceDir = new File(sourceDirectory);
+//        File destDir = new File(destinationDirectory);
 
-        if (!sourceDir.isDirectory() || !destDir.isDirectory()) {
-            System.out.println("Type in the correct paths.");
-            return;
-        }
-        if (!sourceDir.exists() || !destDir.exists()) {
-            System.out.println("Source or destination directory does not exist.");
-            return;
-        }
+//        if (!sourceDir.isDirectory() || !destDir.isDirectory()) {
+//            System.out.println("Type in the correct paths.");
+//            return;
+//        }
+//        if (!sourceDir.exists() || !destDir.exists()) {
+//            System.out.println("Source or destination directory does not exist.");
+//            return;
+//        }
 
         ContinueCallback continueCallback = syncActions -> {
             handleUserInput(syncActions);
             return CompletableFuture.completedFuture(true);
         };
 
-        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir, commandLineArgs.filesToCopy);
-
+//        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
+//
         syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
     }
 
@@ -70,22 +70,33 @@ public class Main {
             String sourceDirectoryFromJson = pair.getString("source");
             String destinationDirectoryFromJson = pair.getString("destination");
             JSONArray copyFromJson = pair.optJSONArray("copy");
+            JSONArray ignoreFromJson = pair.optJSONArray("ignore");
 
             File sourceDirFromJson = new File(sourceDirectoryFromJson);
             File destDirFromJson = new File(destinationDirectoryFromJson);
 
-            List<String> fileToCopy;
+            List<String> fileToCopy = new ArrayList<>();
+            List<String> fileToIgnore = new ArrayList<>();
+
 
             if (copyFromJson != null) {
-                fileToCopy = new ArrayList<>();
                 for (int j = 0; j < copyFromJson.length(); j++) {
-                    fileToCopy.add(copyFromJson.getString(j));
+                    String filename = copyFromJson.getString(j);
+                    fileToCopy.add(filename);
+                    System.out.println("Added file to copy: " + filename);
                 }
 
-            } else {
-                fileToCopy = new ArrayList<>();
             }
-            syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson, fileToCopy);
+
+            if (ignoreFromJson != null) {
+                for (int j = 0; j < ignoreFromJson.length(); j++) {
+                    String filename = ignoreFromJson.getString(j);
+                    fileToIgnore.add(filename);
+                    System.out.println("Added file to ignore: " + filename);
+                }
+
+            }
+            syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson, fileToCopy, fileToIgnore);
 
         }
     }
@@ -186,12 +197,12 @@ public class Main {
     }
 
 
-    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir, List<String> fileToCopy) throws IOException {
+    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir, List<String> fileToCopy, List<String> fileToIgnore) throws IOException {
         CompletableFuture<Void> operationCompleted = new CompletableFuture<>();
 
-        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
+        FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, fileToCopy, fileToIgnore);
 
-        fileComparison.compareAndCopyFiles(commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles)
+        fileComparison.compareAndCopyFiles(fileToCopy, fileToIgnore)
                 .thenAccept(result -> {
                     System.out.println("File comparison and copying completed.");
                     operationCompleted.complete(null);
