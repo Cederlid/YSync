@@ -24,4 +24,6 @@ public class CommandLineArgs {
     @Parameter(names = {"--delete", "-D"}, description = "Delete files in destination directory if they don't exist in source directory")
     public boolean deleteFiles;
 
+    @Parameter(names = {"--configfile", "-cf"}, description = "Json file for configuration")
+    public String configFile;
 }

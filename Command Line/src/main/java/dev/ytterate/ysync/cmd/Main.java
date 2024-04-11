@@ -22,37 +22,22 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        JSONArray jsonArray = loadJsonSyncFileFromDesktop();
+        JSONArray jsonArray = new JSONArray();
 
         CommandLineArgs commandLineArgs = parseCommandLine(args);
+        String configFile = commandLineArgs.configFile;
 
-//        if (commandLineArgs.directories.size() != 2) {
-//            System.out.println("Specify the source and destination directories.");
-//            return;
-//        }
-
-//        String sourceDirectory = commandLineArgs.directories.get(0);
-//        String destinationDirectory = commandLineArgs.directories.get(1);
-
-//        File sourceDir = new File(sourceDirectory);
-//        File destDir = new File(destinationDirectory);
-
-//        if (!sourceDir.isDirectory() || !destDir.isDirectory()) {
-//            System.out.println("Type in the correct paths.");
-//            return;
-//        }
-//        if (!sourceDir.exists() || !destDir.exists()) {
-//            System.out.println("Source or destination directory does not exist.");
-//            return;
-//        }
+        if (configFile == null){
+            jsonArray = loadJsonSyncFileFromDesktop();
+        } else {
+            jsonArray = readSyncFile(new File(configFile));
+        }
 
         ContinueCallback continueCallback = syncActions -> {
             handleUserInput(syncActions);
             return CompletableFuture.completedFuture(true);
         };
 
-//        syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
-//
         syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
     }
 

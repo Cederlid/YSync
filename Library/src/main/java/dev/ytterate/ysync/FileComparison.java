@@ -3,7 +3,6 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
