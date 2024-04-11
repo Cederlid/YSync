@@ -22,21 +22,30 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        JSONArray jsonArray = new JSONArray();
-
         CommandLineArgs commandLineArgs = parseCommandLine(args);
         String configFile = commandLineArgs.configFile;
-
-        if (configFile == null){
-            jsonArray = loadJsonSyncFileFromDesktop();
-        } else {
-            jsonArray = readSyncFile(new File(configFile));
-        }
 
         ContinueCallback continueCallback = syncActions -> {
             handleUserInput(syncActions);
             return CompletableFuture.completedFuture(true);
         };
+
+        if (commandLineArgs.directories.size() == 2) {
+            String sourceDirectory = commandLineArgs.directories.get(0);
+            String destinationDirectory = commandLineArgs.directories.get(1);
+            File sourceDir = new File(sourceDirectory);
+            File destDir = new File(destinationDirectory);
+            if (sourceDir.exists() && destDir.exists()){
+                syncDirectories(commandLineArgs, continueCallback, sourceDir, destDir, commandLineArgs.filesToCopy, commandLineArgs.ignoredFiles);
+                return;
+            }
+        }
+        JSONArray jsonArray;
+        if (configFile == null) {
+            jsonArray = loadJsonSyncFileFromDesktop();
+        } else {
+            jsonArray = readSyncFile(new File(configFile));
+        }
 
         syncDirectoriesFromJsonArray(jsonArray, commandLineArgs, continueCallback);
     }
