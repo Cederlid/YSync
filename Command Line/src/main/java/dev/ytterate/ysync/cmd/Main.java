@@ -40,6 +40,7 @@ public class Main {
                 return;
             }
         }
+
         JSONArray jsonArray;
         if (configFile == null) {
             jsonArray = loadJsonSyncFileFromDesktop();
@@ -166,7 +167,7 @@ public class Main {
 
     }
 
-    private static JSONArray readSyncFile(File jsonFile) {
+    static JSONArray readSyncFile(File jsonFile) {
         JSONArray filesArray;
 
         try {
@@ -191,7 +192,7 @@ public class Main {
     }
 
 
-    private static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir, List<String> fileToCopy, List<String> fileToIgnore) throws IOException {
+    public static void syncDirectories(CommandLineArgs commandLineArgs, ContinueCallback continueCallback, File sourceDir, File destDir, List<String> fileToCopy, List<String> fileToIgnore) throws IOException {
         CompletableFuture<Void> operationCompleted = new CompletableFuture<>();
 
         FileComparison fileComparison = new FileComparison(sourceDir, destDir, continueCallback, fileToCopy, fileToIgnore);
