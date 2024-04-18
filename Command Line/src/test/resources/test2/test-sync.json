@@ -1,0 +1,7 @@
+[
+  {
+    "source": "src/test/resources/test2/Directory1",
+    "destination": "src/test/resources/test2/Directory3",
+    "copy":["viol.jpeg"]
+  }
+]

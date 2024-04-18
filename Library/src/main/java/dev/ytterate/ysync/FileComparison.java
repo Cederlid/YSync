@@ -3,6 +3,7 @@ package dev.ytterate.ysync;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -78,9 +79,7 @@ public class FileComparison {
                         DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
                         syncActions.add(deleteAction);
                         copyNewSourceToDest(sourceFile, destDir);
-                    } else {
-                        copyNewSourceToDest(sourceFile, destDir);
-                    } if (sourceFile.isDirectory() || destFile.isDirectory()) {
+                    } else if (sourceFile.isDirectory() || destFile.isDirectory()) {
                         if (destFile.isFile() || sourceFile.isFile()) {
                             if (ignoreList.contains(relativeSourceFilePath)) {
 
@@ -93,11 +92,11 @@ public class FileComparison {
                         } else {
                             hasMismatches |= compareAndCopyRecursively(copyList, ignoreList, sourceFile, destFile);
                         }
-                    }
-                    if (sourceFile.lastModified() > destFile.lastModified()) {
+                    } else if (sourceFile.lastModified() > destFile.lastModified()) {
                         CopyAction copyAction = new CopyAction(sourceFile.getPath(), destDir.getPath(), false);
                         syncActions.add(copyAction);
                     }
+
                 }
 
             }
@@ -149,7 +148,7 @@ public class FileComparison {
     }
 
     private void copyNewSourceToDest(File notSyncedSource, File destDir) {
-        CopyAction copyAction = new CopyAction(notSyncedSource.getPath(), destDir.getPath(), false);
+        CopyAction copyAction = new CopyAction(notSyncedSource.getPath(), destDir.getPath(), true);
         syncActions.add(copyAction);
     }
 

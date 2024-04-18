@@ -16,10 +16,10 @@ public class CommandLineArgs {
     @Parameter(names = "--report", description = "Show the list of mismatches, but skip the user input and just copies everything else")
     public List<String> showMismatchesAndCopyNoUserInput = new ArrayList<>();
 
-    @Parameter(names = {"--copy", "-c"}, description = "Files to copy")
+    @Parameter(names = {"--copy", "-c"}, description = "Files to copy without being added to the misMatchList")
     public List<String> filesToCopy = new ArrayList<>();
 
-    @Parameter(names = {"--ignore", "-i"}, description = "Files to ignore")
+    @Parameter(names = {"--ignore", "-i"}, description = "Files not to show on misMatchList and not to be copied")
     public List<String> ignoredFiles = new ArrayList<>();
     @Parameter(names = {"--delete", "-D"}, description = "Delete files in destination directory if they don't exist in source directory")
     public boolean deleteFiles;

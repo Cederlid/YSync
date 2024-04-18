@@ -1,0 +1,7 @@
+[
+  {
+    "source": "src/test/resources/test3/Directory1",
+    "destination": "src/test/resources/test3/Directory3",
+    "ignore":["oj.HEIC"]
+  }
+]

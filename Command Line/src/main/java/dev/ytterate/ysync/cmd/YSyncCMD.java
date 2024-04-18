@@ -19,7 +19,7 @@ import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class Main {
+public class YSyncCMD {
 
     public static void main(String[] args) throws IOException {
         CommandLineArgs commandLineArgs = parseCommandLine(args);
@@ -92,7 +92,6 @@ public class Main {
 
             }
             syncDirectories(commandLineArgs, continueCallback, sourceDirFromJson, destDirFromJson, fileToCopy, fileToIgnore);
-
         }
     }
 

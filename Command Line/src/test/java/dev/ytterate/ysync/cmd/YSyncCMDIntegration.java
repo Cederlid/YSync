@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static dev.ytterate.ysync.cmd.Main.readSyncFile;
+import static dev.ytterate.ysync.cmd.YSyncCMD.readSyncFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MainIntegration {
+public class YSyncCMDIntegration {
 
     private FileTime newLastModifiedTime;
     private File tempFile;
@@ -63,7 +63,7 @@ public class MainIntegration {
 
             CommandLineArgs commandLineArgs = new CommandLineArgs();
 
-            Main.syncDirectories(commandLineArgs, null, new File(sourceDirectory), new File(destinationDirectory), fileToCopy, fileToIgnore);
+            YSyncCMD.syncDirectories(commandLineArgs, null, new File(sourceDirectory), new File(destinationDirectory), fileToCopy, fileToIgnore);
         }
 
 
