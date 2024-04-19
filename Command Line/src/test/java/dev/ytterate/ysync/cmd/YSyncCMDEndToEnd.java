@@ -48,38 +48,28 @@ public class YSyncCMDEndToEnd {
     }
 
     @Test
-    public void mainShouldCopyFromJsonFileWhenSourceIsAFile() throws IOException {
-        File testSyncFile = new File("src/test/resources/test2/test-sync.json");
+    public void shouldCopyFromJsonFileWhenSourceIsAFile() throws IOException {
+        //Test2 in resources
+        File testJsonFile = new File("src/test/resources/test2/test-sync.json");
 
-        String[] args = {"-cf", testSyncFile.getPath()};
+        String[] args = {"-cf", testJsonFile.getPath()};
         YSyncCMD.main(args);
 
-        CommandLineArgs commandLineArgs = parseCommandLine(args);
-        JSONArray jsonArray = YSyncCMD.readSyncFile(testSyncFile);
+        JSONArray jsonArray = YSyncCMD.readSyncFile(testJsonFile);
+        assertEquals(1, jsonArray.length());
 
+        JSONObject pair = jsonArray.getJSONObject(0);
+        String destinationDirectoryFromJson = pair.getString("destination");
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject pair = jsonArray.getJSONObject(i);
-            String sourceDirectoryFromJson = pair.getString("source");
-            String destinationDirectoryFromJson = pair.getString("destination");
+        Path destDir = Paths.get(destinationDirectoryFromJson);
 
-            Path sourceDir = Paths.get(sourceDirectoryFromJson);
-            Path destDir = Paths.get(destinationDirectoryFromJson);
+        JSONArray copyFromJson = pair.optJSONArray("copy");
+        assertNotNull(copyFromJson);
+        JSONArray ignoreFromJson = pair.optJSONArray("ignore");
+        assertNull(ignoreFromJson);
 
-            JSONArray copyFromJson = pair.optJSONArray("copy");
-            JSONArray ignoreFromJson = pair.optJSONArray("ignore");
-
-            assertFilesInCopyArray(copyFromJson, destDir);
-            assertTrue(Files.isDirectory(destDir));
-            if (copyFromJson != null) {
-                for (int j = 0; j < copyFromJson.length(); j++) {
-                    String filename = copyFromJson.getString(j);
-                    Path destFile = destDir.resolve(filename);
-                    assertFalse(Files.isDirectory(destFile), "File " + filename + " should not be a directory in destination.");
-                    assertTrue(Files.isRegularFile(destFile), "File " + filename + " should be a regular file in destination.");
-                }
-            }
-        }
+        assertFilesInCopyArray(copyFromJson, destDir);
+        assertTrue(Files.isRegularFile(destDir.resolve("viol.jpeg")));
 
     }
 
@@ -106,43 +96,59 @@ public class YSyncCMDEndToEnd {
         assertNull(ignoreFromJson);
 
         assertFilesInCopyArray(copyFromJson, destDir);
-        assertTrue(Files.isDirectory(destDir.resolve("oj.HEIC")));
+        assertTrue(Files.isDirectory(destDir.resolve("krabba.HEIC")));
 
     }
 
     @Test
-    public void mainShouldIgnoreFromJsonFile() throws IOException {
-        File testSyncFile = new File("src/test/resources/test3/test-sync.json");
+    public void shouldIgnoreFromJsonFileWhenIsAFile() throws IOException {
+        //Test3 in resources
+        File testJsonFile = new File("src/test/resources/test3/test-sync.json");
 
-        String[] args = {"-cf", testSyncFile.getPath()};
+        String[] args = {"-cf", testJsonFile.getPath()};
         YSyncCMD.main(args);
 
-        CommandLineArgs commandLineArgs = parseCommandLine(args);
-        JSONArray jsonArray = YSyncCMD.readSyncFile(testSyncFile);
+        JSONArray jsonArray = YSyncCMD.readSyncFile(testJsonFile);
+        assertEquals(1, jsonArray.length());
 
+        JSONObject object = jsonArray.getJSONObject(0);
+        String destinationDirectoryFromJson = object.getString("destination");
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject pair = jsonArray.getJSONObject(i);
-            String sourceDirectoryFromJson = pair.getString("source");
-            String destinationDirectoryFromJson = pair.getString("destination");
+        Path destDir = Paths.get(destinationDirectoryFromJson);
 
-            Path sourceDir = Paths.get(sourceDirectoryFromJson);
-            Path destDir = Paths.get(destinationDirectoryFromJson);
+        JSONArray copyFromJson = object.optJSONArray("copy");
+        assertNull(copyFromJson);
+        JSONArray ignoreFromJson = object.optJSONArray("ignore");
+        assertNotNull(ignoreFromJson);
 
-            JSONArray copyFromJson = pair.optJSONArray("copy");
-            JSONArray ignoreFromJson = pair.optJSONArray("ignore");
+        assertFilesInIgnoreArray(ignoreFromJson, destDir);
+        assertTrue(Files.isRegularFile(destDir.resolve("oj.HEIC")));
 
-            assertFilesInIgnoreArray(ignoreFromJson, destDir);
-            assertTrue(Files.isDirectory(destDir));
-            if (copyFromJson != null) {
-                for (int j = 0; j < copyFromJson.length(); j++) {
-                    String filename = copyFromJson.getString(j);
-                    Path destFile = destDir.resolve(filename);
-                    assertFalse(Files.isRegularFile(destFile), "File " + filename + " should not be a directory in destination.");
-                    assertTrue(Files.isDirectory(destFile), "File " + filename + " should be a regular file in destination.");
-                }
-            }
-        }
+    }
+
+    @Test
+    public void shouldIgnoreFromJsonFileWhenIsADirectory() throws IOException {
+        //Test4 in resources
+        File testJsonFile = new File("src/test/resources/test4/test-sync.json");
+
+        String[] args = {"-cf", testJsonFile.getPath()};
+        YSyncCMD.main(args);
+
+        JSONArray jsonArray = YSyncCMD.readSyncFile(testJsonFile);
+        assertEquals(1, jsonArray.length());
+
+        JSONObject object = jsonArray.getJSONObject(0);
+        String destinationDirectoryFromJson = object.getString("destination");
+
+        Path destDir = Paths.get(destinationDirectoryFromJson);
+
+        JSONArray copyFromJson = object.optJSONArray("copy");
+        assertNull(copyFromJson);
+        JSONArray ignoreFromJson = object.optJSONArray("ignore");
+        assertNotNull(ignoreFromJson);
+
+        assertFilesInIgnoreArray(ignoreFromJson, destDir);
+        assertTrue(Files.isRegularFile(destDir.resolve("krabba.HEIC")));
 
     }
 

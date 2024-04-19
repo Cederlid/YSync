@@ -1,0 +1,7 @@
+[
+  {
+    "source": "src/test/resources/test4/Directory1",
+    "destination": "src/test/resources/test4/Directory3",
+    "ignore":["krabba.HEIC"]
+  }
+]

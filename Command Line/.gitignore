@@ -33,3 +33,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+/src/test/resources/test4/Directory3/
+/src/test/resources/test4/Directory1/
