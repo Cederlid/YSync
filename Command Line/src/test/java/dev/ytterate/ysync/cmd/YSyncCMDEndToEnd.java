@@ -96,7 +96,7 @@ public class YSyncCMDEndToEnd {
         assertNull(ignoreFromJson);
 
         assertFilesInCopyArray(copyFromJson, destDir);
-        assertTrue(Files.isDirectory(destDir.resolve("krabba.HEIC")));
+        assertTrue(Files.isDirectory(destDir.resolve("oj.HEIC")));
 
     }
 
@@ -127,7 +127,7 @@ public class YSyncCMDEndToEnd {
     }
 
     @Test
-    public void shouldIgnoreFromJsonFileWhenIsADirectory() throws IOException {
+    public void shouldIgnoreFromJsonFileWhenSourceIsADirectory() throws IOException {
         //Test4 in resources
         File testJsonFile = new File("src/test/resources/test4/test-sync.json");
 
