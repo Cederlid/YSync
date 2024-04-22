@@ -69,6 +69,8 @@ public class FileComparison {
                     continue;
                 }
 
+                updateSyncFile(sourceDir,sourceFile.getName(), sourceFile.lastModified());
+
                 File destFile = tryGetFile(destDir, sourceFile);
                 if (destFile == null) {
                     if (getInYsync(destDir, sourceFile.getName()) == null) {
@@ -100,6 +102,22 @@ public class FileComparison {
                 }
 
             }
+
+            JSONArray sourceSyncFilesArray = readSyncFile(sourceDir);
+            for (int i = 0; i < sourceSyncFilesArray.length(); i++) {
+               JSONObject fileObj = sourceSyncFilesArray.getJSONObject(i);
+               String fileName = fileObj.getString("name");
+               File fileInSource = new File(sourceDir, fileName);
+
+               if (!fileInSource.exists()){
+                   File fileInDest = new File(destDir, fileName);
+                   if (fileInDest.exists()){
+                       DeleteAction deleteAction = new DeleteAction(fileInDest.getPath(), false);
+                       syncActions.add(deleteAction);
+                   }
+               }
+            }
+
             for (File destFile : destDir.listFiles()) {
                 if (tryGetFile(sourceDir, destFile) == null) {
                     if (getInYsync(sourceDir, destFile.getName()) != null) {
@@ -166,14 +184,14 @@ public class FileComparison {
     }
 
 
-    void updateSyncFile(File destDir, String fileName, long lastModified) {
+    void updateSyncFile(File directory, String fileName, long lastModified) {
         if (fileName.equals(".ysync")) {
             return;
         }
-        JSONArray filesArray = readSyncFile(destDir);
+        JSONArray filesArray = readSyncFile(directory);
 
         createJsonObjectInArray(filesArray, fileName, lastModified);
-        writeSyncFile(destDir, filesArray);
+        writeSyncFile(directory, filesArray);
     }
 
     JSONArray readSyncFile(File directory) {
