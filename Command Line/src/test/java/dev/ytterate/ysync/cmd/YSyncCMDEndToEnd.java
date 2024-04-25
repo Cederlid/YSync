@@ -6,10 +6,13 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -165,6 +168,27 @@ public class YSyncCMDEndToEnd {
                 assertTrue(Files.exists(destDir.resolve(filename)), "File " + filename + " should be copied.");
             }
         }
+    }
+
+    @Test
+    public void shouldRemoveFileInDestIfRemovedInSource() throws IOException {
+        //Test5 in resources
+        File testJsonFile = new File("src/test/resources/test4/test-sync.json");
+
+        String[] args = {"-cf", testJsonFile.getPath()};
+        YSyncCMD.main(args);
+
+        JSONArray jsonArray = YSyncCMD.readSyncFile(testJsonFile);
+        assertEquals(1, jsonArray.length());
+
+        JSONObject object = jsonArray.getJSONObject(0);
+        String sourceDirectoryFromJson = object.getString("source");
+        String destinationDirectoryFromJson = object.getString("destination");
+
+        Path sourceDir = Paths.get(sourceDirectoryFromJson);
+        Path destDir = Paths.get(destinationDirectoryFromJson);
+
+        assertTrue(Files.exists(destDir.resolve("oj.HEIC")));
     }
 
     private static CommandLineArgs parseCommandLine(String[] args) {
