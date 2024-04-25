@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -173,7 +174,7 @@ public class YSyncCMDEndToEnd {
     @Test
     public void shouldRemoveFileInDestIfRemovedInSource() throws IOException {
         //Test5 in resources
-        File testJsonFile = new File("src/test/resources/test4/test-sync.json");
+        File testJsonFile = new File("src/test/resources/test5/test-sync.json");
 
         String[] args = {"-cf", testJsonFile.getPath()};
         YSyncCMD.main(args);
@@ -185,10 +186,10 @@ public class YSyncCMDEndToEnd {
         String sourceDirectoryFromJson = object.getString("source");
         String destinationDirectoryFromJson = object.getString("destination");
 
-        Path sourceDir = Paths.get(sourceDirectoryFromJson);
         Path destDir = Paths.get(destinationDirectoryFromJson);
+        Path fileToRemove = destDir.resolve("oj.HEIC");
 
-        assertTrue(Files.exists(destDir.resolve("oj.HEIC")));
+        Assertions.assertFalse(Files.exists(fileToRemove));
     }
 
     private static CommandLineArgs parseCommandLine(String[] args) {
