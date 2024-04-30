@@ -183,7 +183,6 @@ public class YSyncCMDEndToEnd {
         assertEquals(1, jsonArray.length());
 
         JSONObject object = jsonArray.getJSONObject(0);
-        String sourceDirectoryFromJson = object.getString("source");
         String destinationDirectoryFromJson = object.getString("destination");
 
         Path destDir = Paths.get(destinationDirectoryFromJson);

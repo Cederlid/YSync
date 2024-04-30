@@ -39,8 +39,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
         LayoutManager layout = new FlowLayout();
         panel.setLayout(layout);
 
-        JButton button = new JButton("Choose sourceFile");
-        JButton button2 = new JButton("Choose sourceFile 2");
+        JButton button = new JButton("Choose the source directory");
+        JButton button2 = new JButton("Choose the destination directory");
         JButton submitBtn = new JButton("Submit");
         JLabel label = new JLabel("", JLabel.CENTER);
 
