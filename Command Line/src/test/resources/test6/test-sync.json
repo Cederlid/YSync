@@ -1,0 +1,6 @@
+[
+  {
+    "source": "src/test/resources/test6/Directory1",
+    "destination": "src/test/resources/test6/Directory3"
+  }
+]

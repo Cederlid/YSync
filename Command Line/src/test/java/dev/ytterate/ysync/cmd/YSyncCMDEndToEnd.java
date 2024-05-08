@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -189,6 +189,47 @@ public class YSyncCMDEndToEnd {
         Path fileToRemove = destDir.resolve("oj.HEIC");
 
         Assertions.assertFalse(Files.exists(fileToRemove));
+    }
+
+    @Test
+    public void shouldSyncCreateDeleteAndRecreate() throws IOException {
+        //Test6 in resources
+        File testJsonFile = new File("src/test/resources/test6/test-sync.json");
+        String[] args = {"-cf", testJsonFile.getPath()};
+        YSyncCMD.main(args);
+
+        JSONArray jsonArray = YSyncCMD.readSyncFile(testJsonFile);
+
+        JSONObject object = jsonArray.getJSONObject(0);
+        String destinationDirectoryFromJson = object.getString("destination");
+        String sourceDirectoryFromJson = object.getString("source");
+
+        Path destDir = Paths.get(destinationDirectoryFromJson);
+        Path sourceDir = Paths.get(sourceDirectoryFromJson);
+
+        Path fileToCopy = destDir.resolve("oj.HEIC");
+
+        assertTrue(Files.exists(fileToCopy));
+
+        YSyncCMD.main(args);
+
+        Path deletedFile = sourceDir.resolve("oj.HEIC");
+        Files.deleteIfExists(deletedFile);
+
+        Path fileToDelete = destDir.resolve("oj.HEIC");
+
+        YSyncCMD.main(args);
+        Assertions.assertFalse(Files.exists(fileToDelete));
+
+        Path reCreateFile = Paths.get("src/test/resources/test6/Directory1/oj.HEIC");
+        Files.createFile(reCreateFile);
+        YSyncCMD.main(args);
+
+        Path fileInDest = destDir.resolve("oj.HEIC");
+        Path fileInSource = sourceDir.resolve("oj.HEIC");
+
+        assertTrue(Files.exists(fileInSource));
+        assertTrue(Files.exists(fileInDest));
     }
 
     private static CommandLineArgs parseCommandLine(String[] args) {

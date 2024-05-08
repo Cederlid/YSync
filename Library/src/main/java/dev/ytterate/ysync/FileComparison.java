@@ -69,13 +69,11 @@ public class FileComparison {
                     continue;
                 }
 
-                updateSyncFile(sourceDir,sourceFile.getName(), sourceFile.lastModified());
+                updateSyncFile(sourceDir, sourceFile.getName(), sourceFile.lastModified());
 
                 File destFile = tryGetFile(destDir, sourceFile);
                 if (destFile == null) {
-                    if (getInYsync(destDir, sourceFile.getName()) == null) {
-                        copyNewSourceToDest(sourceFile, destDir);
-                    }
+                    copyNewSourceToDest(sourceFile, destDir);
                 } else {
                     if (copyList.contains(relativeSourceFilePath)) {
                         DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
@@ -105,17 +103,17 @@ public class FileComparison {
 
             JSONArray sourceSyncFilesArray = readSyncFile(sourceDir);
             for (int i = 0; i < sourceSyncFilesArray.length(); i++) {
-               JSONObject fileObj = sourceSyncFilesArray.getJSONObject(i);
-               String fileName = fileObj.getString("name");
-               File fileInSource = new File(sourceDir, fileName);
+                JSONObject fileObj = sourceSyncFilesArray.getJSONObject(i);
+                String fileName = fileObj.getString("name");
+                File fileInSource = new File(sourceDir, fileName);
 
-               if (!fileInSource.exists()){
-                   File fileInDest = new File(destDir, fileName);
-                   if (fileInDest.exists()){
-                       DeleteAction deleteAction = new DeleteAction(fileInDest.getPath(), false);
-                       syncActions.add(deleteAction);
-                   }
-               }
+                if (!fileInSource.exists()) {
+                    File fileInDest = new File(destDir, fileName);
+                    if (fileInDest.exists()) {
+                        DeleteAction deleteAction = new DeleteAction(fileInDest.getPath(), false);
+                        syncActions.add(deleteAction);
+                    }
+                }
             }
 
             for (File destFile : destDir.listFiles()) {
