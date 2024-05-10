@@ -3,13 +3,19 @@ import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -119,71 +125,105 @@ public class FileChooser extends JFrame implements ContinueCallback {
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-    }
-
-
-    private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
-        List<String> emptyList = new ArrayList<>();
-        fileComparison = new FileComparison(dir1, dir2, this, emptyList, emptyList);
-        return fileComparison.compareAndCopyFiles();
-    }
-
-    @Override
-    public CompletableFuture<Boolean> onGotMisMatches(java.util.List<SyncAction> syncActions) throws IOException {
-        DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
-        for (SyncAction action : syncActions) {
-            if (action.isMisMatch()) {
-                misMatchModel.addElement(action);
-            }
-        }
-
-        JFrame dialogFrame = new JFrame("Choose actions to overwrite");
-        dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-        JList<SyncAction> mismatchList = new JList<>(misMatchModel);
-        mismatchList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        mismatchList.setCellRenderer(new CheckBoxListCellRenderer());
-
-        JScrollPane scrollPane = new JScrollPane(mismatchList);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        JButton continueButton = new JButton("Continue");
-        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-        continueButton.addActionListener(e -> {
-            for (int i = 0; i < misMatchModel.size(); i++) {
-                SyncAction action = misMatchModel.getElementAt(i);
-                if (action.isMisMatch()) {
-                    if (mismatchList.isSelectedIndex(i)) {
-                        ((MisMatchAction) action).confirm();
+                if (file1 != null && file2 != null) {
+                    try {
+                        writeDirectoriesToJson(file1.getAbsolutePath(), file2.getAbsolutePath());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
+                } else {
+                    errorLabel.setText("Please choose both source and destination directories first.");
                 }
             }
-            try {
-                completableFuture.complete(true);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-            dialogFrame.dispose();
         });
-
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(continueButton);
-
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        dialogFrame.getContentPane().add(panel);
-
-        dialogFrame.pack();
-        dialogFrame.setVisible(true);
-
-        return completableFuture;
     }
+
+    void writeDirectoriesToJson(String source, String destination) throws IOException {
+        try {
+            File jsonFile = new File("/Users/wijdancederlid/Desktop/config.json");
+            JSONArray jsonArray;
+            if (jsonFile.exists()) {
+                String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
+                jsonArray = new JSONArray(jsonContent);
+            } else {
+                jsonArray = new JSONArray();
+            }
+            JSONObject directoryObject = new JSONObject();
+            directoryObject.put("source", source);
+            directoryObject.put("destination", destination);
+
+            jsonArray.put(directoryObject);
+            try (FileWriter fileWriter = new FileWriter(jsonFile)) {
+                fileWriter.write(jsonArray.toString(4));
+            }
+
+            JOptionPane.showMessageDialog(null, "Directories saved to config.json");
+        } catch (IOException e) {
+            errorLabel.setText("Error: " + e.getMessage());
+        }
+    }
+
+
+
+private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
+    List<String> emptyList = new ArrayList<>();
+    fileComparison = new FileComparison(dir1, dir2, this, emptyList, emptyList);
+    return fileComparison.compareAndCopyFiles();
+}
+
+@Override
+public CompletableFuture<Boolean> onGotMisMatches(java.util.List<SyncAction> syncActions) throws IOException {
+    DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
+    for (SyncAction action : syncActions) {
+        if (action.isMisMatch()) {
+            misMatchModel.addElement(action);
+        }
+    }
+
+    JFrame dialogFrame = new JFrame("Choose actions to overwrite");
+    dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout());
+
+    JList<SyncAction> mismatchList = new JList<>(misMatchModel);
+    mismatchList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    mismatchList.setCellRenderer(new CheckBoxListCellRenderer());
+
+    JScrollPane scrollPane = new JScrollPane(mismatchList);
+    panel.add(scrollPane, BorderLayout.CENTER);
+
+    JButton continueButton = new JButton("Continue");
+    CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+    continueButton.addActionListener(e -> {
+        for (int i = 0; i < misMatchModel.size(); i++) {
+            SyncAction action = misMatchModel.getElementAt(i);
+            if (action.isMisMatch()) {
+                if (mismatchList.isSelectedIndex(i)) {
+                    ((MisMatchAction) action).confirm();
+                }
+            }
+        }
+        try {
+            completableFuture.complete(true);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        dialogFrame.dispose();
+    });
+
+
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.add(continueButton);
+
+    panel.add(buttonPanel, BorderLayout.SOUTH);
+    dialogFrame.getContentPane().add(panel);
+
+    dialogFrame.pack();
+    dialogFrame.setVisible(true);
+
+    return completableFuture;
+}
 }
 
 
