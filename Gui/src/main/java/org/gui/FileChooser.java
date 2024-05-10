@@ -42,15 +42,17 @@ public class FileChooser extends JFrame implements ContinueCallback {
         JButton button = new JButton("Choose the source directory");
         JButton button2 = new JButton("Choose the destination directory");
         JButton submitBtn = new JButton("Submit");
+        JButton saveBtn = new JButton("Save");
         JLabel label = new JLabel("", JLabel.CENTER);
 
         panel.add(button);
         panel.add(button2);
         panel.add(submitBtn);
+        panel.add(saveBtn);
         panel.add(label);
         frame.getContentPane().add(panel, BorderLayout.NORTH);
 
-        addPopupListener(submitBtn);
+        addPopupListener(submitBtn, saveBtn);
         addDirectoryListener(frame, button, label);
         addDirectoryListener2(frame, button2, label);
 
@@ -85,7 +87,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         button2.addActionListener(createDirectoryActionListener(frame, label, false));
     }
 
-    private void addPopupListener(JButton submitBtn) {
+    private void addPopupListener(JButton submitBtn, JButton saveBtn) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,6 +113,13 @@ public class FileChooser extends JFrame implements ContinueCallback {
                         throw new RuntimeException(e);
                     }
                 });
+            }
+        });
+
+        saveBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
