@@ -140,7 +140,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     void writeDirectoriesToJson(String source, String destination) throws IOException {
         try {
-            File jsonFile = new File("/Users/wijdancederlid/Desktop/config.json");
+            File jsonFile = new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json");
             JSONArray jsonArray;
             if (jsonFile.exists()) {
                 String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
@@ -157,7 +157,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 fileWriter.write(jsonArray.toString(4));
             }
 
-            JOptionPane.showMessageDialog(null, "Directories saved to config.json");
+            JOptionPane.showMessageDialog(null, "Directories saved to JsonSyncFile.json");
         } catch (IOException e) {
             errorLabel.setText("Error: " + e.getMessage());
         }
