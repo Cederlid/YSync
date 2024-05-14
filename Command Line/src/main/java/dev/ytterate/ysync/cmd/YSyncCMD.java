@@ -80,7 +80,6 @@ public class YSyncCMD {
                     fileToCopy.add(filename);
                     System.out.println("Added file to copy: " + filename);
                 }
-
             }
 
             if (ignoreFromJson != null) {
