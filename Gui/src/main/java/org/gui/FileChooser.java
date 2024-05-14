@@ -37,7 +37,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         createUi(frame);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setMinimumSize(new Dimension(1100, 600));
+        frame.setMinimumSize(new Dimension(600, 600));
         frame.pack();
         frame.setVisible(true);
     }
@@ -88,9 +88,11 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 if (isFirstButton) {
                     file1 = targetFile;
                     button.setText("Source: " + file1.getPath());
+                    frame.pack();
                 } else {
                     file2 = targetFile;
                     button.setText("Destination: " + file2.getPath());
+                    frame.pack();
                 }
             } else {
                 label.setText("Open command canceled");
