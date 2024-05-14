@@ -43,25 +43,30 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
     private void createUi(final JFrame frame) {
         JPanel panel = new JPanel();
-        LayoutManager layout = new FlowLayout();
-        panel.setLayout(layout);
+        panel.setLayout(new BorderLayout());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
 
         JButton button = new JButton("Choose the source directory");
         JButton button2 = new JButton("Choose the destination directory");
         JButton submitBtn = new JButton("Submit");
         JButton saveBtn = new JButton("Save");
         JLabel label = new JLabel("", JLabel.CENTER);
+
         jsonText = new JTextArea();
         jsonText.setEditable(false);
         jsonText.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(jsonText);
 
-        panel.add(button);
-        panel.add(button2);
-        panel.add(submitBtn);
-        panel.add(saveBtn);
-        panel.add(label);
-        panel.add(jsonText);
-        frame.getContentPane().add(panel, BorderLayout.NORTH);
+        buttonPanel.add(button);
+        buttonPanel.add(button2);
+        buttonPanel.add(submitBtn);
+        buttonPanel.add(saveBtn);
+        buttonPanel.add(label);
+        panel.add(buttonPanel, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        frame.getContentPane().add(panel);
 
         addPopupListener(submitBtn, saveBtn);
         addDirectoryListener(frame, button, label);
