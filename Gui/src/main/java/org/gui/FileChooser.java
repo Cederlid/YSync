@@ -35,9 +35,10 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private void createWindow() {
         JFrame frame = new JFrame("File reader");
         createUi(frame);
-        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        frame.setMinimumSize(new Dimension(1100, 600));
+        frame.pack();
         frame.setVisible(true);
     }
 
@@ -59,6 +60,9 @@ public class FileChooser extends JFrame implements ContinueCallback {
         jsonText.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(jsonText);
 
+        addDirectoryListener(frame, button, label, true);
+        addDirectoryListener2(frame, button2, label, false);
+
         buttonPanel.add(button);
         buttonPanel.add(button2);
         buttonPanel.add(submitBtn);
@@ -69,12 +73,9 @@ public class FileChooser extends JFrame implements ContinueCallback {
         frame.getContentPane().add(panel);
 
         addPopupListener(submitBtn, saveBtn);
-        addDirectoryListener(frame, button, label);
-        addDirectoryListener2(frame, button2, label);
-
     }
 
-    private ActionListener createDirectoryActionListener(JFrame frame, JLabel label, boolean isFirstButton) {
+    private ActionListener createDirectoryActionListener(JFrame frame, JButton button, JLabel label, boolean isFirstButton) {
         return e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -86,8 +87,10 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 File targetFile = fileChooser.getSelectedFile();
                 if (isFirstButton) {
                     file1 = targetFile;
+                    button.setText("Source: " + file1.getPath());
                 } else {
                     file2 = targetFile;
+                    button.setText("Destination: " + file2.getPath());
                 }
             } else {
                 label.setText("Open command canceled");
@@ -95,12 +98,12 @@ public class FileChooser extends JFrame implements ContinueCallback {
         };
     }
 
-    private void addDirectoryListener(JFrame frame, JButton button, JLabel label) {
-        button.addActionListener(createDirectoryActionListener(frame, label, true));
+    private void addDirectoryListener(JFrame frame, JButton button, JLabel label, boolean isFirstButton) {
+        button.addActionListener(createDirectoryActionListener(frame, button, label, true));
     }
 
-    private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label) {
-        button2.addActionListener(createDirectoryActionListener(frame, label, false));
+    private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label, boolean isFirstButton) {
+        button2.addActionListener(createDirectoryActionListener(frame,button2, label, false));
     }
 
     private void addPopupListener(JButton submitBtn, JButton saveBtn) {
@@ -175,7 +178,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     private void showJsonContent() {
-        if (file1 != null && file2 != null){
+        if (file1 != null && file2 != null) {
             try {
                 String jsonContent = FileUtils.readFileToString(new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json"), StandardCharsets.UTF_8);
                 jsonText.setText(jsonContent);
