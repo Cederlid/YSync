@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.print.attribute.standard.JobName;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -37,95 +38,97 @@ public class FileComparison {
     }
 
     public CompletableFuture<Void> compareAndCopyFiles(List<String> copyList, List<String> ignoreList) throws IOException {
-        boolean hasMismatches = compareAndCopyRecursively(copyList, ignoreList, sourceRoot, destRoot);
-        MisMatchAction misMatchAction = new MisMatchAction(sourceRoot.getPath(), destRoot.getPath());
-        if (hasMismatches) {
-            misMatchAction.confirm();
-            CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
-            gotMisMatchesFuture.thenApply(result -> {
-                try {
-                    onResolvedMisMatches();
-                    return null;
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                    throw t;
-                }
-            });
-        } else {
-            onResolvedMisMatches();
+        if (sourceRoot != null && destRoot != null && sourceRoot.exists() && destRoot.exists()) {
+            boolean hasMismatches = compareAndCopyRecursively(copyList, ignoreList, sourceRoot, destRoot);
+            MisMatchAction misMatchAction = new MisMatchAction(sourceRoot.getPath(), destRoot.getPath());
+            if (hasMismatches) {
+                misMatchAction.confirm();
+                CompletableFuture<Boolean> gotMisMatchesFuture = continueCallback.onGotMisMatches(syncActions);
+                gotMisMatchesFuture.thenApply(result -> {
+                    try {
+                        onResolvedMisMatches();
+                        return null;
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                        throw t;
+                    }
+                });
+            } else {
+                onResolvedMisMatches();
+            }
         }
         return copyCompleteFuture;
     }
 
     private Boolean compareAndCopyRecursively(List<String> copyList, List<String> ignoreList, File sourceDir, File destDir) {
         boolean hasMismatches = false;
-        if (sourceDir != null && destDir != null) {
-            for (File sourceFile : sourceDir.listFiles()) {
-                String relativeSourceFilePath = sourceFile.getPath().substring(sourceRoot.getPath().length() + 1);
+        for (File sourceFile : sourceDir.listFiles()) {
+            String relativeSourceFilePath = sourceFile.getPath().substring(sourceRoot.getPath().length() + 1);
 
-                if (sourceFile.getName().equals(".ysync")) {
-                    continue;
+            if (sourceFile.getName().equals(".ysync")) {
+                continue;
+            }
+
+            updateSyncFile(sourceDir, sourceFile.getName(), sourceFile.lastModified());
+
+            File destFile = tryGetFile(destDir, sourceFile);
+            if (destFile == null) {
+                copyNewSourceToDest(sourceFile, destDir);
+            } else {
+                if (copyList.contains(relativeSourceFilePath)) {
+                    DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
+                    syncActions.add(deleteAction);
+                    copyNewSourceToDest(sourceFile, destDir);
+                } else if (sourceFile.isDirectory() || destFile.isDirectory()) {
+                    if (destFile.isFile() || sourceFile.isFile()) {
+                        if (ignoreList.contains(relativeSourceFilePath)) {
+
+                        } else {
+                            MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
+                            syncActions.add(misMatchSourceAction);
+                            misMatchSourceAction.isMisMatch();
+                            hasMismatches = true;
+                        }
+                    } else {
+                        hasMismatches |= compareAndCopyRecursively(copyList, ignoreList, sourceFile, destFile);
+                    }
+                } else if (sourceFile.lastModified() > destFile.lastModified()) {
+                    CopyAction copyAction = new CopyAction(sourceFile.getPath(), destDir.getPath(), false);
+                    syncActions.add(copyAction);
                 }
 
-                updateSyncFile(sourceDir, sourceFile.getName(), sourceFile.lastModified());
+            }
 
-                File destFile = tryGetFile(destDir, sourceFile);
-                if (destFile == null) {
-                    copyNewSourceToDest(sourceFile, destDir);
-                } else {
-                    if (copyList.contains(relativeSourceFilePath)) {
+        }
+
+        JSONArray sourceSyncFilesArray = readSyncFile(sourceDir);
+        for (int i = 0; i < sourceSyncFilesArray.length(); i++) {
+            JSONObject fileObj = sourceSyncFilesArray.getJSONObject(i);
+            String fileName = fileObj.getString("name");
+            File fileInSource = new File(sourceDir, fileName);
+
+            if (!fileInSource.exists()) {
+                File fileInDest = new File(destDir, fileName);
+                if (fileInDest.exists()) {
+                    DeleteAction deleteAction = new DeleteAction(fileInDest.getPath(), false);
+                    syncActions.add(deleteAction);
+                }
+            }
+        }
+
+        for (File destFile : destDir.listFiles()) {
+            if (tryGetFile(sourceDir, destFile) == null) {
+                JSONObject sourceRet = getInYsync(sourceDir, destFile.getName());
+                JSONObject destRet = getInYsync(destDir, destFile.getName());
+                if (sourceRet != null && destRet != null) {
+                    long fileTimeInDestination = destRet.getLong("lastModified");
+                    long fileTimeInSource = sourceRet.getLong("lastModified");
+
+                    if (fileTimeInDestination < fileTimeInSource) {
                         DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
                         syncActions.add(deleteAction);
-                        copyNewSourceToDest(sourceFile, destDir);
-                    } else if (sourceFile.isDirectory() || destFile.isDirectory()) {
-                        if (destFile.isFile() || sourceFile.isFile()) {
-                            if (ignoreList.contains(relativeSourceFilePath)) {
-
-                            } else {
-                                MisMatchAction misMatchSourceAction = new MisMatchAction(sourceFile.getPath(), destFile.getPath());
-                                syncActions.add(misMatchSourceAction);
-                                misMatchSourceAction.isMisMatch();
-                                hasMismatches = true;
-                            }
-                        } else {
-                            hasMismatches |= compareAndCopyRecursively(copyList, ignoreList, sourceFile, destFile);
-                        }
-                    } else if (sourceFile.lastModified() > destFile.lastModified()) {
-                        CopyAction copyAction = new CopyAction(sourceFile.getPath(), destDir.getPath(), false);
-                        syncActions.add(copyAction);
-                    }
-
-                }
-
-            }
-
-            JSONArray sourceSyncFilesArray = readSyncFile(sourceDir);
-            for (int i = 0; i < sourceSyncFilesArray.length(); i++) {
-                JSONObject fileObj = sourceSyncFilesArray.getJSONObject(i);
-                String fileName = fileObj.getString("name");
-                File fileInSource = new File(sourceDir, fileName);
-
-                if (!fileInSource.exists()) {
-                    File fileInDest = new File(destDir, fileName);
-                    if (fileInDest.exists()) {
-                        DeleteAction deleteAction = new DeleteAction(fileInDest.getPath(), false);
-                        syncActions.add(deleteAction);
-                    }
-                }
-            }
-
-            for (File destFile : destDir.listFiles()) {
-                if (tryGetFile(sourceDir, destFile) == null) {
-                    if (getInYsync(sourceDir, destFile.getName()) != null) {
-                        long fileTimeInDestination = getInYsync(destDir, destFile.getName()).getLong("lastModified");
-                        long fileTimeInSource = getInYsync(sourceDir, destFile.getName()).getLong("lastModified");
-
-                        if (fileTimeInDestination < fileTimeInSource) {
-                            DeleteAction deleteAction = new DeleteAction(destFile.getPath(), false);
-                            syncActions.add(deleteAction);
-                        }
                     }
                 }
             }

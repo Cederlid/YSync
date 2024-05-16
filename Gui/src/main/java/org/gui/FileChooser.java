@@ -5,13 +5,13 @@ import dev.ytterate.ysync.MisMatchAction;
 import dev.ytterate.ysync.SyncAction;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,6 +26,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private final JLabel errorLabel = new JLabel();
     private FileComparison fileComparison;
     private JTextArea jsonText;
+    private Icon fileAddedIcon;
+    private Icon copyIcon;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -43,6 +45,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     private void createUi(final JFrame frame) {
+        fileAddedIcon = scaleIcon(new ImageIcon("Gui/src/main/resources/images/custom-icon.png"), 50, 50);
+        copyIcon = scaleIcon(new ImageIcon("Gui/src/main/resources/images/icon-copy.png"), 50, 50);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -51,6 +55,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
         JButton button = new JButton("Choose the source directory");
         JButton button2 = new JButton("Choose the destination directory");
+        button.setPreferredSize((new Dimension(400,30)));
+        button2.setPreferredSize((new Dimension(400,30)));
         JButton submitBtn = new JButton("Submit");
         JButton saveBtn = new JButton("Save");
         JLabel label = new JLabel("", JLabel.CENTER);
@@ -69,10 +75,20 @@ public class FileChooser extends JFrame implements ContinueCallback {
         buttonPanel.add(saveBtn);
         buttonPanel.add(label);
         panel.add(buttonPanel, BorderLayout.NORTH);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(scrollPane);
         frame.getContentPane().add(panel);
 
         addPopupListener(submitBtn, saveBtn);
+        showJsonContent();
+    }
+
+    private ImageIcon scaleIcon(ImageIcon icon, int width, int height){
+        Image image = icon.getImage();
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2D = scaledImage.createGraphics();
+        graphics2D.drawImage(image, 0, 0, width, height, null);
+        graphics2D.dispose();
+        return new ImageIcon(scaledImage);
     }
 
     private ActionListener createDirectoryActionListener(JFrame frame, JButton button, JLabel label, boolean isFirstButton) {
@@ -126,7 +142,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 copyFilesInOneDirection(file1, file2).thenApply(result -> {
                     try {
                         copyFilesInOneDirection(file2, file1).thenApply(r -> {
-                            JOptionPane.showMessageDialog(null, "Copy is complete!");
+                            JOptionPane.showMessageDialog(null, "Copy is complete!", "Success", JOptionPane.INFORMATION_MESSAGE, copyIcon);
                             return null;
                         });
                         return null;
@@ -172,24 +188,19 @@ public class FileChooser extends JFrame implements ContinueCallback {
             try (FileWriter fileWriter = new FileWriter(jsonFile)) {
                 fileWriter.write(jsonArray.toString(4));
             }
-
-            JOptionPane.showMessageDialog(null, "Directories saved to JsonSyncFile.json");
+            JOptionPane.showMessageDialog(null, "Directories saved to JsonSyncFile.json", "Success", JOptionPane.INFORMATION_MESSAGE, fileAddedIcon);
         } catch (IOException e) {
             errorLabel.setText("Error: " + e.getMessage());
         }
     }
 
     private void showJsonContent() {
-        if (file1 != null && file2 != null) {
             try {
                 String jsonContent = FileUtils.readFileToString(new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json"), StandardCharsets.UTF_8);
                 jsonText.setText(jsonContent);
             } catch (IOException e) {
                 errorLabel.setText("Error: " + e.getMessage());
             }
-        } else {
-            errorLabel.setText("Please choose source and destination directories first!");
-        }
     }
 
 
