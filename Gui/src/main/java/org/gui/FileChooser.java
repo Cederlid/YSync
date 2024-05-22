@@ -65,6 +65,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         jsonText = new JTextArea();
         jsonText.setEditable(false);
         jsonText.setLineWrap(true);
+        jsonText.setBackground( new Color(227, 246, 252  ));
         JScrollPane scrollPane = new JScrollPane(jsonText);
 
         addDirectoryListener(frame, button, true);
