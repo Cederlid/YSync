@@ -55,34 +55,33 @@ public class FileChooser extends JFrame implements ContinueCallback {
 
         JButton button = new JButton("Choose the source directory");
         JButton button2 = new JButton("Choose the destination directory");
-        button.setPreferredSize((new Dimension(400,30)));
-        button2.setPreferredSize((new Dimension(400,30)));
+        button.setPreferredSize((new Dimension(400, 30)));
+        button2.setPreferredSize((new Dimension(400, 30)));
         JButton submitBtn = new JButton("Submit");
         JButton saveBtn = new JButton("Save");
-        JLabel label = new JLabel("", JLabel.CENTER);
-
+        JButton jsonSyncBtn = new JButton("Sync from Json file");
         jsonText = new JTextArea();
         jsonText.setEditable(false);
         jsonText.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(jsonText);
 
-        addDirectoryListener(frame, button, label, true);
-        addDirectoryListener2(frame, button2, label, false);
+        addDirectoryListener(frame, button, true);
+        addDirectoryListener2(frame, button2,false);
 
         buttonPanel.add(button);
         buttonPanel.add(button2);
         buttonPanel.add(submitBtn);
         buttonPanel.add(saveBtn);
-        buttonPanel.add(label);
+        buttonPanel.add(jsonSyncBtn);
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(scrollPane);
         frame.getContentPane().add(panel);
 
-        addPopupListener(submitBtn, saveBtn);
+        addPopupListener(submitBtn, saveBtn, jsonSyncBtn);
         showJsonContent();
     }
 
-    private ImageIcon scaleIcon(ImageIcon icon, int width, int height){
+    private ImageIcon scaleIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
         BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2D = scaledImage.createGraphics();
@@ -91,7 +90,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         return new ImageIcon(scaledImage);
     }
 
-    private ActionListener createDirectoryActionListener(JFrame frame, JButton button, JLabel label, boolean isFirstButton) {
+    private ActionListener createDirectoryActionListener(JFrame frame, JButton button, boolean isFirstButton) {
         return e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -111,20 +110,21 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     frame.pack();
                 }
             } else {
-                label.setText("Open command canceled");
+                JOptionPane.showMessageDialog(null, "The action have been cancelled!", "Choose directories", JOptionPane.INFORMATION_MESSAGE, null);
+
             }
         };
     }
 
-    private void addDirectoryListener(JFrame frame, JButton button, JLabel label, boolean isFirstButton) {
-        button.addActionListener(createDirectoryActionListener(frame, button, label, true));
+    private void addDirectoryListener(JFrame frame, JButton button, boolean isFirstButton) {
+        button.addActionListener(createDirectoryActionListener(frame, button,true));
     }
 
-    private void addDirectoryListener2(JFrame frame, JButton button2, JLabel label, boolean isFirstButton) {
-        button2.addActionListener(createDirectoryActionListener(frame,button2, label, false));
+    private void addDirectoryListener2(JFrame frame, JButton button2, boolean isFirstButton) {
+        button2.addActionListener(createDirectoryActionListener(frame, button2,false));
     }
 
-    private void addPopupListener(JButton submitBtn, JButton saveBtn) {
+    private void addPopupListener(JButton submitBtn, JButton saveBtn, JButton jsonSyncBtn) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,11 +168,64 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 }
             }
         });
+
+        jsonSyncBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File jsonFile = new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json");
+                if (jsonFile.exists() && jsonFile.isFile()) {
+                    try {
+                        List<String[]> directories = readDirectoriesFromJson(jsonFile);
+                        for (String[] directory : directories) {
+                            String source = directory[0];
+                            String destination = directory[1];
+                            copyFilesInOneDirection(new File(source), new File(destination))
+                                    .thenAccept(result -> {
+                                        try {
+                                            copyFilesInOneDirection(new File(source), new File(destination));
+                                            JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                        } catch (IOException ex) {
+                                            throw new RuntimeException(ex);
+                                        }
+                                    }).exceptionally(ex -> {
+                                        errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
+                                        return null;
+                                    });
+                        }
+                    } catch (IOException ex) {
+                        errorLabel.setText("Error reading JSON file: " + ex.getMessage());
+                    }
+                } else {
+                    errorLabel.setText("The JSON file does not exist or is not a file.");
+                }
+            }
+        });
+
+
+    }
+
+    private List<String[]> readDirectoriesFromJson(File jsonFile) throws IOException {
+        List<String[]> directories = new ArrayList<>();
+
+        String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
+
+        JSONArray jsonArray = new JSONArray(jsonContent);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject directoryObject = jsonArray.getJSONObject(i);
+
+            String source = directoryObject.getString("source");
+            String destination = directoryObject.getString("destination");
+
+            directories.add(new String[]{source, destination});
+        }
+
+        return directories;
     }
 
     void writeDirectoriesToJson(String source, String destination) throws IOException {
         try {
-            File jsonFile = new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json");
+            File jsonFile = new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json");
             JSONArray jsonArray;
             if (jsonFile.exists()) {
                 String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
@@ -195,12 +248,12 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     private void showJsonContent() {
-            try {
-                String jsonContent = FileUtils.readFileToString(new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json"), StandardCharsets.UTF_8);
-                jsonText.setText(jsonContent);
-            } catch (IOException e) {
-                errorLabel.setText("Error: " + e.getMessage());
-            }
+        try {
+            String jsonContent = FileUtils.readFileToString(new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json"), StandardCharsets.UTF_8);
+            jsonText.setText(jsonContent);
+        } catch (IOException e) {
+            errorLabel.setText("Error: " + e.getMessage());
+        }
     }
 
 

@@ -52,8 +52,8 @@ public class YSyncCMD {
     }
 
     private static JSONArray loadJsonSyncFileFromDesktop() {
-        String desktopPath = System.getProperty("user.home") + "/Desktop";
-        String jsonFilePath = desktopPath + "/JsonSyncFile.json";
+        String desktopPath = System.getProperty("user.home") + File.separator + "Desktop";
+        String jsonFilePath = desktopPath + File.separator + "JsonSyncFile.json";
         JSONArray jsonArray = readSyncFile(new File(jsonFilePath));
         System.out.println("Sync file includes: " + jsonArray.toString());
         return jsonArray;
