@@ -28,6 +28,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private JTextArea jsonText;
     private Icon fileAddedIcon;
     private Icon copyIcon;
+    private Icon cancelIcon;
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -47,6 +48,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private void createUi(final JFrame frame) {
         fileAddedIcon = scaleIcon(new ImageIcon("Gui/src/main/resources/images/custom-icon.png"), 50, 50);
         copyIcon = scaleIcon(new ImageIcon("Gui/src/main/resources/images/icon-copy.png"), 50, 50);
+        cancelIcon = scaleIcon(new ImageIcon("Gui/src/main/resources/images/cancel-icon.png"), 50, 50);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -110,7 +112,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     frame.pack();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "The action have been cancelled!", "Choose directories", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(null, "The action have been cancelled!", "Choose directories", JOptionPane.INFORMATION_MESSAGE, cancelIcon);
 
             }
         };
