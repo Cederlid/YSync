@@ -1,4 +1,3 @@
-import dev.ytterate.ysync.CheckBoxListCellRenderer;
 import dev.ytterate.ysync.ContinueCallback;
 import dev.ytterate.ysync.FileComparison;
 import dev.ytterate.ysync.MisMatchAction;
@@ -25,7 +24,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private File file2 = null;
     private final JLabel errorLabel = new JLabel();
     private FileComparison fileComparison;
-    private JTextArea jsonText;
+    private JPanel jsonPanel;
     private Icon fileAddedIcon;
     private Icon copyIcon;
     private Icon cancelIcon;
@@ -62,11 +61,9 @@ public class FileChooser extends JFrame implements ContinueCallback {
         JButton submitBtn = new JButton("Submit");
         JButton saveBtn = new JButton("Save");
         JButton jsonSyncBtn = new JButton("Sync from Json file");
-        jsonText = new JTextArea();
-        jsonText.setEditable(false);
-        jsonText.setLineWrap(true);
-        jsonText.setBackground( new Color(227, 246, 252  ));
-        JScrollPane scrollPane = new JScrollPane(jsonText);
+        jsonPanel = new JPanel();
+        jsonPanel.setLayout(new BoxLayout(jsonPanel, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(jsonPanel);
 
         addDirectoryListener(frame, button, true);
         addDirectoryListener2(frame, button2,false);
@@ -251,9 +248,38 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     private void showJsonContent() {
+        jsonPanel.removeAll();
         try {
-            String jsonContent = FileUtils.readFileToString(new File("/Users/wijdancederlid/Desktop/JsonSyncFile.json"), StandardCharsets.UTF_8);
-            jsonText.setText(jsonContent);
+            List<String[]> jsonArray = readDirectoriesFromJson(new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json"));
+            for (String[] sourceAndDest : jsonArray){
+                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                itemPanel.setSize(5,5);
+
+                JLabel label = new JLabel(("Source: " + sourceAndDest[0] + " Destination: " + sourceAndDest[1]));
+                JButton syncBtn = new JButton("Sync");
+                syncBtn.addActionListener(e -> {
+                    try {
+                        copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
+                                .thenAccept(result -> {
+                                    try {
+                                        copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
+                                        JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                    } catch (IOException ex) {
+                                        errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
+                                    }
+                                });
+                    } catch (IOException ex) {
+                        errorLabel.setText("Error starting synchronization: " + ex.getMessage());
+                    }
+                });
+
+                itemPanel.add(label);
+                itemPanel.add(syncBtn);
+                jsonPanel.add(itemPanel);
+            }
+
+            jsonPanel.revalidate();
+            jsonPanel.repaint();
         } catch (IOException e) {
             errorLabel.setText("Error: " + e.getMessage());
         }
@@ -267,7 +293,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     @Override
-    public CompletableFuture<Boolean> onGotMisMatches(java.util.List<SyncAction> syncActions) throws IOException {
+    public CompletableFuture<Boolean> onGotMisMatches(java.util.List<SyncAction> syncActions) {
         DefaultListModel<SyncAction> misMatchModel = new DefaultListModel<>();
         for (SyncAction action : syncActions) {
             if (action.isMisMatch()) {
