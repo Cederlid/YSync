@@ -256,22 +256,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                 itemPanel.setSize(5,5);
 
                 JLabel label = new JLabel(("Source: " + sourceAndDest[0] + " Destination: " + sourceAndDest[1]));
-                JButton syncBtn = new JButton("Sync");
-                syncBtn.addActionListener(e -> {
-                    try {
-                        copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
-                                .thenAccept(result -> {
-                                    try {
-                                        copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
-                                        JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                    } catch (IOException ex) {
-                                        errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
-                                    }
-                                });
-                    } catch (IOException ex) {
-                        errorLabel.setText("Error starting synchronization: " + ex.getMessage());
-                    }
-                });
+                JButton syncBtn = syncButton(sourceAndDest);
 
                 itemPanel.add(label);
                 itemPanel.add(syncBtn);
@@ -283,6 +268,26 @@ public class FileChooser extends JFrame implements ContinueCallback {
         } catch (IOException e) {
             errorLabel.setText("Error: " + e.getMessage());
         }
+    }
+
+    private JButton syncButton(String[] sourceAndDest) {
+        JButton syncBtn = new JButton("Sync");
+        syncBtn.addActionListener(e -> {
+            try {
+                copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
+                        .thenAccept(result -> {
+                            try {
+                                copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
+                                JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (IOException ex) {
+                                errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
+                            }
+                        });
+            } catch (IOException ex) {
+                errorLabel.setText("Error starting synchronization: " + ex.getMessage());
+            }
+        });
+        return syncBtn;
     }
 
 
