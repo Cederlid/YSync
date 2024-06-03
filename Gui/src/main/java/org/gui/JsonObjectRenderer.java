@@ -2,17 +2,28 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
-public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONObject>{
+public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONObject> {
     private final JLabel sourceLabel;
     private final JLabel destinationLabel;
+    private final JButton syncButton;
+    private final JLabel errorLabel;
 
-    public JsonObjectRenderer() {
-        setLayout(new BorderLayout(5,5));
+
+    public JsonObjectRenderer(JLabel errorLabel) {
+        setLayout(new BorderLayout(5, 5));
         sourceLabel = new JLabel();
         destinationLabel = new JLabel();
+        syncButton = new JButton("Sync");
+        this.errorLabel = errorLabel;
         add(sourceLabel, BorderLayout.WEST);
         add(destinationLabel, BorderLayout.CENTER);
+        add(syncButton, BorderLayout.EAST);
+
     }
 
     @Override
@@ -20,7 +31,7 @@ public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONO
         sourceLabel.setText("Source: " + value.getString("source") + " - ");
         destinationLabel.setText("Destination: " + value.getString("destination"));
 
-        if (isSelected){
+        if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
         } else {
@@ -29,18 +40,4 @@ public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONO
         }
         return this;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

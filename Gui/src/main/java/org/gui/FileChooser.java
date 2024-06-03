@@ -23,7 +23,6 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private File file1 = null;
     private File file2 = null;
     private final JLabel errorLabel = new JLabel();
-    private FileComparison fileComparison;
     private JPanel jsonPanel;
     private Icon fileAddedIcon;
     private Icon copyIcon;
@@ -77,7 +76,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
         panel.add(scrollPane);
         frame.getContentPane().add(panel);
 
-        addPopupListener(submitBtn, saveBtn, jsonSyncBtn);
+        JsonObjectRenderer renderer = new JsonObjectRenderer(errorLabel);
+        addPopupListener(submitBtn, saveBtn, jsonSyncBtn, renderer);
         showJsonContent();
     }
 
@@ -110,7 +110,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
                     frame.pack();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "The action have been cancelled!", "Choose directories", JOptionPane.INFORMATION_MESSAGE, cancelIcon);
+                JOptionPane.showMessageDialog(null, "Cancel!", "Choose directories", JOptionPane.INFORMATION_MESSAGE, cancelIcon);
 
             }
         };
@@ -124,7 +124,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         button2.addActionListener(createDirectoryActionListener(frame, button2,false));
     }
 
-    private void addPopupListener(JButton submitBtn, JButton saveBtn, JButton jsonSyncBtn) {
+    private void addPopupListener(JButton submitBtn, JButton saveBtn, JButton jsonSyncBtn, JsonObjectRenderer renderer) {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -268,7 +268,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
             }
 
             JList<JSONObject> jsonList = new JList<>(listModel);
-            jsonList.setCellRenderer(new JsonObjectRenderer());
+            jsonList.setCellRenderer(new JsonObjectRenderer(errorLabel));
             jsonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             jsonList.setLayoutOrientation(JList.VERTICAL);
 
@@ -283,30 +283,30 @@ public class FileChooser extends JFrame implements ContinueCallback {
         }
     }
 
-    private JButton syncButton(String[] sourceAndDest) {
-        JButton syncBtn = new JButton("Sync");
-        syncBtn.addActionListener(e -> {
-            try {
-                copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
-                        .thenAccept(result -> {
-                            try {
-                                copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
-                                JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                            } catch (IOException ex) {
-                                errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
-                            }
-                        });
-            } catch (IOException ex) {
-                errorLabel.setText("Error starting synchronization: " + ex.getMessage());
-            }
-        });
-        return syncBtn;
-    }
+//    private JButton syncButton(String[] sourceAndDest) {
+//        JButton syncBtn = new JButton("Sync");
+//        syncBtn.addActionListener(e -> {
+//            try {
+//                copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
+//                        .thenAccept(result -> {
+//                            try {
+//                                copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
+//                                JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+//                            } catch (IOException ex) {
+//                                errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
+//                            }
+//                        });
+//            } catch (IOException ex) {
+//                errorLabel.setText("Error starting synchronization: " + ex.getMessage());
+//            }
+//        });
+//        return syncBtn;
+//    }
 
 
-    private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
+    public static CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
         List<String> emptyList = new ArrayList<>();
-        fileComparison = new FileComparison(dir1, dir2, this, emptyList, emptyList);
+        FileComparison fileComparison = new FileComparison(dir1, dir2, null, emptyList, emptyList);
         return fileComparison.compareAndCopyFiles();
     }
 
