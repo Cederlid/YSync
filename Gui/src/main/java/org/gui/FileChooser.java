@@ -223,6 +223,17 @@ public class FileChooser extends JFrame implements ContinueCallback {
         return directories;
     }
 
+    private List<JSONObject> readJsonArrayFromFile(File jsonFile) throws IOException{
+        List<JSONObject> jsonObjects = new ArrayList<>();
+
+        String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
+        JSONArray jsonArray = new JSONArray(jsonContent);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObjects.add(jsonArray.getJSONObject(i));
+        }
+        return jsonObjects;
+    }
     void writeDirectoriesToJson(String source, String destination) throws IOException {
         try {
             File jsonFile = new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json");
@@ -250,18 +261,20 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private void showJsonContent() {
         jsonPanel.removeAll();
         try {
-            List<String[]> jsonArray = readDirectoriesFromJson(new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json"));
-            for (String[] sourceAndDest : jsonArray){
-                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                itemPanel.setSize(5,5);
-
-                JLabel label = new JLabel(("Source: " + sourceAndDest[0] + " Destination: " + sourceAndDest[1]));
-                JButton syncBtn = syncButton(sourceAndDest);
-
-                itemPanel.add(label);
-                itemPanel.add(syncBtn);
-                jsonPanel.add(itemPanel);
+            List<JSONObject> jsonArray = readJsonArrayFromFile(new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json"));
+            DefaultListModel<JSONObject> listModel = new DefaultListModel<>();
+            for (JSONObject jsonObject : jsonArray){
+                listModel.addElement(jsonObject);
             }
+
+            JList<JSONObject> jsonList = new JList<>(listModel);
+            jsonList.setCellRenderer(new JsonObjectRenderer());
+            jsonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            jsonList.setLayoutOrientation(JList.VERTICAL);
+
+            jsonPanel.setLayout(new BorderLayout());
+            JScrollPane scrollPane = new JScrollPane(jsonList);
+            jsonPanel.add(scrollPane, BorderLayout.CENTER);
 
             jsonPanel.revalidate();
             jsonPanel.repaint();
