@@ -1,5 +1,3 @@
-package dev.ytterate.ysync;
-
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
