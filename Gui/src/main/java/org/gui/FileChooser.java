@@ -65,7 +65,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         JScrollPane scrollPane = new JScrollPane(jsonPanel);
 
         addDirectoryListener(frame, button, true);
-        addDirectoryListener2(frame, button2,false);
+        addDirectoryListener2(frame, button2, false);
 
         buttonPanel.add(button);
         buttonPanel.add(button2);
@@ -117,11 +117,11 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
     private void addDirectoryListener(JFrame frame, JButton button, boolean isFirstButton) {
-        button.addActionListener(createDirectoryActionListener(frame, button,true));
+        button.addActionListener(createDirectoryActionListener(frame, button, true));
     }
 
     private void addDirectoryListener2(JFrame frame, JButton button2, boolean isFirstButton) {
-        button2.addActionListener(createDirectoryActionListener(frame, button2,false));
+        button2.addActionListener(createDirectoryActionListener(frame, button2, false));
     }
 
     private void addPopupListener(JButton submitBtn, JButton saveBtn, JButton jsonSyncBtn, JsonObjectRenderer renderer) {
@@ -223,7 +223,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         return directories;
     }
 
-    private List<JSONObject> readJsonArrayFromFile(File jsonFile) throws IOException{
+    private List<JSONObject> readJsonArrayFromFile(File jsonFile) throws IOException {
         List<JSONObject> jsonObjects = new ArrayList<>();
 
         String jsonContent = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
@@ -234,6 +234,7 @@ public class FileChooser extends JFrame implements ContinueCallback {
         }
         return jsonObjects;
     }
+
     void writeDirectoriesToJson(String source, String destination) throws IOException {
         try {
             File jsonFile = new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json");
@@ -261,20 +262,19 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private void showJsonContent() {
         jsonPanel.removeAll();
         try {
-            List<JSONObject> jsonArray = readJsonArrayFromFile(new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json"));
-            DefaultListModel<JSONObject> listModel = new DefaultListModel<>();
-            for (JSONObject jsonObject : jsonArray){
-                listModel.addElement(jsonObject);
+            List<String[]> jsonArray = readDirectoriesFromJson(new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "JsonSyncFile.json"));
+            for (String[] sourceAndDest : jsonArray) {
+                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                itemPanel.setSize(5, 5);
+
+
+                JLabel label = new JLabel(("Source: " + sourceAndDest[0] + " Destination: " + sourceAndDest[1]));
+                JButton syncBtn = syncButton(sourceAndDest);
+
+                itemPanel.add(label);
+                itemPanel.add(syncBtn);
+                jsonPanel.add(itemPanel);
             }
-
-            JList<JSONObject> jsonList = new JList<>(listModel);
-            jsonList.setCellRenderer(new JsonObjectRenderer(errorLabel));
-            jsonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            jsonList.setLayoutOrientation(JList.VERTICAL);
-
-            jsonPanel.setLayout(new BorderLayout());
-            JScrollPane scrollPane = new JScrollPane(jsonList);
-            jsonPanel.add(scrollPane, BorderLayout.CENTER);
 
             jsonPanel.revalidate();
             jsonPanel.repaint();
@@ -283,25 +283,25 @@ public class FileChooser extends JFrame implements ContinueCallback {
         }
     }
 
-//    private JButton syncButton(String[] sourceAndDest) {
-//        JButton syncBtn = new JButton("Sync");
-//        syncBtn.addActionListener(e -> {
-//            try {
-//                copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
-//                        .thenAccept(result -> {
-//                            try {
-//                                copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
-//                                JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
-//                            } catch (IOException ex) {
-//                                errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
-//                            }
-//                        });
-//            } catch (IOException ex) {
-//                errorLabel.setText("Error starting synchronization: " + ex.getMessage());
-//            }
-//        });
-//        return syncBtn;
-//    }
+    private JButton syncButton(String[] sourceAndDest) {
+        JButton syncBtn = new JButton("Sync");
+        syncBtn.addActionListener(e -> {
+            try {
+                copyFilesInOneDirection(new File(sourceAndDest[0]), new File(sourceAndDest[1]))
+                        .thenAccept(result -> {
+                            try {
+                                copyFilesInOneDirection(new File(sourceAndDest[1]), new File(sourceAndDest[0]));
+                                JOptionPane.showMessageDialog(null, "Synchronization complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (IOException ex) {
+                                errorLabel.setText("Error synchronizing directories: " + ex.getMessage());
+                            }
+                        });
+            } catch (IOException ex) {
+                errorLabel.setText("Error starting synchronization: " + ex.getMessage());
+            }
+        });
+        return syncBtn;
+    }
 
 
     public static CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {

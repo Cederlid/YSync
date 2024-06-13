@@ -2,15 +2,11 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONObject> {
     private final JLabel sourceLabel;
     private final JLabel destinationLabel;
-    private final JButton syncButton;
+    private final JButton syncButton = new JButton("Sync");
     private final JLabel errorLabel;
 
 
@@ -18,12 +14,10 @@ public class JsonObjectRenderer extends JPanel implements ListCellRenderer<JSONO
         setLayout(new BorderLayout(5, 5));
         sourceLabel = new JLabel();
         destinationLabel = new JLabel();
-        syncButton = new JButton("Sync");
         this.errorLabel = errorLabel;
         add(sourceLabel, BorderLayout.WEST);
         add(destinationLabel, BorderLayout.CENTER);
         add(syncButton, BorderLayout.EAST);
-
     }
 
     @Override
