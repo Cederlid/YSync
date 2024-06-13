@@ -27,6 +27,8 @@ public class FileChooser extends JFrame implements ContinueCallback {
     private Icon fileAddedIcon;
     private Icon copyIcon;
     private Icon cancelIcon;
+    private FileComparison fileComparison;
+
 
     public static void main(String[] args) {
         FileChooser fileChooser = new FileChooser();
@@ -304,9 +306,9 @@ public class FileChooser extends JFrame implements ContinueCallback {
     }
 
 
-    public static CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
+    private CompletableFuture<Void> copyFilesInOneDirection(File dir1, File dir2) throws IOException {
         List<String> emptyList = new ArrayList<>();
-        FileComparison fileComparison = new FileComparison(dir1, dir2, null, emptyList, emptyList);
+        fileComparison = new FileComparison(dir1, dir2, this, emptyList, emptyList);
         return fileComparison.compareAndCopyFiles();
     }
 
